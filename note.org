@@ -1,0 +1,225 @@
+* 安装 apache2 php7 ThinkPHP Laravel
+环境 
+参考 https://www.howtoing.com/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04/
+    https://www.howtoing.com/how-to-set-up-apache-virtual-hosts-on-ubuntu-16-04/
+
+sudo apt-get update
+sudo apt-get install apache2
+
+sudo apache2ctl configtest
+
+sudo vim /etc/apache2/apache2.conf
+  ServerName localhost
+
+sudo apache2ctl configtest
+
+开启防火墙
+sudo ufw app list
+
+sudo ufw allow in "Apache Full"
+
+测试 http://locahost
+
+
+安装PHP
+
+sudo apt-get install php libapache2-mod-php php-mcrypt
+
+sudo vim /etc/apache2/mods-enabled/dir.conf
+   DirectoryIndex index.php 移到前面
+
+sudo systemctl restart apache2
+
+sudo systemctl status apache2
+
+sudo vim /var/www/html/phpinfo.php
+
+测试 http://localhost/phpinfo.php
+
+下载项目
+sudo chown -R $USER:$USER /var/www 修改目录为当前用户拥有目录
+
+sudo chmod -R 755 /var/www
+
+git clone 
+如果下载 sudo git clone ssh... 报错 not permit..
+  sudo rm -rf /root/.ssh   
+  sudo cp ~/.ssh -r /root/
+
+配置虚拟主机
+
+sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/sz.rr.conf
+
+sudo vim /etc/apache2/sites-available/sz.rr.conf
+
+<VirtualHost *:80>
+    ServerAdmin 201313488@qq.com
+    ServerName sz.rr
+    ServerAlias www.sz.rr
+    DocumentRoot /var/www/hourlyrate-admin/php
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+sudo a2ensite sz.rr.conf
+
+# sudo a2dissite 000-default.conf
+
+sudo systemctl restart apache2
+
+sudo vim /etc/hosts
+  127.0.0.1   sz.rr
+
+vim /var/www/hourlyrate-admin/php/phpinfo.php
+测试 http://sz.rr/phpinfo.php
+     http://sz.rr
+
+** 调试ThinkPHP
+ 报错： _STORAGE_WRITE_ERROR_:./Application/Runtime... 
+ 解决： mkdir ./Application/Runtime
+       chmod 777 ./Application/Runtime
+
+ 报错： not find function php_curl
+ 解决： sudo vim /etc/php/7.0/apache2/php.ini
+          curl前面去掉;
+       sudo apt install php-curl
+       sudo systemctl restart apache2
+       
+ 报错：Call to undefined function Think\Template\simplexml_load_string()
+ 解决： extension=php_xmlrpc.dll
+        sudo apt install php7.0-xml
+        sudo systemctl restart apache2
+
+** 调试Laravel
+安装composer
+根目录composer install 
+  报错缺ext-mbstring
+   解决： sudo vim /etc/php/7.0/apache2/php.ini
+          mbstring 前面去掉;
+       sudo apt install php-mbstring
+  坑：
+    vim /var/www/api-backend/public/phpinfo.php
+       <?php phpinfo();
+    测试 http://pangtu.rr/phpinfo.php ok
+    根目录 php -S localhost:8888 -t public/
+    测试 http://localhost:8888 ok
+    但 http://panggu.rr 报500错
+  解决： 
+    vim /etc/apache2/sites-available/pangu.rr.conf 
+    复制粘贴 /var/www/api-backend/public
+    ok
+* Ubuntu vim emacs 翻译工具安装
+安装ui版 sudo apt install stardict
+  安装本地词典 http://download.huzheng.org/
+  tar -xjvf star....tar.bz2 -C /usr/share/stardict/dic
+安装命令行版 sudo apt install sdcv 
+
+
+支持vim翻译
+  ~/.vim/plugin/sdcv.vim
+    
+function! Mydict()
+  "执行sdcv命令查询单词的含义,返回的值保存在expl变量中
+  let expl=system('sdcv -n ' . expand("<cword>"))
+  "在每个窗口中执行命令，判断窗口中的文件名是否是dict-tmp，如果是，强制关闭
+  windo if expand("%")=="dict-tmp" |q!|endif	
+  "纵向分割窗口，宽度为25，新窗口的内容为dict-tmp文件的内容
+  25vsp dict-tmp
+  "设置查询结果窗口的属性，不缓存，不保留交换文件
+  setlocal buftype=nofile bufhidden=hide noswapfile
+  "将expl的内容显示到查询结果窗口
+  1s/^/\=expl/
+  "跳转回文本窗口
+  wincmd p
+endfunction
+"按键绑定，将调用函数并执行
+nmap F :call Mydict()<CR>
+
+
+用法：
+  非编辑模式下 调用 shift + f
+  退出 C-w o
+
+man 模式下 !sdcv hello
+
+参考http://renwolang521.iteye.com/blog/1317789
+    http://blog.codepiano.com/2012/03/24/translate-word-under-cursor-in-vim
+
+支持emacs
+;; author: pluskid
+;; 调用 stardict 的命令行接口来查辞典
+;; 如果选中了 region 就查询 region 的内容，
+;; 否则就查询当前光标所在的词
+(global-set-key [mouse-3] 'kid-star-dict);;鼠标右键
+(defun kid-star-dict ()
+  (interactive)
+  (let ((begin (point-min))
+        (end (point-max)))
+    (if mark-active
+        (setq begin (region-beginning)
+              end (region-end))
+      (save-excursion
+        (backward-word)
+        (mark-word)
+        (setq begin (region-beginning)
+              end (region-end))))
+    ;; 有时候 stardict 会很慢，所以在回显区显示一点东西
+    ;; 以免觉得 Emacs 在干什么其他奇怪的事情。
+    (message "searching for %s ..." (buffer-substring begin end))
+    (tooltip-show 
+     (shell-command-to-string 
+      (concat "sdcv -n " 
+              (buffer-substring begin end))))))
+* Composer 安装与使用
+参考 https://pkg.phpcomposer.com/
+     https://laravel-china.org/topics/1901/correct-method-for-installing-composer-expansion-pack
+
+** composer 安装
+php -r "copy('https://install.phpcomposer.com/installer', 'composer-setup.php');"
+
+php composer-setup.php
+
+php -r "unlink('composer-setup.php');"
+
+全局安装
+sudo mv composer.phar /usr/local/bin/composer
+
+经常执行 composer selfupdate 以保持 Composer 一直是最新版本
+
+镜像用法
+修改当前项目的 composer.json 配置文件
+进入你的项目的根目录（也就是 composer.json 文件所在目录），执行如下命令：
+
+composer config repo.packagist composer https://packagist.phpcomposer.com
+上述命令将会在当前项目中的 composer.json 文件的末尾自动添加镜像的配置信息（你也可以自己手工添加）：
+
+"repositories": {
+    "packagist": {
+        "type": "composer",
+        "url": "https://packagist.phpcomposer.com"
+    }
+}
+
+
+** 正确的 Composer 扩展包安装方法
+流程一：新项目流程#
+
+创建 composer.json，并添加依赖到的扩展包；
+运行 composer install，安装扩展包并生成 composer.lock；
+提交 composer.lock 到代码版本控制器中，如：git;
+
+流程二：项目协作者安装现有项目#
+
+克隆项目后，根目录下直接运行 composer install 从 composer.lock 中安装 指定版本 的扩展包以及其依赖；
+此流程适用于生产环境代码的部署。
+
+流程三：为项目添加新扩展包#
+
+使用 composer require vendor/package 添加扩展包；
+提交更新后的 composer.json 和 composer.lock 到代码版本控制器中，如：git;
+
+
+composer install - 如有 composer.lock 文件，直接安装，否则从 composer.json 安装最新扩展包和依赖；
+composer update - 从 composer.json 安装最新扩展包和依赖；
+composer update vendor/package - 从 composer.json 或者对应包的配置，并更新到最新；
+composer require new/package - 添加安装 new/package, 可以指定版本，如： composer require new/package ~2.5.

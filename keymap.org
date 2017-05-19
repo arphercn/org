@@ -1,0 +1,457 @@
+* emacs
+上下页               C-v  M-v
+方向键               C-b  C-n  C-p  C-f
+单词间移动           M-b  M-f
+光标文字显示         C-l
+
+行首行尾            C-a  C-e
+
+上一段下一段         M-a  M-e
+全文首位             M-<  M->
+
+Forward 4 word       C-u 4 M-f
+Repeat 9 *           C-u 9 *
+Page down 9 lines    C-u 9 C-v
+This line to top     C-u 3 C-l 		     
+
+Disabled commond     C-x C-l n
+Remain 1 window      C-h k C-f
+                     C-x 1
+Delete current win   C-x 0		     
+Delete world         M-b M-d <DEL>
+Replace world        M-b M-d really
+Delete line end      C-k
+Delete <p> end       M-k
+
+Delete line          C-k C-k
+                     C-u 4 C-k
+
+Select all 	     C-x h
+Cut    		     C-w
+Copy		     M-w
+paste		     C-y
+
+Cut line             C-k C-k <move> C-y
+                     C-u 4 C-k <move> C-y
+Copy line            C-k C-k C-y <move> C-y
+                     C-u 4 C-k C-y <move> C-y
+
+Recover data         C-k C-k <move> C-k C-k C-y
+                             <backmove> C-k M-y
+Undo                 C-/
+
+open/new file        C-x C-f
+save file            C-x C-s
+list buffer          C-x  C-b  C-x 1
+switch buffer        C-x  b  bbbb.txt
+save all files       C-x  s
+
+Replace string       M-x repl s <return> bbbb
+                                <return> cccc
+
+auto save file       #bbbb.c#
+recover file         C-x  C-f  bbbb.c
+                          M-x  recover-file <return> yes
+major mode switch    M-x  text-mode  <return>
+major model help     C-h  m
+
+auto return in .txt  M-x  auto-fill-mode <return>
+change return char   C-u  70  C-x  f
+                     put  cursor on line then M-q
+
+Search               C-s  C-s  <del>
+Search backward      C-r  C-s  <del>
+
+Mutple window        C-x  2
+  scroll other       C-M-v  C-M-S-v
+  switch cursor      C-x  o
+Open in anoter win   C-x  4  C-f  bbbb.c
+                     C-x  o
+
+Help                 C-h  ?
+ key info            C-h  k  C-p
+ function info	     
+ current func info   C-h  f  previous-line
+ key word info	     C-h  a  file
+ variable info       C-h  v  variable
+
+	info	     C-h  i  <return>
+
+
+copy-file	     M-x  copy-file  <return>
+
+
+开启行号	     M-x  linum-mode
+当前行上移            C-x C-t
+
+切换回原来的buffer    C-x <right>
+删除缓冲	     M-x kill-some-bufferx
+
+管理包		     M-x package-list-packages
+刷新包		     M-x package-refresh-content
+
+swiper
+    to first         M-<
+    to last	     M->
+
+myinit.org编辑
+  #+BEGIN_SRC 快捷   <s <tab> emacs-lisp
+  块内缩进等编辑     C-c '
+  缩进		    <down> <tab>
+  退出编辑模式	    C-c '
+
+macro编辑
+  开始              F3
+  结束		    F4
+  重复上一宏	    C-x e
+  
+全文缩进         C-M-\
+
+注释/反注释          M-;
+增加矩形注释         C-x r t
+取消矩形注释         C-x r k
+跳转到行内非空白    M-m
+上移一行           C-x C-t
+* vim
+方向键              h j k l
+基于单词移动        b e w
+批量移动光标        8j 8k
+批量输入            30i-Esc 4a*Esc
+
+一行中查找字母      fb Fb t"
+{}[]()对应括号      %
+行首行尾            0 ^ $
+查找本单词          × #
+全文首尾行          gg G
+某行首              :22
+查找                /the /\d /\wello
+
+插入一行            o O
+删除                x X
+替换单字母          r
+剪切                d dw d5l dt" di" da"
+复制                yy yj y5j    yi" ya"
+粘贴                p 3p
+
+重复上个命令        .
+虚拟模式选择        ve vw vW vi" va" vis vap
+保存                :w :q :q!
+保存readonly        :w !sudo tee %
+撤销重做            u C+r
+同时打开切换        :e <path>  :bn
+
+G 最后一行
+
+
+搜索替换  /abc搜abc         n下一个
+          :set ic忽略大小写 :set noic不忽略
+          :3,6/your/my/g    3到6行your换成my
+		  :%s/your/my/g     全文your换成my
+
+p粘贴在行下 P粘贴在行上
+替换      r替换一个   R开始替换
+删除      x删除       3x删3个字  D删到行尾  
+		  :3,5d删3到5行   dG删到文章尾 
+保存退出  :w 保存   :w name.php 另存
+		  :wq == ZZ 保存退出
+		  :wq! 强制保存退出
+		  :q 不保存退出
+		  :q! 强制不保存退出
+		
+		  :set nu设置行号  :set nonu取消行号
+		  :set nohls设置vim中空格不显示颜色块
+		  :r name.php 导入文件内容
+		  :which ls 不退出vim的情况下使用命令
+		  :r !date 导入当前时间
+		  map (crl+v crl+字母) 命令  定义快捷键
+
+          ab mymail arpher@yeah.net 
+
+		  ab myWeb www.ar-pher.cn
+
+          保存快捷配置到 用户根目录的 .vimrc 文件中
+* shadow
+513534624  				h....0.6
+苹果 					b..A....
+arpher@aliyun.com 		h......5
+mooiix@163.com 			bo******
+wellness66@sina.com  	wellness66
+bearpher@gmail.com 		h..E...6
+ar_pher@hotmail.com 	h......5
+bfengyi@sina.com 		b......5
+
+github.com
+	arpher@aliyun.com 	h......5
+七牛
+	201313488@qq.com 	h......5
+
+知乎
+	201313488@qq.com h..U...6
+
+www.genymotion.com
+	ar_pher@hotmail h..N...
+
+heroku.com
+	ar_pher@hotmail h..U.....
+
+jd.com
+	bfengyi9 18392..23.. h..D.01.
+ 
+x2.bearychat.com
+	301313488@qq.com bo....9
+
+https://git.oschina.net/
+	bearpher  h.......
+	
+又拍
+	bfengyi@126 b.....Y.
+		
+www.douban.com
+	bfengyi@126.com b.....D.
+
+新浪www.weibo.com
+	bfengyi@sina.com b.....L
+坚果云
+	201313488@qq.com h......5
+
+www.wiz.cn
+	bfengyi@126.com bo......
+
+shadowsocks
+	47.90.85.241 :8388
+	flzx3.. aes-256-cfb
+
+陈晨 330105198804200615 杭州
+django bbbb1234
+
+atlassian
+	atlassian.com
+	bitbucket.org
+	SourceTree
+	ar_pher@hotmail h..NA...	
+	
+MAIL	
+	MAIL_DRIVER=smtp
+	MAIL_HOST=smtp.126.com
+	MAIL_PORT=25
+	MAIL_USERNAME=bfengyi@126.com
+	MAIL_PASSWORD=bo...9
+
+WEIXIN微信订阅号
+	鲍家小湾 			arpher@aliyun.com	h..N....
+	师辰案例 			bfengyi@126.com		b......X	
+
+360
+	bfengyi
+	bfengyi@126.com
+	bfengyi@sina.com
+                               均是 b.....3.	
+网易
+        www.126.com
+        http://note.youdao.com
+                            bfengyi@126.com  h..6...5
+
+
+
+
+历史照片\16.3.8iphone\2015_08
+* mandarin
+ben  本子 奔跑 笨蛋
+beng 水泵 蹦跳 迸发
+bin  斌  
+cun  寸 存 村
+cong 从 丛 匆 葱 聪 
+dun  吨 顿 盾 蹲 敦
+dong 懂 东 动 洞 董 冬
+* git
+		    状态    git status
+工作区添加到暂存    git add readme.txt
+					git add .
+暂存区添加到本地    git commit -m '修改了bug'    没有add的文件不会commit到本地
+		日记显示	git log
+					git log --pretty=oneline
+		命令记录	git reflog    查看commit号码		
+本地版本时光穿梭	git reset --hard HEAD^ 
+					git reset --hard HEAD^^ 
+					git reset --hard HEAD~5 
+					git reset --hard de321d1
+  仅回退提交消息	git reset --soft de32
+  回退消息和index   git reset de32
+  
+					
+		区别显示	git diff readme.txt   查看工作区修改了什么
+					git diff HEAD -- readme.txt  查工作区和最新版本库的区别
+					git diff HEAD^ -- readme.txt  查工作区和上次版本库的区别
+撤销修改从工作区(未commit)	git checkout -- readme.txt
+							git checkout -- .
+撤销修改从暂存区(已commit)	git reset HEAD -- readme.txt
+
+
+实例
+ 修改文件
+		初始化      git init
+		添加		git add
+		提交		git commit -m '第一版'
+		添加标签    git tag '1.0'
+		添加		git add
+		提交		git commit -m '第二版'
+		添加标签    git tag '2.0'
+		
+  列出标签和信息    git tag -n
+		查看标签    git show 1.0
+	切换到一标签    git reset --hard 2.0 切换到标签2.0
+	后期添加标签	git tag v1 bb29
+	
+创建SSH Key			ssh-keygen -t rsa -C "201313488@qq.com"
+
+把本地的推送到远程  github.com  点击“Create repository”按钮
+根据GitHub的提示    git remote add origin https://github.com/arphercn/eeee.git
+下一步，推送到远程  git push -u origin master
+					-u第一次推送master分支的所有内容
+此后，使用命令		git push origin master   推送最新修改
+
+推送远程不用密码方法
+	1切换到路径		git remote set-url --push origin git@github.com:arphercn/eeee.git
+		再使用		git push origin master
+	2或者第一次时   git remote add origin git@github.com:arphercn/bbbb.git
+	
+	
+一般远程流程
+	1 建远程仓库 (勾选README.md)
+	2 克隆到本地	git clone git@github.com:arpher/ffff.git
+					(如果https 需要以后输入密码push)
+	3 进入目录		cd ffff
+	4 操作,提交		git push origin master
+	
+分支
+查看分支：				git branch
+创建分支：				git branch <name>
+切换分支：				git checkout <name>
+创建+切换分支：			git checkout -b <name>
+合并某分支到当前分支：	git merge <name>
+删除分支：				git branch -d <name
+
+合并
+当合并时出现冲突时
+	查看哪个文件		git status
+	在文件处理完冲突	git add .
+						git commit -m 'conflict hander'
+	再次执行合并		git merge feature1
+	加上--no-ff参数
+	合并后的历史有分支	git merge --no-ff -m "merge with no-ff" feature1
+查看合并分支			git log --graph --pretty=oneline --abbrev-commit
+创建远程origin的release分支到本地	git checkout -b release origin/release
+
+
+实际项目开发流程(分支管理策略)
+	1 github上创建仓库,
+		勾选README.md
+	2 克隆到本地		git clone git@github.com:arphercn/cccc.git
+	3 创建dev分支		git checkout -b dev
+	4 创建login分支		git checkout -b login
+		查看分支		git branch
+	5 在login分支下
+				编辑	git add .
+				  提交	git commit -m '完成登录表单'
+				  编辑  git add .
+				  提交	git commit -m '完成用户数据库'
+				  编辑	git add .
+				  提交	git commit -m '登录页面美化'
+	6 切换到dev分支		git checkout dev
+		合并login分支	git merge --no-ff -m '差不多完成了登录功能' login
+		查看			git log --graph
+		删除login分支	git branch -d login
+		提交dev到远程	git push origin dev
+	7 额外添加验证码	
+		切换到login分支	git checkout -b login2
+			编辑		git add .
+			提交		git commit -m '完成验证码功能'
+		切换到dev分支	git checkout dev
+			合并		git merge --no-ff -m '登录功能完善' login2
+		查看			git lg
+		删除login2		git branch -d login2
+		
+		
+	8 完成版本1.0开发
+		切换到master分支	git checkout master
+		合并dev分支			git merge --no-ff -m '更新了登录功能' dev
+		查看				git lg
+		
+	9 提交到远程		git push origin dev
+						git push origin master
+						
+						
+						
+git多账户管理
+	因为多了一个bearpher@github账户,所以在同一台电脑下push到这个账户时会收到
+		ERROR: Permission to bearpher/hello.git denied to arphercn.
+		的错误提示,所以为此账户添加ssh
+	参考
+		https://www.zybuluo.com/yangfch3/note/172120
+		http://www.jianshu.com/p/f7f4142a1556
+	
+	在C:\Users\ThinkPad\.ssh 目录下,生成ssh公私钥
+		ssh-keygen -t rsa -C "bearpher@gmail.com"
+			根据提示,第一次输入id_rsa_github_bearpher,第二三次直接回车
+	取消全局设置
+		git config --global --unset user.name
+		git config --global --unset user.email
+	新建config文件
+		touch config
+		vi config
+			# Default github user(arpher@qq.com)  默认配置，一般可以省略
+			Host github.com
+			Hostname github.com
+			User arphercn
+			Identityfile ~/.ssh/github
+
+			# second user(bearpher@gmail.com)  给一个新的Host称呼
+			Host bearpher.github.com  
+			HostName github.com   
+			User bearpher  
+			IdentityFile C:/Users/ThinkPad/.ssh/id_rsa_github_bearpher
+			
+	测试
+		ssh -T git@bearpher.github.com
+		
+	使用
+		情景1：使用新的公私钥进行克隆操作
+			git clone git@bearpher.github.com:bearpher/hello.git 
+			注意此时要把原来的github.com配置成你定义的bearpher.github.com
+		情景2：已经克隆，之后才添加新的公私钥，我要为仓库设置使用新的公私钥进行push操作
+			修改仓库的配置文件：.git/config 为
+			[remote "origin"]
+				url = git@bearpher.github.com:bearpher/hello.git
+
+git下载基于其中一个分支开发
+	克隆 实际上是克隆了所以远程的分支
+		git clone git@github.com:arphercn/cccc.git
+	查看所有分支
+		git branch -a
+		  * master
+		  remotes/origin/HEAD -> origin/master
+		  remotes/origin/dev
+		  remotes/origin/master
+	切换到远程dev分支查看
+		git checkout origin/dev
+	从远程dev分支创建本地dev开发
+		git checkout -b dev origin/dev
+			再次查看
+				git branch
+				git branch -a
+	参考
+		http://justlpf.blog.51cto.com/3889157/1217508
+
+		
+.gitignore文件不工作		
+	git rm --cached file/path/to/be/ignored						
+
+阮一峰 常用 Git 命令清单	
+	http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html		
+
+$ git config --global user.name "Your Name"
+$ git config --global user.email "email@example.com"		
+
+		
+
+		
