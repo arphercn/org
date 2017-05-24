@@ -3,8 +3,8 @@
 重启X Window    C-M-<del>
 X Window 与 terminal 切换         C-M-[F1]~[F6] C-M-[F7]
 注销            exit
-修改语系        echo $LANG    $LANG=en_US.UTF-8
-命令            date +%Y/%m/%d    date +%H:%M
+修改语系        echo $L其他ANG    $LANG=en_US.UTF-8
+命令            date +%Y/%m/%d ;;   date +%H:%M
 man
   查找			man -f man    whatis
   关键词查找	man -k manual    apropos
@@ -304,11 +304,6 @@ xargs
 
 
 
-
-
-
-
-
 * 12 正则表示法与文件格式化处理
 文件夹中找单词 grep 'article' Documents/php/learnlaravel5/app/Http/Controllers/*
 
@@ -322,5 +317,70 @@ grep -n '[0-9]' regular_express.txt
 
 [:alnum:] 0-9, A-Z, a-z
 [:alpha:] A-Z, a-z
-[:digit:] 
-[:lower:]
+[:digit:] 0-9
+[:lower:] a-z
+
+grep -n 't[ae]st' regular_express.txt
+grep -n '[^g]oo' regular_express.txt
+grep -n '[^a-z]oo' regular_express.txt
+grep -n '[0-9]' regular_express.txt
+grep -n '[^[:lower:]]oo' regular_express.txt
+grep -n '^the' regular_express.txt
+grep -n '^[a-z]' regular_express.txt
+grep -n '^[^a-zA-Z]' regular_express.txt  ^在[]里面表示非，在外面表示行首
+grep -n '\.$' regular_express.txt
+cat -nv regular_express.txt | head -n 10 | tail -n 6 显示6行截止到第10行
+grep -n '^$' regular_express.txt 搜空白行
+
+grep -v '^$' /etc/syslog.conf | grep -v '^#' 输出没有空格和#注释的行
+
+grep -n 'g..d' regular_express.txt   . 一定有一个任意字符
+grep -n 'g.*g' regular_express.txt   * 重复前一个 0 到无穷多次
+grep -n 'o\{2\}' regular_express.txt  oo
+grep -n 'go\{2,5\}g' regular_express.txt  2 到 5 个 o
+grep -n 'go\{2,\}g' regular_express.txt  2 个 o 以上
+
+
+sed 工具
+
+nl /etc/passwd | sed '2,5d'    d 删除
+nl /etc/passwd | sed '2a drink tea'   在第二行后(亦卲是加在第三行)加上『drink tea?』
+nl /etc/passwd | sed '2a Drink tea or ......\
+> drink beer ?'                        添加多行
+nl /etc/passwd | sed '2,5c No 2-5 number'  2-5 行癿内容叏代成为『No 2-5 number』
+nl /etc/passwd | sed -n '5,7p'   仅列出 /etc/passwd 档案内癿第 5-7 行
+
+sed 's/要被叏代癿字符串/新癿字符串/g'
+mac ifconfig 取出ip
+ifconfig | grep 'inet ' | sed 's/inet //g' | sed 's/ netmask.*//g'
+取出 MAN行的 不带注释#的
+cat /etc/man.conf | grep 'MAN' | sed 's/^#.*//g' | sed '/^$/d'
+
+直接修改档案内容(危险劢作)
+
+
+延伸正觃表示法
+egrep -v '^$|^#' regular_express.txt  去除穸白行不行首为 # 癿行列
+
++ 重复『一个戒一个以上』癿前一个 RE 字符
+? 『零个戒一个』癿前一个 RE 字符  
+\| 用戒(or)癿方式找出数个字符串 egrep -n 'gd|good' regular_express.txt                                                       
+()找出『群组』字符串  egrep -n 'g(la|oo)d' regular_express.txt
+()+ 多个重复群组癿判别 echo 'AxyzxyzxyzxyzC' | egrep 'A(xyz)+C'
+
+格式化打印: printf
+
+me Chinese English Math Average
+DmTsai 80 60 92 77.33
+VBird 75 55 80 70.00
+Ken 60 90 70 73.33
+
+printf '%s\t %s\t %s\t %s\t %s\t \n' $(cat printf.txt)
+printf '%10s %5i %5i %5i %8.2f \n' $(cat printf.txt |\
+> grep -v Name)
+
+
+
+
+
+
