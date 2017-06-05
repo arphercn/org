@@ -1,4 +1,3 @@
-
 * 5	首次登入与在线求助 man page
 重启X Window    C-M-<del>
 X Window 与 terminal 切换         C-M-[F1]~[F6] C-M-[F7]
@@ -428,6 +427,57 @@ find / -type f | xargs -n 10 grep -l '\*'
 alias myip="ifconfig | grep 'inet ' | sed 's/inet //g' | sed 's/ netmask.*//g' | grep '10.8'"
 MYIP=$(myip)
 如果每次登入都要生效,可以将alias不MYIP癿讴定那两行,写入你癿~/.bashrc卲 可!
+
+
+
+* 17 程序管理与SELinux初探
+
+C-z 暂停程序
+jobs 查看暂停程序
+fg %1 恢复到前台执行(% 可有可无)
+bg %1 在后台变为running
+
+前面的只针对C-c有效而已，假如通过远程终端的在后台执行
+nohup ./sleep500.sh &
+
+强制删除 kill -9 %2
+
+ps aux 观察系统所有的程序数据 
+ps -lA 也是能够观察所有系统的数据 
+ps axjf 连同部分程序树状态
+
+ps -l 仅观察自己的 bash 相关程序
+
+查看程序pid
+ps aux | grep httpd
+ps axjf | grep apach2 以程序树查看
+
+pstree -p 02043 查看pid的相关依赖程序
+
+kill -signal 2043 
+信号查看 kill -l
+ -1 启动 -9 强制删除 -15 默认正常删除
+
+删除服务 killall -9 httpd
+-i 交互询问是否删除
+
+调整程序优先级
+nice -n 6 vim eeee.txt 新建程序时调整优先级
+renice 5 2064 调整现有程序优先级
+  nice 范围为 -20 ~ 19 ;
+  root 可随意调整自己戒他人程序的 Nice 值,且范围为 -20 ~ 19 ;
+  一般用户仅可调整自己程序的 Nice 值,且范围仅为 0 ~ 19 (避免一般用户抢占系统资源);
+
+free 观察内存使用情况
+注意swap 使用情况，一般来说，swap最好不要被使用，效能跟物理内存差很多
+
+uname:查阅系统与核心相关信息
+uname -a
+
+uptime 观察系统启动时间与工作负载
+
+netstat 列出目前系统已经建立的网络联机与unix socket状态
+
 
 
 

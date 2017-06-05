@@ -127,4 +127,7 @@ https://detail.tmall.com/item.htm?spm=a220o.1000855.w4004-15715496505.2.Md9Fx1&a
 蓝牡丹 绿新花
 * 网址
 http://www.ittun.com/
-
+PHP常用功能函数----进阶篇 http://www.kancloud.cn/z113211/cyh
+* 收尾程序
+浏览器清缓存
+mac 取消sudo密码
