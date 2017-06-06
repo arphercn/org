@@ -477,8 +477,10 @@ uname -a
 uptime 观察系统启动时间与工作负载
 
 netstat 列出目前系统已经建立的网络联机与unix socket状态
+使用 n 时, netstat 就不会使用主机名不服务名称 (hostname & service_name) 来显示, 取而代之的则是以 IP 及 port number 来显示的
 
-
-
+哪些服务『目前』是在启动的状态?
+可以透过 services --status-all,戒者是透过 netstat -anl 等方式。也可以透过 pstree 去查询喔! 只是相关对应 的服务 daemon 档名就得要个别查询了。
+  tcp wrappers 软件功能不 xinetd 的功能中,可以使用哪两个档案迚行网络防火墙的控管? /etc/hosts.{allow,deny}
 
 
