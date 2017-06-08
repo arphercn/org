@@ -134,6 +134,8 @@ mac 取消sudo密码
 * 招聘
 https://www.zhipin.com/job_detail/1411730712.html?ka=search_list_10 php
 https://www.zhipin.com/job_detail/1411829773.html?ka=search_list_35 云杉
+https://www.liepin.com/job/194698555.shtml?imscid=R000000075&ckid=ebb710739ac3df73&headckid=ebb710739ac3df73&pageNo=0&pageIdx1&totalIdx=1&sup=1 php开发工程师（运营后台）深圳充电网科技有限公司
+
 
 * za
 花瓶抓包

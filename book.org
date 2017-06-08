@@ -429,6 +429,28 @@ MYIP=$(myip)
 如果每次登入都要生效,可以将alias不MYIP癿讴定那两行,写入你癿~/.bashrc卲 可!
 
 
+* 15 磁盘配额quota
+首先磁盘分区 /dev/sda2 /home  
+操作 用virtual box安装ubuntu16
+可以用 df -h /home 查看
+建立用户和密码
+groupadd mygrp
+useradd -g mygrp user1
+...
+sudo passwd user1
+...
+加入quota支持
+vim /etc/fstab
+  LABEL=/home /home ext3 defaults,usrquota,grpquota
+
+mount -a 重新挂载
+mount -fav 检查/etc/fstab 是否正确
+
+检查
+sudo quotacheck -avug  查得 /home 支持先不管报错
+ll /home/   查得quota的记录文件 aquota.user aquota.group
+
+
 
 * 17 程序管理与SELinux初探
 
