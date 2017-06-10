@@ -428,8 +428,8 @@ alias myip="ifconfig | grep 'inet ' | sed 's/inet //g' | sed 's/ netmask.*//g' |
 MYIP=$(myip)
 如果每次登入都要生效,可以将alias不MYIP癿讴定那两行,写入你癿~/.bashrc卲 可!
 
-
-* 15 磁盘配额quota
+* 15 磁盘配额quota LVM
+** quota实践
 首先磁盘分区 /dev/sda2 /home  
 操作 用virtual box安装ubuntu16
 可以用 df -h /home 查看
@@ -450,8 +450,101 @@ mount -fav 检查/etc/fstab 是否正确
 sudo quotacheck -avug  查得 /home 支持先不管报错
 ll /home/   查得quota的记录文件 aquota.user aquota.group
 
+** LVM实践
+--扩容LVM--
+
+首先virtual box 安装ubuntu server默认LVM
+virtual box添加2GB硬盘
+分割500M lvm
+  fdisk /dev/sdb
+  n新建 p(primary) 回车 +500M   t修改类型  8e(LVM类型) w写入
+
+sudo partprobe
+
+查看sudo fdisk -l
+
+建立新的PV
+  sudo pvcreate /dev/sdb1
+  查看VG vgscan vgdisplay
+添加/dev/sdb1到VG(volume group)
+  vgextend ubuntu-vg /dev/sdb1
+  查看 vgdisplay 查看里面的free PE有130个PE 
+放大LV 添加VG里free PE到LV中
+  查看LV名字 sudo lvdisplay 查得LV名字/dev/ubuntu-vg/root
+  放大 lvresize -l +130 /dev/ubuntu-vg/root 
+  再次查看 sudo vgdisplay VG的free PE变为0
+          sudo lvdisplay LV size 变大8.5为9.10G
+          df -h /  查得文件系统仍然是8.3G,没有变化
+放大文件系统
+  先查看 dumpe2fs /dev/ubuntu-vg/root 共Group67
+  將完整的LV容量扩充到文件系统 resize2fs /dev/ubuntu-vg/root
+  查看 df -h / 增为8.8G 扩容成功
+       dupme2fs /dev/ubuntu-vg/root Group增至72 
+
+总结先fdisk实体分割，然后PV->VG->LV 可以分别加上display查看
+    最后用resize2fs扩容文件系统
 
 
+--缩小LVM--
+去掉挂载到/mnt/lvm的sdb5
+查看sudo pvscan    sudo pvdisplay 查得sdb1 total PE 12个 200M
+  df -h /mnt/lvm    查得659M
+  算得减少容量后659M-200M=459M
+
+sudo resize2fs /dev/ubuntu-vg/root 450M    用0.45G貌似不行
+  提示 /dev/ubuntu-vg/root is mount on /mnt/lvm
+
+umount /mnt/lvm
+执行resize2fs 再次提示 Please run 'e2fsck -f /dev/arphervg/arpherlv' first.先检查磁盘
+于是先检查磁盘，然后umount
+再次执行resize2fs成功
+然后重新挂载 sudo mount /dev/arphervg/arpherlv /mnt/lvm
+  查 df -h /mnt/lvm  变为428M 成功
+  发现原来/mnt/lvm的文件消失了
+
+查vgdisplay 得VG size 688MB
+  lvdisplay 得LV size 688MB
+  pvdisplay 的sdb5的free PE 12个 共200MB
+    加入sdb5的free PE 为0  另外有sdb6的free PE 12个 都大小200MB要卸掉sdb5的话
+       参考鸟哥的pvmove /dev/hda6 /dev/hda10
+       pvmove /dev/sdb5 /dev/sdb6 可以把sd5的PE移到sd6上
+       然后可以將/dev/sdb5 移除arphervg
+降低lv vg容量
+  sudo lvresize -l -12 /dev/arphervg/arpherlv   sdb5有12个PE
+  將/dev/sd5移出arpherlv  
+    sudo vgreduce arphervg /dev/sdb5
+  然后查看 sudo vgdisplay 得VG size 496MB成功
+          sudo pvdisplay 得 /dev/sdb5 is new physical volume 成功
+
+
+--新增lvm--
+查看sudo fdisk -l
+  先分好 /dev/sdb2
+建立新的PV
+  sudo pvcreate /dev/sdb2
+  查看sudo pvscan
+建立新的VG
+  將sdb2建成vg
+  参考 vgcreate -s 16M vbirdvg /dev/hda{6,7,8}
+    指定PE为16M,
+  sudo vgcreate -s 16M arphervg /dev/sdb2 
+  查sudo -vgdisplay 得Total PE为31
+建立新的LV
+  sudo lvcreate -l 31 -n arpherlv arphervg
+  -l PE的数量 -n lv的名字
+格式化，挂载lv
+  先查看文件系统格式 df -hT
+  sudo mkfs -t ext4 /dev/arphervg/arpherlv
+  
+  mkdir /mnt/lvm
+  sudo mount /dev/arpher/arpherlv /mnt/lvm
+
+  查看 sudo lvscan 
+       sudo lvdisplay
+       df -h       sudo fdisk -l
+  
+
+ 
 * 17 程序管理与SELinux初探
 
 C-z 暂停程序
