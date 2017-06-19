@@ -223,3 +223,506 @@ composer install - 如有 composer.lock 文件，直接安装，否则从 compos
 composer update - 从 composer.json 安装最新扩展包和依赖；
 composer update vendor/package - 从 composer.json 或者对应包的配置，并更新到最新；
 composer require new/package - 添加安装 new/package, 可以指定版本，如： composer require new/package ~2.5.
+* linux笔记
+老鸟建议
+	最小安装  尽量不yum卸载
+
+
+查看主机名 临时改名hostname 
+
+
+netstat -lunt 通过查看端口知道开了哪些服务
+
+挂载
+mkdir /mnt/cdrom 通常在/mnt目录挂载文件
+		设备   目录
+mount /dev/sr0 /mnt/cdrom
+cd /mnt/cdrom 
+ls   查看挂载情况
+卸载 
+cd 先把命令返回，不能停在本目录执行命令
+umount /dev/sr0 或umount /mnt/cdrom
+
+重启 (推荐使用，可以取消正在使用的服务)
+shutdown -r now 现在重启 r指reboot
+shutdown -r 8:00 8:00重启
+shutdown -h  8:00关机(*禁用*)
+shutdown -c 取消关机重启
+
+其他重启命令 reboot init 6
+改系统运行级别 init 1   状态有(0,1,2,3,4,5,6)
+查看系统运行级别配置文件cat /etc/inittab  X11指图形界面
+查询系统运行级别    runlevel
+退出登录(记得退出)  logout
+
+
+
+RPM安装卸载
+		名称中noarch指适合所有linux版本
+		www.rpmfind.com 找模块依赖包
+		包安装位置var/lib/rpm/
+		
+		安装 rpm -ivh 包全名(安装install 显示信息verbose 进度hash)
+		         -nodeps (不检测依赖性)
+			先
+			mkdir /mnt/cdrom
+			mount /dev/sr0 /mnt/cdrom
+			查看挂载：mount
+			cd /mnt/cdrom
+			ls 在此目录安装-
+		升级rpm -Uvh 包全名(升级)
+		卸载rpm -e 包名 (不用一定在安装目录)
+
+查询 
+	 rpm -qa               查询全部
+	 rpm -q httpd          查询包名(query)
+	 rpm -qa | grep httpd  查询httpd相关的安装
+	 
+	 rpm -qR httpd         查询依赖信息(requie)
+	 rpm -qRp 包全名   查询未安装依赖信息(/mnt/cdrom/packages/)
+	 
+	 rpm -ql httpd         查询已安装软件安装位置(list)
+						   源码包安装位置查询 ls /usr/local/apa...
+	 rpm -qlp 包全名       查询未安装软件的位置
+	 rpm -qf /etc/yum.conf 查询系统文件属于那个软件包(files)
+	 
+	 rpm -qi httpd         查询软件信息(information)
+	 rpm -qip 包全名       查询未安装软件信息(package)
+	 
+rpm包校验
+		rpm -V httpd  校验(verify)
+		rpm -ql httpd
+		vim /etc/httpd/conf/httpd.conf
+rpm包中文件提取
+		rpm2cpio 包全名 |\
+		cpio -idv .文件绝对路径   \为了命令换行.当前目录
+		
+		rpm2cpio 将rpm包转为cpio格式命令
+		cpio -idv < [文件|设备]  从档案中提取文件(copy-in模式，还原 自动新建目录 显示还原过程)
+		
+		例  mv /bin/ls /tmp
+			ls
+			rpm2cpio /mnt/cdrom/Packages/coreutils-8.4-31.el6.i686.rpm |\
+			> cpio -idm ./bin/ls  (> 另开一行命令面板提示)
+			dir
+			cd bin/
+			cp ls /bin/ls
+			
+网络yum源
+	vi /etc/yum.repos.d/CentOS-Base.repo
+	enabled=1 生效 0不生效
+	
+yum命令(命令地址不限，不需要包全名)
+	查询所有可用软件包列表      yum list
+	搜索所有和关键字相关的包    yum search httpd
+	安装                        yum -y install gcc
+			-y 自动回答yes
+			gcc 源码包安装需要的c语言编译器
+								rpm -q gcc 查询安装成功
+	升级   	yum -y update (*禁用*)升级所有包和内核
+			yum -Y updata gcc
+	卸载	yum -y remove 关键字(*尽量禁用*)依赖性
+yum软件组管理
+	查询列表	yum grouplist
+	安装    	yum groupinstall "软件组名"
+	卸载		yum groupremove  "软件组名"
+	
+yum源光盘搭建
+	1挂载光盘	虚拟机->设置->网络适配器->右上角已连接 勾
+				mkdir /media/CentOS/
+				mount -t iso9660 /dev/sr0 /media/CentOS/
+				mount 查看
+	2网源失效	cd /etc/yum.repos.d/
+				ls
+				mv CentOS-Base.repo CentOS-Base.repo.bak
+				mv CentOS-Debuginfo.repo CentOS-Debuginfo.repo.bak
+				mv CentOS-Vault.repo CentOS-Vault.repo.bak
+				
+				vi CentOS-Media.repo (不随便添加# 修改格式)
+				baseurl=file:///media/CentOS
+				#        file:///media/cdrom/
+				#        file:///media/cdrecorder/
+				enabled=1
+	3查看成果	yum list
+				yum install vim
+	
+源码包安装
+	 检查安装gcc rpm -q gcc
+	1复制压缩包到root目录
+	2解压缩 tar -zxvf httpd-2.4.17.tar.gz
+		ls
+		du -sh httpd-2.4.17查看大小
+	3进入解压缩包目录cd httpd-2.4.17
+		查看ls   vi README    vi INSTALL
+	4准备 
+		./configure --help
+		./configure --prefix=/usr/local/apache2
+			生成Makefile文件,用于后续编辑
+	5编译 make
+		到这一步前面报错的话make clean可以清空编译产生的文件
+	6编译安装make install
+	7/usr/local/apache2/bin/apachectl start
+
+	
+用户配置文件
+
+	查询配置文件命令  man 5 passwd
+	/etc/passwd  用户名:密码标志:UID:GID:用户说明:家目录:登录之后的Shell
+		UID  0:超级用户 1-499系统用户 500-65535 普通用户
+	/etc/shadow 用户名:密码:最后修改:两次间隔:\
+				有效期:警告天数:宽限天数:失效时间:保留
+				加密算法升级为：SHA512  !!  * 表示没密码
+		换算时间  date -d "1970-01-01 16076 days"
+				echo $(($(date --date="2014/01/06"+%s)/86400+1))
+	/etc/group    组名:组密码标志:GID:组中附加用户
+	/etc/gshadow  组名:组密码:组管理员用户名:组中附加用户
+	查看用户组
+		新建用户时自动新建同名的用户组,
+		只有用户组存在才能创建用户,用户依存于用户组存在
+				cat /etc/passwd  看组ID
+				cat /etc/group   看组ID对应的组名
+				
+		修改普通用户为超级用户  UID=0
+		var 可变文件存放
+	家目录  /root/ 			权限 550  超级用户 
+			/home/用户名/   权限 700  普通用户 
+	/var/spool/mail/用户名/ 用户邮箱
+	/etc/skel/              用户模板(普通用户家目录里默认自带文件)
+	
+	
+	用户默认文件    /etc/default/useradd
+					/etc/login.defs
+	普通用户添加 useradd meizi	-u -d -c -g -G -s
+	    密码添加 passwd meizi 123456
+				 echo "123456" | passwd --stdin 123
+	超级用户修改密码 passwd 123456
+	超级用户修改普通密码 passwd meizi 123456
+	普通用户修改密码 passwd 123456
+		
+		我是谁  whoami
+		密码修改 后退:crl+Backspace  或重来: ctrl+c
+		查询	passwd -S meizi
+				cat /etc/shadow | grep meizi
+		锁定    passwd -l meizi  其实就是在shadow密码前加!!
+		解锁	passwd -u meizi
+	用户修改 usermod -c  -G     -L   -U
+					说明 用户组 锁定 解锁
+	密码状态修改 chage -l   -d      -m -M -W -I -E
+					   状态 修改日期...
+				chage -d 0 meizi 改后第一次登录后会提示修改密码
+	用户删除  userdel -r 注意-r同时删除用户家目录
+	
+		id meizi  查询uid gid 目前所在组
+		usermod -G root meizi 加meizi到root组
+	身份切换 su - meizi   -注意连带切换环境变量
+			 env 查环境变量
+			 su - root -c "useradd fengge"   -c临时执行命令
+			 exit 退出
+			 
+	用户组管理
+		groupadd lamp    -g 指定GID  -g用处不大
+		groupmod -n 新组名 老组名   修改组名(*不建议*)要修改mail等,建议直接删除后添加新的
+		groupdel 组名(有作为主组的用户存在时，不能删)
+			useradd -g lamp1 user1 添加user1用户主组是lamp1
+			useradd -G lamp2 user2 添加user2到附加组lamp2
+			userdel -r user1       先删主组的用户
+			groupdel lamp1         才能删主组
+		gpasswd -a meizi lamp 把meizi加到lamp组作为附加用户
+		gpasswd -d meizi lamp 把meizi从lamp组中删除
+		
+		
+权限
+	
+	df -h 查看分区使用状况
+	dumpe2fs -h /dev/sda5 	查指定分区文件系统信息
+		看 Default mount options:支持acl  目前大多数linux默认已经支持了，不用配置了,万一不支持的话
+	临时开启分区ACL权限 mount -o remount,acl   -o支持特殊
+	永久                vim /etc/fstab  (*慎重写错不能启动*)
+						default,acl  (在需要的分区加,acl)
+						mount -o remount
+						
+	查看acl权限 getfacl 文件名
+	设置acl权限 setfacl -m 文件名
+		例：添加shiting用户rx权限对/project/
+		mkdir /project/
+		useradd bimm	 useradd cangls 	useradd shiting
+		groupadd tgroup
+		gpasswd -a bimm tgroup 		gpasswd -a cangls tgroup
+		cat /etc/group
+		
+		chown root:tgroup /project/ 改/project/拥有者和组群
+		chmod 770 /project/
+		ll -d /project/
+		
+		setfacl -m u:shiting:rx /project/ 
+				-m 设置acl u用户模式
+		ll -d /project/ 查看多了+
+		getfacl /project/ 报错提示去掉前面的/
+
+		su - shiting
+		ls 可以  cd /project/ 可以  touch abc 报错
+	组acl权限设置
+		groupadd tgroup2
+		setfacl -m g:tgroup2:rwx /project/
+		getfacl /project/
+最大有效权限mask
+		文件除了所有者owner,其他的权限与mask权限相与才是 
+		文件的最终权限
+		setfacl -m m:rx
+删除acl
+		setfacl -x g:tgroup2 /project/ 删组
+		setfacl -x u:shiting /project/ 删用户
+		setfacl -b /project/ 删全部acl
+		查看 getfacl /project/
+			 ll /project/
+递归acl(只对文件起作用)
+	以前的里面的遵守
+		setfacl -m u:shiting:rx -R /project/
+						-R递归 注意位置
+	新建的遵守(默认递归)
+		setfacl -m d:u:shiting:rx /project/
+				   d默认
+
+
+			touch abc    ll abc
+SUID (只有可执行二进制程序才能执行SUID命令)
+	比如passwd命令有SUID权限,所以其他用户执行时
+	就可以变为root,可以使用passwd命令操作/etc/shadow文件
+	把密码写进文件
+	
+	SetUID 灵魂附体二进制文件(*危险*)
+		whereis passwd
+		ll /usr/bin/passwd  有s
+		建议经常检测 以删除
+		   
+
+SetGID (对可执行二进制程序和目录都能执行SUID命令)
+		
+	对文件：执行时组身份升级为程序文件的组属
+		whereis locate
+		ll /usr/bin/locate 
+			-rwx--s--x 1 root slocate有s,有SGID,
+			其他用户执行是组升级为slocate
+		ll /var/lib/mlocate/mlocate.db
+			-rw-r----- 1 root slocate 组为slocate,有读权限
+			所以其他用户可以用locate命令执行
+			
+			
+	对目录：
+		cd /tmp/
+		mkdir test/
+		chmod 2755 test/  或g+s
+		ll -d test/
+		chmod 2777 test/ 为测试
+		su - meizi
+		touch abc   	ll -d abc查看
+		cd /tmp/test/   touch abc   ll -d abc查看
+		普通用户新建文件的所属组为创建者的所属组
+
+Sticky BIT (只对目录有效)
+		粘着位，保护自己建的文件不被其他普通用户删
+		ll -d /tmp/ 查看有t (只对本目录下文件有效)
+		su - meizi   touch abc 
+		su - fengge   cd /tmp/   ll
+		rm -rf abc  不能删,只有创建者能删，避免误操作
+
+	设置
+			  SUID		SGID  TUID
+		chmod 4755 abc   2755  1755
+		chmod u+s abc     g+s     o+t
+		(设置SUID和SGID文件必须有x权限,大写S指报错)
+		  
+	删除
+			  SetUID	  SGID  TUID
+		chmod 755 abc
+		chmod u-s abc     g-s     o-t	
+		
+chattr文件系统属性
+		锁起来了,可以防止root误操作
+	格式：chattr [+-=]i 文件|目录
+		文件有i属性时：
+					所有人(包括root),只能查看,
+					不能删除改名、添加修改数据
+			例:
+			touch abc 	ll	 echo 111>>>abc		cat abc
+			chattr +i abc 	ll 看不到i属性
+			lsattr -a abc 	----i-------e-
+				e代表在ext文件系统，不用管
+		目录有i属性时：所有人不能建立删除文件，只能修改文件数据
+			例:
+			mkdir /test 	touch 	/text/bcd
+			chattr +i /test/ 	lsattr -a /test/ 能查看到有i属性
+			echo 222 >> /test/bcd 可以
+			cat /test/bcd 可以
+			rm -rf /test/bcd 不可以
+	格式：chattr [+-=]a 文件|目录		
+		文件有a属性时：只能追加数据，不能修改、删除
+			例:echo 1111 >> abc 可以
+			   vi abc 不能保存
+		目录有a属性时：只能建立修改文件，不能删除
+	总结:i比a更严格,不能修改
+			a是add的意思,指可以添加数据
+			
+sudo权限：
+	root:
+		把超级的命令赋予普通用户
+		visudo 实际上修改的是/etc/sudoers
+		
+		root 	ALL=(ALL) 	ALL
+		允许meizi  在本机或本服务器网段任何IP 使用此命令
+		meizi 	ALL=/sbin/shutdown -r now写多，赋权限多
+		meizi 192.168.1.200=/usr/bin/vim (*禁*)普通用户vim有限制
+	普通用户
+		sudo -l查看授权命令
+		sudo /sbin/shutdown -r now
+		
+		
+文件系统
+
+		
+	df [-h] [挂载点]   文件系统查看(从系统程序考虑)
+			-h人性化 -a 显示所有 -T显示类型 
+		查：剩余空间为真实的
+		系统要定时重启，来清除缓存数据 
+			游戏、下载、电影每周重启
+			不大网站每月重启
+		ll -h /etc/ 只统计其下一级子目录文件大小
+	du -sh /etc 统计所有目录或文件大小(从文件考虑)(注意比较耗资源)
+	看文件大小直接用 ll -h 
+		-s总和 -a显示其下每个子文件	
+	fsck [-a -y]分区设备文件名  文件系统修复 (*禁用*)
+					底层命令，不用手工敲
+	dumpe2fs /dev/sda1 查数据块
+		查Block size
+		
+	mount [] 设备文件名 挂载点      查系统已挂载的设备
+			-t 文件系统 硬盘:ext4 光盘:iso9660
+			-L 卷标，别名-l显示卷标
+			-o特殊选项 remount 
+					   exec/noexec 文件系统下文件可不可执行
+			例：noexec可以让home下文件不能 执行
+			ls 		touch ashell.sh
+			vim 内容#!/bin/bash
+					echo "hello world"
+			chmod 755 ashell.sh     ./ashell.sh 执行
+			mount -o remount,noexec /home/
+			cp ashell /home/  	cd /home/
+			ashell.sh 不能执行 chmod 755 ashell.sh 也不能
+			df 		dumpe2fs /dev/sda2 我没能找到noexex
+			mount -o remount,exec /home/
+			
+	挂载光盘 mkdir /mnt/cdrom   现在默认也可以挂载到根下有media
+			 放入光盘
+			 mount -t iso9660 /dev/sr0 /mnt/cdrom/  \
+			 或简写mount /dev/cdrom /mnt/cdrom/  
+						cdrom是sr0软连接(ll /dev/cdrom)
+			 df查看      cd /mnt/cdrom/
+实战挂载光盘 mkdir /media/CentOS
+			 mount -t iso9660 /dev/sr0 /media/CentOS
+			 mount		 
+			 
+	卸载光盘 cd ..
+			 umount /mnt/cdrom/ 或umount /dev/sr0
+			 去掉光盘
+			 
+	挂载u盘 设备名自动识别
+			进入虚拟机  鼠标点进去 插入u盘
+			fdisk -l 查u盘设备名 查看到设备名sdb
+			用远程工具
+			fdisk -l 
+			mount -t vfat /dev/sdb1 /mnt/usb/ 
+			 FAT32分区识别为vfat FAT16->fat  linux默认不支持NTFX
+			umount /dev/sdb1  	拔出u盘
+			
+加新分区
+		查看命令
+			看分区df -h     看挂载mount     看设备fdisk -l
+		
+	步骤
+	虚拟机断电  添加硬盘(下一步、磁盘类型:SCSI 10G) 开机
+	fdisk -l 查看到新硬盘sdbp
+	fdisk /dev/sdb   不写sdb1等
+		m帮助   l显示系统类型   n新建 	 d删除
+		t改系统ID  w保存退出  q不保存退出
+		crl+退出 删除
+		
+		p查看
+		n新建  p选主分区  1选1号主区(硬盘分区最好不要跳开)
+		1选1号柱列  +2G  p查看
+		n新建  e选扩展分区  2选2  回车  回车：剩下都都做了扩展分区
+		
+		p查看
+		n新建  l(1234给了主分区)  回车 +2G  p查看
+		
+		w(注意保存)
+		partprobe提示要重启时:重新读分区表信息
+		
+		fdisk -l 查看
+		格式化  mkfs -t ext4 /dev/sdb1 (扩展区不能格式化如sdb2)
+				mkfs -t ext4 /dev/sdb5
+		新建挂载点 mkdir /disk1    mkdir /disk5 
+			命令挂载(重启后会失效)
+					mount /dev/sdb1 /disk1/      
+					mount /dev/sdb1 /disk5/
+			mount 或 df 查看挂载
+		设置自动挂载
+		先查UUID dumpe2fs -h /dev/sdb1  代替下面的/dev/sdb1
+			此项可选 一般执行 防止以后设备名冲突
+			Filesystem UUID:32dc9d2b-fa35-4ad1-8c61-327f99c9142a
+		vim /etc/fstab (注意写好,系统会崩溃)
+			/dev/sdb1    /disk1    ext4  defaults   1  2
+			/dev/sdb5    /disk5    ext4  defaults   1  2
+		mount -a 载入/etc/fstab挂载分区(防止写错系统崩溃)
+		
+			万一崩溃了
+			重启  输入root密码
+			mount -o remount,rw /  重新挂载rw权限
+			vim /etc/fstab 写正确的
+			
+新硬盘分配swap分区1G  
+		free -m 查看内存和swap占用情况 -m兆
+			cached缓存 读取的数据写入内存 加速读取 
+			buffer缓存 分散的写入命令写入内存 加速数据写入
+		fdisk /dev/sdb   l查swap分区ID号为82
+		
+		n  l  回车  +1G  p查看  l查看ID m查到t  t  6 82 p  w保存退出
+		提示在忙的话partprobe  报错不管  重启reboot   
+		格式化mkswap /dev/sdb6
+				保存UUID=9b24f75d-8ba5-4ea5-9ee4-021b3dac10ac
+			命令加入swapon /dev/sdb6   如果不想用了swapoff /dev/sdb6
+		
+		自动挂载vim /etc/fstab
+		/dev/sdb6    swap      swap    defaults   0  0
+		reboot     
+		查看free -m 
+		
+
+
+服务 
+	service --status-all 查询所有RPM包服务状态
+	自启动方法(用完不一定已经启动 要service network restart)
+	1	chkconfig --list | grep httpd查询
+		chkconfig [--level] 2345 httpd on自启动开启
+	2	ll /etc/rc.d/rc.local		(推荐)
+		ll /etc/rc.local 上面的软连接,此文件所有用户登密码前启动
+		vim /etc/rc.local
+			/etc/rc.d/httpd start  #加入
+	3	ntsysv   要自启动的打*
+	
+	vim /etc/rc.d/  下面不同数字是启动顺序
+	
+进程
+	查看：ps aux     unix的格式
+		  ps -le 详细 
+		  
+CPU  dmesg | grep CPU 
+	 cat /proc/cpuinfo 文件断电重写
+	 
+	 w 看用户
+	 crontab -l 看定时任务
+	
+日志
+	服务查看 ps aux | grep rstslogd
+			 chkconfig --list | grep rsyslog
+	配置文件 /etc/logrotate.conf
+	

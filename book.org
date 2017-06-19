@@ -543,8 +543,6 @@ umount /mnt/lvm
        sudo lvdisplay
        df -h       sudo fdisk -l
   
-
- 
 * 17 程序管理与SELinux初探
 
 C-z 暂停程序
@@ -598,4 +596,281 @@ netstat 列出目前系统已经建立的网络联机与unix socket状态
 可以透过 services --status-all,戒者是透过 netstat -anl 等方式。也可以透过 pstree 去查询喔! 只是相关对应 的服务 daemon 档名就得要个别查询了。
   tcp wrappers 软件功能不 xinetd 的功能中,可以使用哪两个档案迚行网络防火墙的控管? /etc/hosts.{allow,deny}
 
+* 1 网络基础
+
+命令 route  arp
+ARP  Address Resolution Protocol 网络地址解析
+ICMP  Internet Control Messege Protocol 英特网信息讯息控制协议
+本机dns文件 /etc/recolv.conf
+
+* 4 连上internet
+
+观察核心捕捉的网卡信息
+dmesg | grep -in eth 查得 e1000e模块 1000Mbps  inter  
+
+查询相关设备芯片数据
+lspci | grep -i eth 查得I218-v设备
+
+查询核心是佛顺利载入模块
+lsmod | grep e1000e
+
+查询模块信心
+modinfo e1000e  查得filename驱动程序目录
+
+查询网卡卡号 ifconfig
+
+
+
+
+
+
+
+
+
+
+
+* 5 Linux 常用网络命令
+Ubuntu是一个依赖于网络的系统，没有网何止我们活不了，他也活不下去。那在虚拟机里的Ubuntu要是连不上网了，该怎么办呢？ 
+首先明确一下，网络的问题是复杂的，并不能保证一剂猛药直戳病灶，立马康复，而可能由方方面面的各种原因所造成，我们要做的，是淡定，对病情保持乐观心态，然后将可能的情况一一排查。来看：
+第一，检查网线。有人会对此不屑一顾，但是也有人搞了2小时之后发现网线没插紧而胸闷气喘的。另外必须确认windows主机能上网。
+
+第二，检查VMware的网络配置方式，具体而言，如果你所在的网络可以允许你拥有多个独立IP，那么推荐设置为桥接（Bridged）模式。如果你所在的网络只能允许你拥有一个IP，那么推荐设置为NAT模式。
+
+第三，正确配置Ubuntu的IP地址，IP地址的设置有两种方式，一种是固定IP，一种是自动获取IP，如果是固定IP，请确保 /etc/network/interfaces 有如下内容：
+其中 address、netmask 和 gateway 分别是IP地址、子网掩码和网关地址，注意要设置成你自己的网络环境，可别照我的抄！
+如果是自动获取IP，就更简单了，确保 /etc/network/interfaces 里的内容如下：​
+眼尖的同学看到了没，就是将static改成dhcp，就由原来的静态固定IP改成动态自动获取IP。
+第四，正确地配置DNS服务器，确保 /etc/resolv.conf 里面有如下语句：
+nameserver 202.96.134.133
+配置DNS服务器需注意，上述 202.96.134.133 的服务器地址仅限于华南地区，北方地区需要自行百度距离更近的服务器。另外 nameserver 语句可以写多句，相当于备用DNS。
+第五，确保配置了正确的网关地址，比如你所在网络的网关地址是192.168.1.1，那么可以执行如下命令：
+sudo route add default gw 192.168.1.1
+
+第六，重新启动网络服务，命令如下：
+sudo /etc/init.d/networking reload
+sudo /etc/init.d/networking restart
+一般而言，到此网络就应该能联网了，如果还不行，再继续尝试如下方法：
+
+1 重新启停虚拟网卡：
+      sudo ifconfig eth0 down
+      sudo ifconfig eth0 up
+2 重新启动Ubuntu：
+      sudo shutdown -r now
+http://blog.csdn.net/vincent040/article/details/51148677
+
+常用命令
+ifconfig
+route
+ip 兼顾上面两个命令 还可以改eth0名字 和mac地址
+traceroute
+
+netstat
+秀出目前已启动的网络
+sudo netstat -tulnp
+ -l 显示listen的端口
+观察本机所有网络程序的联机状态
+sudo netstat -atunp
+  例如可以查看运行的 ftp 为ESTABLISHED
+列出在监听的网络服务
+  sudo netstat -tunl
+列出已联机的网络联机状态
+  sudo netstat -tun
+删除已建立或在监听中的联机
+  kill -9 pid号  不用killall 可能误删别人运行的相同服务
+
+  查看程序通过脚本关闭-centos
+  sudo netstat -atulnp | grep 5793 得ftp
+  type ftp 得 /usr/bin/ftp
+  rpm -qf /usr/bin/ftp  或 dpkg -s ftp 或 查软件安装位置 dpkg -L ftp
+  rpm -qc ftp | grep init  或 dpkp -S ftp | grep init
+  更多dpkg操作http://www.cnblogs.com/forward/archive/2012/01/10/2318483.html
+
+netstat 更多参考http://blog.csdn.net/xad707348125/article/details/46804649
+
+sar命令可以从文件的读写情况、系统调用的使用情况、磁盘I/O、CPU效率、内存使用状况、进程活动及IPC有关的活动等方面进行报告
+
+nmap
+  扫描本机启用的接口 仅TCP
+nmap localhost
+  扫描本机启用的接口 TCP+UDP
+sudo nmap -sTU localhost
+  如果要扫描区网内的主机
+localhost换成192.168.0.0/24
+
+
+
+
+检查主机名的ip
+host www.baidu.com
+  通过/etc/resove.conf 的dns的ip查的
+host www.baidu.com 168.95.1.1 通过这条ip查的baidu的ip
+
+查ip的主机名
+nslookup 168.95.1.1
+
+
+ftp ftp.ksu.edu.tw
+用户名anonymous 密码空
+命令 help ls cd get put bye
+  图形化工具gftp
+
+图形化通讯工具pidgin 支持msn gtalk....等
+
+文字浏览工具 links
+文字下载工具 wget  设置proxy 等配置 /etc/wgetrc
+
+
+tcpdump
+sudo tcpdump -i lo -nn 
+  测试ssh localhost 可以看到三次握手  有seq ack字样
+sudo tcpdump -i lo -nn -X 'port 21'
+  测试ftp localhost 可以看到到明文USER arpher PASS 字样
+
+wireshark
+安装 根据提示 sudo apt install wireshark-..
+
+dumpcap需要root权限才能使用的,以普通用户打开Wireshark
+
+1.添加wireshark用户组
+sudo groupadd  wireshark
+2.将dumpcap更改为wireshark用户组 
+sudo chgrp wireshark /usr/bin/dumpcap 
+3.让wireshark用户组有root权限使用dumpcap
+sudo chmod 4755 /usr/bin/dumpcap 
+4.将需要使用的普通用户名加入wireshark用户组
+#sudo gpasswd -a arpher wireshark 
+
+参考https://wiki.wireshark.org/CaptureSetup/CapturePrivileges
+https://anonscm.debian.org/viewvc/collab-maint/ext-maint/wireshark/trunk/debian/README.Debian?view=markup
+http://jingyan.baidu.com/article/c74d60009d992f0f6a595de6.html
+
+关闭时报错 .config/wireshark/ 里文件无权限
+sudo chgrp -R arpher ./
+sudo chown -R arpher ./
+
+
+nc工具
+
+
+
+
+
+* 7 网络安全
+* 9 防火墙与NAT服务器
+* 10 ssh
+ssh -f arpher@47.90.85.241 find / bbbb &> ~/find.log 在本地生成find.log
+-f 远程执行，不需要等待
+* 20 www服务器
+** unbutu-lamp配置记录
+
+安装ubuntu版chkconfig
+  sudo apt install sysv-rc-conf   成功
+执行 sysv-rc-conf --list
+  报错  perl: warning: Setting locale failed.
+  解决  sudo apt-get install language-pack-zh-hans
+
+查看目录
+
+查询 sudo dpkg -L apache2
+apache 启动文件
+/usr/sbin/  有apachectl 和apache2ctl
+用diff 检查发现相同，是apache2的启动脚本
+登录server后 ll /usr/sbin/apache* 发现apachectl是apache2ctl的软链接
+
+mysql配置文件地址
+ll /usr/mysql/
+  my.cnf -> /etc/alternatives/my.cnf
+ll /etc/alternatives/my*
+  /etc/alternatives/my.cnf -> /etc/mysql/mysql.cnf
+
+php配置文件
+vim /etc/php/7.0/apache2/
+
+php是否支持mysql
+vim /etc/php/7.0/mods-available/
+
+
+
+
+
+
+** centos-lamp
+yum安装 改mysql为mariadb
+yum install httpd mariadb mariadb-server php php-mysql
+查询安装位置
+rpm -ql mariadb
+
+httpd配置
+vim /etc/httpd/conf/httpd.conf
+
+php配置
+vim /etc/php.ini
+register_argc_argv = Off
+
+log_errors = On
+ignore_repeated_errors = On
+ignore_repeated_source = On
+
+display_errors = Off
+display_startup_errors = Off
+
+查询ip
+ip address
+
+虚拟机调试  ，桥接模式
+
+1、关闭firewall：
+systemctl stop firewalld.service #停止firewall
+systemctl disable firewalld.service #禁止firewall开机启动
+firewall-cmd --state #查看默认防火墙状态（关闭后显示not running，开启后显示running)
+
+测试 
+/usr/sbin/httpd 为实际程序
+/usr/sbin/apachectl 脚本
+apachectl configtest
+
+自动启动
+执行chkconfig 和chkconfig按提示
+systemctl enable httpd.service
+systemctl list-unit-files | grep httpd
+测试
+没有netstat命令 安装yum install net-tools
+netstat -tulnp | grep httpd 成功
+ip address 代替ifconfig
+宿主机 http://192.168.0.106
+
+vim /var/www/html/phpinfo.php
+<?php phpinfo();
+测试 http://192.168.0.106/phpinfo.php
+
+其他模块 安装yum install httpd-manual
+测试 http://192.168.0.106/manual
+mrtg:利用类似绘图软件自动产生主机流量图表的软件;
+mod_perl:让你的 WWW 服务器支持 perl 写的网页程序(例如 webmail 程
+序);
+mod_python:让你的 WWW 服务器支持 python 写的网页程序。
+mod_ssl:让你的 WWW 可以支持 https 这种加密过后的传输模式
+
+mysql
+mysql start报错
+Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2)
+service mariadb start
+Redirecting to /bin/systemctl start  mariadb.service
+
+netstat -tulnp | grep mysqld 成功
+mysql -u root -p
+
+show databases;
+exit
+修改密码mysqladmin -u root password 'root'
+给arpher用户一个 MySQL的数据库使用权,数据库名称为arpherdb,且密码为 arpher
+mysql> grant all privileges on arpherdb.* to arpher@localhost identified by 'arpher';
+mysql> use mysql;
+mysql> select * from user where user = 'arpher'\G;
+** centos-lnmp
+
+换桥接模式后，yum不能使用
+经过各种测试，发现原来是防火墙的问题
+关闭防火墙(参考上一目录lamp)
+yum update 成功
 
