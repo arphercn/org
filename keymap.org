@@ -170,91 +170,6 @@ p粘贴在行下 P粘贴在行上
 		  ab myWeb www.ar-pher.cn
 
           保存快捷配置到 用户根目录的 .vimrc 文件中
-* shadow
-513534624  				h....0.6
-苹果 					b..A....
-mooiix@163.com 			bo******
-wellness66@sina.com  	wellness66
-bearpher@gmail.com 		h..E...6
-ar_pher@hotmail.com 	h......5
-bfengyi@sina.com 		b......5
-arpher@aliyun.com 		h......5
- ssh arpher b.......
-github.com
-	arpher@aliyun.com 	h......5
-七牛
-	201313488@qq.com 	h......5
-
-知乎
-	201313488@qq.com h..U...6
-
-www.genymotion.com
-	ar_pher@hotmail h..N...
-
-heroku.com
-	ar_pher@hotmail h..U.....
-
-jd.com
-	bfengyi9 18392..23.. h..D.01.
- 
-x2.bearychat.com
-	301313488@qq.com bo....9
-
-https://git.oschina.net/
-	bearpher  h.......
-	
-又拍
-	bfengyi@126 b.....Y.
-		
-www.douban.com
-	bfengyi@126.com b.....D.
-
-新浪www.weibo.com
-	bfengyi@sina.com b.....L
-坚果云
-	201313488@qq.com h......5
-
-www.wiz.cn
-	bfengyi@126.com bo......
-
-shadowsocks
-	47.90.85.241 :8388
-	flzx3.. aes-256-cfb
-
-陈晨 330105198804200615 杭州
-django bbbb1234
-
-atlassian
-	atlassian.com
-	bitbucket.org
-	SourceTree
-	ar_pher@hotmail h..NA...	
-	
-MAIL	
-	MAIL_DRIVER=smtp
-	MAIL_HOST=smtp.126.com
-	MAIL_PORT=25
-	MAIL_USERNAME=bfengyi@126.com
-	MAIL_PASSWORD=bo...9
-
-WEIXIN微信订阅号
-	鲍家小湾 			arpher@aliyun.com	h..N....
-	师辰案例 			bfengyi@126.com		b......X	
-
-360
-	bfengyi
-	bfengyi@126.com
-	bfengyi@sina.com
-                               均是 b.....3.	
-网易
-        www.126.com
-        http://note.youdao.com
-                            bfengyi@126.com  h..6...5
-
-搬瓦工 https://bwh1.net/
-    201313488@qq.com ....h0..
-
-历史照片\16.3.8iphone\2015_08
 * mandarin
 ben  本子 奔跑 笨蛋
 beng 水泵 蹦跳 迸发
@@ -452,8 +367,7 @@ git下载基于其中一个分支开发
 $ git config --global user.name "Your Name"
 $ git config --global user.email "email@example.com"		
 
-		
-		
+				
 * linux note
 老鸟建议
 	最小安装  尽量不yum卸载
