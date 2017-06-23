@@ -1,0 +1,1 @@
+The PHP version of the Ajax WeatherWidget uses PHP's XSLT entensions. Visit http://us3.php.net/manual/en/ref.xslt.php to learn how to enable them on your server.

@@ -1,0 +1,1 @@
+The PHP version of the Ajax SiteSearch widget uses PHP's MSSQL entensions. Visit http://us3.php.net/manual/en/ref.mssql.php to learn how to enable them on your server.

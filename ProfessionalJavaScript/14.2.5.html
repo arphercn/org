@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title></title>
+
+</head>
+<body>
+
+<form id="myForm" name="myForm" action="https://www.google.com/"  method="POST">
+
+    <div>
+        username <input type="text" name="username" required>
+    </div>
+    <div>
+       email<input type="email" name ="email" required> 
+       url<input type="url" name="homepage">
+       number<input type="number" min="0" max="100" step="5" name="count">
+    </div>
+
+    <div>
+        <select name="location" id="selLocation"> 
+            <option value="1Sunnyvale, CA">1Sunnyvale</option> 
+            <option value="2Los Angeles, CA">2Los Angeles</option> 
+            <option value="3Mountain View, CA">3Mountain View</option> 
+        </select>
+    </div>
+    <div>
+        <input type="submit" value="confirm">
+    </div>
+
+        
+</form>
+
+
+
+<script type="text/javascript" src="function.js"></script>
+
+<script type="text/javascript">
+
+
+// 14.2.4 HTML5 约束验证API 
+
+    // Firefox 4+、Safari 5+、Chrome和 Opera 10+。
+
+// 1. 必填字段
+    
+    // 检查某个表单字段是否为必填字段   
+/*
+    var isUsernameRequired = document.forms[0].elements["username"].required;
+    alert(isUsernameRequired);
+*/
+
+// 2. 其他输入类型
+
+// 3. 数值范围
+
+// 4. 输入模式
+    
+// 6. 禁用验证
+
+// 14.3 选择框脚本
+    
+    var selectbox = document.forms[0]. elements["location"]; 
+/*
+     
+    //推荐 
+    var text = selectbox.options[0].text;      alert(text);   //选项的文本 
+    var value = selectbox.options[0].value;    alert(value);   //选项的值
+*/
+
+// 14.3.1 选择选项 
+
+/*
+    selectbox.options[1].selected = true; 
+
+
+    function getSelectedOptions(selectbox){ 
+        var result = new Array(); 
+        var option = null; 
+     
+        for (var i=0, len=selectbox.options.length; i < len; i++){ 
+            option = selectbox.options[i]; 
+            if (option.selected){ 
+                result.push(option); 
+            } 
+        } 
+     
+        return result; 
+    }
+
+    var selectbox = document.getElementById("selLocation"); 
+    var selectedOptions = getSelectedOptions(selectbox); 
+    var message = ""; 
+     
+    for (var i=0, len=selectedOptions.length; i < len; i++){ 
+        message += "Selected index: " + selectedOptions[i].index + 
+        "\nSelected text: " + selectedOptions[i].text + 
+        "\nSelected value: " + selectedOptions[i].value + "\n\n"; 
+    } 
+     
+    alert(message); 
+*/
+
+// 14.3.2 添加选项
+
+/*
+    var newOption = new Option("Option text", "Option value"); 
+    selectbox.add(newOption, undefined); //最佳方案
+*/
+
+// 14.3.3 移除选项 
+
+    // selectbox.removeChild(selectbox.options[0]);     //移除第一个选项
+
+
+    // 要清除选择框中所有的项
+/*
+    function clearSelectbox(selectbox){ 
+        for(var i=0, len=selectbox.options.length; i < len; i++){ 
+            selectbox.remove(i);
+        } 
+    }
+
+    clearSelectbox(selectbox);
+*/
+
+// 14.3.4 移动和重排选项
+
+/*    
+    var selectbox1 = document.getElementById("selLocations1"); 
+    var selectbox2 = document.getElementById("selLocations2"); 
+     
+    selectbox2.appendChild(selectbox1.options[0]);
+
+
+    var optionToMove = selectbox.options[1]; 
+    selectbox.insertBefore(optionToMove, selectbox.options[optionToMove.index+2]);
+*/
+    //待开发在两个菜单 移动菜单的 界面
+
+// 14.4 表单序列化
+
+    // demo
+/*
+    function serialize(form){         
+        var parts = [], 
+        field = null,     
+        i,       
+        len,    
+        j,    
+        optLen,   
+        option,  
+        optValue; 
+         
+        for (i=0, len=form.elements.length; i < len; i++){ 
+            field = form.elements[i]; 
+         
+            switch(field.type){ 
+                case "select-one": 
+                case "select-multiple": 
+     
+                if (field.name.length){ 
+                    for (j=0, optLen = field.options.length; j < optLen; j++){
+                            option = field.options[j]; 
+                            if (option.selected){ 
+                                optValue = ""; 
+                                if (option.hasAttribute){ 
+                                    optValue = (option.hasAttribute("value") ?  
+                                                option.value : option.text); 
+                                } else { 
+                                    optValue = (option.attributes["value"].specified ?  
+                                                option.value : option.text); 
+                                } 
+                                parts.push(encodeURIComponent(field.name) + "=" + 
+                                           encodeURIComponent(optValue)); 
+                               } 
+                            } 
+                        } 
+                        break; 
+                         
+                    case undefined:       //字段集 
+                    case "file":          //文件输入 
+                    case "submit":        //提交按钮 
+                    case "reset":         //重置按钮 
+                    case "button":        //自定义按钮 
+                        break;                          
+                    case "radio":         //单选按钮 
+                    case "checkbox":       //复选框 
+                        if (!field.checked){ 
+                            break; 
+                        }
+
+                        // 执行默认操作                                     
+                    default: 
+                        //不包含没有名字的表单字段 
+                        if (field.name.length){ 
+                            parts.push(encodeURIComponent(field.name) + "=" +  
+                                       encodeURIComponent(field.value)); 
+                        } 
+                } 
+            }         
+            return parts.join("&"); 
+        }                
+
+        var form = document.getElementById('myForm');
+        alert(serialize(form));
+        alert(form);
+*/
+
+// 14.5 富文本编辑
+
+
+    
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

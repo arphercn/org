@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+<pre>
+  
+</pre>
+<script type="text/javascript">
+
+// 6.1 理解对象
+  /*  
+    var person = new Object(); 
+    person.name = "Nicholas"; 
+    person.age = 29;  
+    person.job = "Software Engineer"; 
+     
+    person.sayName = function(){ 
+        alert(this.name);  
+    };
+
+    var person = { 
+        name: "Nicholas",  
+        age: 29, 
+        job: "Software Engineer", 
+     
+        sayName: function(){ 
+            alert(this.name); 
+        } 
+    }
+  */  
+
+  // 6.1.1 属性类型
+
+    // 1. 数据属性
+      
+      // 数据属性包含一个数据值的位置。在这个位置可以读取和写入值。
+      // 数据属性有 4个描述其行为的特性
+      // [[Configurable]] [[Enumerable]] [[Writable]] [[Value]]
+      /*
+        var person = {}; 
+        Object.defineProperty(person, "name", { 
+            writable: false, 
+            value: "Nicholas"  
+        }); 
+         
+        alert(person.name);  //"Nicholas" 
+        person.name = "Greg"; 
+        alert(person.name);  //"Nicholas"
+      */  
+      /*
+        var person = {}; 
+        Object.defineProperty(person, "name", { 
+            configurable: false, 
+            value: "Nicholas" 
+        }); 
+         
+        alert(person.name);  //"Nicholas" 
+        delete person.name; 
+        alert(person.name);  //"Nicholas"
+      */  
+      /*
+        var person = {}; 
+        Object.defineProperty(person, "name", { 
+            configurable: false, 
+            value: "Nicholas" 
+        }); 
+         
+        //抛出错误 Uncaught TypeError: Cannot redefine property: name
+        Object.defineProperty(person, "name", { 
+            configurable: true, 
+            value: "Nicholas" 
+        });
+      */  
+
+    // 2. 访问器属性  
+
+      // 访问器属性不包含数据值；它们包含一对儿 getter和 setter函数
+      // （不过，这两个函数都不是必需的） 
+      //  访问器属性有如下 4个特性
+      // [[Configurable]] [[Enumerable]] [[Get]] [[Set]]
+      /*
+        var book = { 
+            _year: 2004,  
+            edition: 1 
+        }; 
+         
+        Object.defineProperty(book, "year", { 
+            get: function(){ 
+                return this._year; 
+            }, 
+            set: function(newValue){ 
+         
+                if (newValue > 2004) { 
+                    this._year = newValue; 
+                    this.edition += newValue - 2004;  // += 为了转为字符串
+                } 
+            } 
+        }); 
+         
+        book.year = 2005; 
+        alert(book.edition);  //2
+      */ 
+      /*
+        var book = { 
+            _year: 2004, 
+            edition: 1 
+        }; 
+         
+        //定义访问器的旧有方法 
+        book.__defineGetter__("year", function(){ 
+            return this._year; 
+        }); 
+         
+        book.__defineSetter__("year", function(newValue){ 
+            if (newValue > 2004) { 
+                this._year = newValue; 
+                this.edition += newValue - 2004; 
+            } 
+        }); 
+         
+        book.year = 2005; 
+        alert(book.edition);  //2 
+      */  
+
+  // 6.1.2 定义多个属性
+    /*
+      var book = {}; 
+       
+      Object.defineProperties(book, { 
+          _year: { 
+              value: 2004 
+          }, 
+           
+          edition: { 
+              value: 1 
+          }, 
+       
+          year: { 
+              get: function(){
+                  return this._year; 
+              }, 
+       
+              set: function(newValue){ 
+                  if (newValue > 2004) { 
+                      this._year = newValue; 
+                      this.edition += newValue - 2004; 
+                  } 
+              } 
+          } 
+      });          
+    */ 
+   
+  // 6.1.3 读取属性的特性    
+  /*
+    var book = {}; 
+     
+    Object.defineProperties(book, { 
+        _year: {  
+            value: 2004 
+        }, 
+     
+        edition: { 
+            value: 1 
+        }, 
+     
+        year: { 
+            get: function(){ 
+                return this._year; 
+            }, 
+     
+            set: function(newValue){ 
+                if (newValue > 2004) { 
+                    this._year = newValue; 
+                    this.edition += newValue - 2004; 
+                } 
+            } 
+        } 
+    }); 
+     
+    var descriptor = Object.getOwnPropertyDescriptor(book, "_year"); 
+    alert(descriptor.value);         //2004 
+    alert(descriptor.configurable); //false
+    alert(typeof descriptor.get);    //"undefined" 
+     
+    var descriptor = Object.getOwnPropertyDescriptor(book, "year"); 
+    alert(descriptor.value);        //undefined 
+    alert(descriptor.enumerable);   //false 
+    alert(typeof descriptor.get);   //"function"    
+  */  
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

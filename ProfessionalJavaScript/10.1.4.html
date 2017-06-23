@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+
+    <!-- 没有内容，也就没有文本节点 --> 
+    <div></div> 
+     
+    <!-- 有空格，因而有一个文本节点 --> 
+    <div> </div> 
+     
+    <!-- 有内容，因而有一个文本节点 --> 
+    <div>Hello World!</div>
+
+    
+    <div id="myDiv"><!--A comment --></div>
+
+    <ul id="myList"></ul>
+
+<script type="text/javascript">
+
+// 10.1.4 Text类型
+
+    // var div = document.getElementsByTagName('div');
+
+    // // var textNode = div.firstChild;
+    // var textNode = div.childNodes[0]
+    // alert(textNode);
+
+// 1. 创建文本节点
+
+
+    // var textNode = document.createTextNode("<strong>Hello</strong> world!");    
+
+/*
+    var element = document.createElement("div"); 
+    element.className = "message"; 
+     
+    var textNode = document.createTextNode("Hello world!"); 
+    element.appendChild(textNode); 
+
+    var anotherTextNode = document.createTextNode("Yippee!"); 
+    element.appendChild(anotherTextNode);
+
+    document.body.appendChild(element);
+
+// 2. 规范化文本节点
+
+    alert(element.childNodes.length);    //2 
+     
+    element.normalize(); 
+    alert(element.childNodes.length);    //1 
+    alert(element.firstChild.nodeValue);    // "Hello world!Yippee!"
+*/
+
+// 3. 分割文本节点 
+
+/*    
+    var element = document.createElement("div"); 
+    element.className = "message"; 
+     
+    var textNode = document.createTextNode("Hello world!"); 
+    element.appendChild(textNode); 
+     
+    document.body.appendChild(element); 
+     
+    var newNode = element.firstChild.splitText(5); 
+    alert(element.firstChild.nodeValue);    //"Hello" 
+    alert(newNode.nodeValue);             
+    //" world!" 
+    alert(element.childNodes.length);       //2
+*/
+
+// 10.1.5 Comment类型
+
+/*    
+    var div = document.getElementById("myDiv"); 
+    var comment = div.firstChild; 
+    alert(comment.data);    //"A comment"
+*/
+
+// 10.1.8 DocumentFragment类型
+
+    // demo
+    // 这个<ul>元素添加 3个列表项
+/*
+    var fragment = document.createDocumentFragment(); 
+    var ul = document.getElementById("myList"); 
+    var li = null; 
+     
+    for (var i=0; i < 3; i++){ 
+        li = document.createElement("li"); 
+        li.appendChild(document.createTextNode("Item " + (i+1))); 
+        fragment.appendChild(li); 
+    } 
+     
+    ul.appendChild(fragment);
+*/
+
+// 10.1.9 Attr类型
+
+
+// 10.2 DOM操作技术
+
+// 10.2.1 动态脚本
+    
+    // demo
+/*
+    function loadScript(url){ 
+        var script = document.createElement("script"); 
+        script.type = "text/javascript"; 
+        script.src = url; 
+        document.body.appendChild(script); 
+    }
+
+    loadScript("client.js");
+*/    
+/*
+    function loadScriptString(code){ 
+        var script = document.createElement("script"); 
+        script.type = "text/javascript"; 
+        try { 
+            script.appendChild(document.createTextNode(code)); 
+        } catch (ex){ 
+            script.text = code; 
+        } 
+        document.body.appendChild(script); 
+    }
+
+    loadScriptString("function sayHi(){alert('hi');}");
+
+    sayHi();
+
+    // eval()是一样的
+*/
+
+// 10.2.2 动态样式
+
+    // demo
+/*
+    function loadStyles(url){ 
+        var link = document.createElement("link");
+        link.rel = "stylesheet"; 
+        link.type = "text/css"; 
+        link.href = url; 
+        var head = document.getElementsByTagName("head")[0]; 
+        head.appendChild(link); 
+    } 
+    
+    loadStyles("styles.css");   
+*/
+/*
+    function loadStyleString(css){ 
+        var style = document.createElement("style");
+        style.type = "text/css"; 
+        try{ 
+            style.appendChild(document.createTextNode(css)); 
+        } catch (ex){ 
+            style.styleSheet.cssText = css; 
+        } 
+        var head = document.getElementsByTagName("head")[0]; 
+        head.appendChild(style); 
+    }
+
+    loadStyleString("body{background-color:red}");
+*/
+
+// 10.2.3 操作表
+
+/*
+    <table border="1" width="100%"> 
+        <tbody> 
+            <tr> 
+                <td>Cell 1,1</td> 
+                <td>Cell 2,1</td> 
+            </tr> 
+            <tr> 
+                <td>Cell 1,2</td> 
+                <td>Cell 2,2</td> 
+            </tr> 
+        </tbody> 
+    </table>
+*/
+/*    
+    //创建 table 
+    var table = document.createElement("table"); 
+    table.border = 1; 
+    table.width = "100%"; 
+     
+    //创建 tbody 
+    var tbody = document.createElement("tbody"); 
+    table.appendChild(tbody); 
+     
+    //创建第一行 
+    tbody.insertRow(0); 
+    tbody.rows[0].insertCell(0); 
+    tbody.rows[0].cells[0].appendChild(document.createTextNode("Cell 1,1")); 
+    tbody.rows[0].insertCell(1); 
+    tbody.rows[0].cells[1].appendChild(document.createTextNode("Cell 2,1")); 
+     
+    //创建第二行 
+    tbody.insertRow(1); 
+    tbody.rows[1].insertCell(0); 
+    tbody.rows[1].cells[0].appendChild(document.createTextNode("Cell 1,2")); 
+    tbody.rows[1].insertCell(1); 
+    tbody.rows[1].cells[1].appendChild(document.createTextNode("Cell 2,2"));
+
+    //将表格添加到文档主体中 
+    document.body.appendChild(table);
+*/
+
+// 10.2.4 使用NodeList
+
+/*
+    var divs = document.getElementsByTagName("div"), 
+        i, 
+        len, 
+        div; 
+     
+    for (i=0, len=divs.length; i < len; i++){ 
+        div = document.createElement("div"); 
+        document.body.appendChild(div); 
+    }
+*/
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title></title>
+</head>
+<body>
+
+<div id="myDiv">
+    
+
+    <input id="myBtn" type="button" value="alert event">
+
+    <!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
+    <!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
+
+    <a href="http://www.baidu.com" id="myLink">百度</a>
+
+    <img src="D:\_0图\1-151121094432.jpg" id="myImage">
+
+    <div id="myDiv2" style="background-color:red;height:100px;width:100px;"></div>
+
+    <input type="text" id="myText">
+</div>
+<script type="text/javascript">
+
+    var EventUtil = { 
+      
+        addHandler: function(element, type, handler){ 
+            if (element.addEventListener){ 
+                element.addEventListener(type, handler, false); 
+            } else if (element.attachEvent){ 
+                element.attachEvent("on" + type, handler); 
+            } else { 
+                element["on" + type] = handler; 
+            } 
+        }, 
+
+        removeHandler: function(element, type, handler){ 
+            if (element.removeEventListener){ 
+                element.removeEventListener(type, handler, false); 
+            } else if (element.detachEvent){ 
+                element.detachEvent("on" + type, handler); 
+            } else { 
+                element["on" + type] = null; 
+            } 
+        },
+     
+        getEvent: function(event){ 
+            return event ? event : window.event; 
+        }, 
+     
+        getTarget: function(event){ 
+            return event.target || event.srcElement; 
+        },
+
+        getRelatedTarget: function(event){ 
+                if (event.relatedTarget){ 
+                    return event.relatedTarget; 
+                } else if (event.toElement){ 
+                    return event.toElement; 
+                } else if (event.fromElement){ 
+                    return event.fromElement; 
+                } else { 
+                    return null; 
+                } 
+             
+            }, 
+        
+        getButton: function(event){ 
+                if (document.implementation.hasFeature("MouseEvents", "2.0")){ 
+                    return event.button;
+            } else { 
+                switch(event.button){ 
+                    case 0: 
+                    case 1: 
+                    case 3: 
+                    case 5: 
+                    case 7: 
+                        return 0; 
+                    case 2: 
+                    case 6: 
+                        return 2; 
+                    case 4:  
+                        return 1; 
+                } 
+            } 
+        },
+
+        getWheelDelta: function(event){ 
+            if (event.wheelDelta){ 
+                return event.wheelDelta;  //不检测老版本opera
+            } else { 
+                return -event.detail * 40; 
+            }
+        }, 
+
+        getCharCode: function(event){ 
+            if (typeof event.charCode == "number"){ 
+                return event.charCode; 
+            } else { 
+                return event.keyCode; 
+            } 
+        },                
+
+        preventDefault: function(event){ 
+            if (event.preventDefault){ 
+                event.preventDefault(); 
+            } else { 
+                event.returnValue = false; 
+            } 
+        }, 
+           
+        stopPropagation: function(event){
+            if (event.stopPropagation){ 
+                event.stopPropagation(); 
+            } else { 
+                event.cancelBubble = true; 
+            } 
+        } 
+     
+    };
+
+// 13.4 事件类型
+
+// 13.4.1 UI事件
+
+// 1. load 事件
+    
+/*
+    EventUtil.addHandler(window, "load", function(event){ 
+        alert("Loaded!");  
+    });
+
+    // 当例子中的图像加载完毕后就会显示一个警告框
+    var image = document.getElementById("myImage"); 
+    EventUtil.addHandler(image, "load", function(event){ 
+        event = EventUtil.getEvent(event); 
+        alert(EventUtil.getTarget(event).src); 
+    });
+
+    // 在创建新的<img>元素时，可以为其指定一个事件处理程序，以便图像加载完毕后给出提示
+    // 必须确定页面已经加载完毕
+    EventUtil.addHandler(window, "load", function(){ 
+        var image = document.createElement("img"); 
+        EventUtil.addHandler(image, "load", function(event){ 
+            event = EventUtil.getEvent(event); 
+            alert(EventUtil.getTarget(event).src); 
+        }); 
+        document.body.appendChild(image); 
+        image.src = "D:\\_0图\\1-151121094432.jpg";             
+    });
+*/
+// 2. unload 事件
+
+// 3. resize 事件
+
+/*
+    EventUtil.addHandler(window, "resize", function(event){ 
+        alert("Resized"); 
+    }); 
+*/
+
+// 4. scroll 事件
+
+/*  
+    // 不太好用  
+    EventUtil.addHandler(window, "scroll", function(event){ 
+        if (document.compatMode == "CSS1Compat"){ 
+            alert(document.documentElement.scrollTop); 
+        } else { 
+            alert(document.body.scrollTop); 
+        } 
+    })
+*/
+
+// 13.4.2 焦点事件 
+
+// 13.4.3 鼠标与滚轮事件
+    
+// 1. 客户区坐标位置    
+
+/*    
+    var myDiv = document.getElementById("myDiv"); 
+    EventUtil.addHandler(myDiv, "click", function(event){ 
+        event = EventUtil.getEvent(event); 
+        alert("Client coordinates: " + event.clientX + "," + event.clientY);         
+    });
+    // 点击涉及到鼠标,图片界面,点击动作
+    // 通过此封装可以在点击事件中 添加自己的 逻辑,能用的资源有event对象
+    // 比如显示鼠标的坐标
+*/
+
+// 2. 页面坐标位置
+
+/*    
+    var myDiv = document.getElementById("myDiv"); 
+    EventUtil.addHandler(myDiv, "click", function(event){ 
+        event = EventUtil.getEvent(event); 
+        alert("Page coordinates: " + event.pageX + "," + event.pageY); 
+    });
+*/
+/*
+    // 兼容ie8及更早版本
+    var div = document.getElementById("myDiv"); 
+    EventUtil.addHandler(div, "click", function(event){ 
+        event = EventUtil.getEvent(event); 
+        var pageX = event.pageX, 
+            pageY = event.pageY; 
+     
+        if (pageX === undefined){ 
+            pageX = event.clientX + (document.body.scrollLeft || 
+                    document.documentElement.scrollLeft); 
+        }  
+     
+        if (pageY === undefined){ 
+            pageY = event.clientY + (document.body.scrollTop || 
+                    document.documentElement.scrollTop); 
+        } 
+     
+        alert("Page coordinates: " + pageX + "," + pageY); 
+    });
+*/
+
+// 3. 屏幕坐标位置
+
+/*
+    var div = document.getElementById("myDiv"); 
+    EventUtil.addHandler(div, "click", function(event){ 
+        event = EventUtil.getEvent(event); 
+        alert("Screen coordinates: " + event.screenX + "," + event.screenY);         
+    }); 
+*/
+
+// 4. 修改键
+
+/*
+    // IE9、Firefox、Safari、Chrome和 Opera都支持这 4个键。IE8及之前版本不支持metaKey 属性
+    var div = document.getElementById("myDiv"); 
+    EventUtil.addHandler(div, "click", function(event){ 
+        event = EventUtil.getEvent(event); 
+        var keys = new Array(); 
+     
+        if (event.shiftKey){ 
+            keys.push("shift"); 
+        } 
+     
+        if (event.ctrlKey){ 
+            keys.push("ctrl"); 
+        } 
+     
+        if (event.altKey){ 
+            keys.push("alt"); 
+        } 
+     
+        if (event.metaKey){ 
+            keys.push("meta"); 
+        } 
+     
+        alert("Keys: " + keys.join(",")); 
+     
+    });
+*/
+
+// 5. 相关元素
+
+/*    
+    var div = document.getElementById("myDiv2"); 
+    EventUtil.addHandler(div, "mouseout", function(event){ 
+        event = EventUtil.getEvent(event); 
+        var target = EventUtil.getTarget(event); 
+        var relatedTarget = EventUtil.getRelatedTarget(event); 
+        alert("Moused out of " + target.tagName + " to " + relatedTarget.tagName);         
+    });
+*/
+
+// 6. 鼠标按钮
+
+/*
+    var div = document.getElementById("myDiv"); 
+    EventUtil.addHandler(div, "mousedown", function(event){ 
+        event = EventUtil.getEvent(event); 
+        alert(EventUtil.getButton(event)); 
+    });   
+*/
+
+// 7. 更多的事件信息
+
+// 8. 鼠标滚轮事件 
+
+/*    
+    (function(){ 
+     
+        function handleMouseWheel(event){ 
+            event = EventUtil.getEvent(event); 
+            var delta = EventUtil.getWheelDelta(event); 
+            alert(delta); 
+        } 
+         
+        EventUtil.addHandler(document, "mousewheel", handleMouseWheel); 
+        EventUtil.addHandler(document, "DOMMouseScroll", handleMouseWheel); 
+     
+    })();
+*/
+
+// 13.4.4 键盘与文本事件 
+
+// 1. 键码       
+
+/*    
+    var textbox = document.getElementById("myText"); 
+    EventUtil.addHandler(textbox, "keyup", function(event){ 
+        event = EventUtil.getEvent(event); 
+        alert(event.keyCode);      
+    });
+*/
+
+// 2. 字符编码
+
+/*
+    var textbox = document.getElementById("myText"); 
+    EventUtil.addHandler(textbox, "keypress", function(event){ 
+        event = EventUtil.getEvent(event);
+        var charCode = EventUtil.getCharCode(event);
+        alert(String.fromCharCode(charCode)); 
+    });    
+*/
+
+// 3. DOM3 级变化
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

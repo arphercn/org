@@ -1,0 +1,26 @@
+<html>
+<head>
+    <title>Priority Queue Test</title>
+    <script type="text/javascript" src="PriorityQueue.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+    
+    var q = new PriorityQueue(function (a,b) { 
+        if (a < b) return 1;
+        else if (a > b) return -1;
+        else return 0;
+    });
+    q.put("3");
+    q.put("6");
+    q.put("1");
+    q.put("5");
+    q.put("9");
+    
+    while (q.size()) {
+        document.write(q.get() + "<br />");
+    }
+    
+    </script>
+</body>
+</html>

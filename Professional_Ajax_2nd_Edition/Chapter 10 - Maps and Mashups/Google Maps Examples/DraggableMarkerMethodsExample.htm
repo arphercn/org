@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Google Maps Draggable Marker Methods Example</title>
+    <script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key={your key}"></script>
+    <script type="text/javascript">
+    //<![CDATA[
+        var oMap = null;
+        var oMarker = null;
+        
+        window.onload = function () {
+        
+            if (GBrowserIsCompatible()) {
+                oMap = new GMap2(document.getElementById("divMap"));
+                oMap.addControl(new GSmallMapControl());
+                oMap.addControl(new GMapTypeControl());
+                oMap.setCenter(new GLatLng(32, -92), 3);  
+                
+                oMarker = new GMarker(new GLatLng(32, -92), { title: "My marker", draggable : true });
+                oMap.addOverlay(oMarker);              
+            }
+                
+        }
+        
+        function toggleDraggable(oMarker) {
+            if (oMarker.draggable()) {
+                if (oMarker.draggingEnabled()) {
+                    oMarker.disableDragging();
+                } else {
+                    oMarker.enableDragging();
+                }
+            }
+        }
+        
+    //]]>
+    </script>
+  </head>
+  <body>
+    <div id="divMap" style="height: 400px; width: 400px"></div>
+    <input type="button" value="Toggle Dragging" onclick="toggleDraggable(oMarker)" />
+  </body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Request Manager Example</title>
+    <script type="text/javascript" src="PriorityQueue.js"></script>
+    <script type="text/javascript" src="RequestManager.js"></script>
+    <script type="text/javascript" src="RequestManagerExample.js"></script>
+</head>
+<body>
+    <fieldset>
+        <legend>Requests to Send</legend>
+        <input type="button" value="poll()" onclick="addPoll()" />
+        <input type="button" value="prefetch()" onclick="addPreFetch()" />
+        <input type="button" value="submit()" onclick="addSubmit()" />
+        <input type="button" value="submitPart()" onclick="addSubmitPart()" />
+        <input type="button" value="send()" onclick="addLowPriority()" />
+    </fieldset>
+    <fieldset>
+        <legend>Responses</legend>
+        <div id="divResponses"></div>
+    </fieldset>
+</body>
+</html>

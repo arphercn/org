@@ -1,0 +1,38 @@
+* 安装
+ubuntu wiki
+http://wiki.ubuntu.org.cn/MySQL%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97
+
+root改密码
+GRANT ALL PRIVILEGES ON *.* TO root@localhost IDENTIFIED BY "root"
+创建arpher拥有db库
+create database db;
+GRANT ALL PRIVILEGES ON db.* TO arpher@localhost IDENTIFIED BY "2";
+
+* 3 服务器性能解析
+网站性能分析
+ab
+http_load 工具
+
+数据库测试
+sysbench
+
+tpcc-mysql
+安装
+sudo apt-get install libmysqlclient-dev--否则会出现‘/bin/sh: 1: mysql_config: not found  ’错误
+sudo git clone https://github.com/Percona-Lab/tpcc-mysql.git
+cd tpcc...
+cd src
+make 
+   参考http://www.voidcn.com/blog/john1337/article/p-6575442.html
+3.1
+性能用查询的响应时间来度量
+1 优化就是在一定的工作负载下降低响应时间  每秒查询量是吞吐量，是性能优化的副产品
+2 无法测量就无法有效的优化
+
+3.1 
+好用的服务器监控软件New Relic
+PHP监控软件xhprof  facebook开发的，2009年开源
+
+PHP性能剖析工具，自己开发的ifP 更关注数据库的调用
+
+

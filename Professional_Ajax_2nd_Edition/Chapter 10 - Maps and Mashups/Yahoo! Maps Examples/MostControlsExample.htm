@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Yahoo! Maps Most Controls Example</title>
+    <script type="text/javascript" src="http://api.maps.yahoo.com/ajaxymap?v=3.4&appid={your id}"></script>
+    <script type="text/javascript">
+    //<![CDATA[
+        window.onload = function () {        
+            var oMap = new YMap(document.getElementById("divMap"));
+            oMap.addTypeControl();
+            oMap.addZoomLong();
+            oMap.addPanControl();
+            oMap.drawZoomAndCenter(new YGeoPoint(32, -92), 16);
+        }
+    //]]>
+    </script>
+  </head>
+  <body>
+    <div id="divMap" style="height: 400px; width: 400px"></div>
+  </body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title></title>
+
+</head>
+<body>
+
+<!-- <div style="height: 200px" class="editable" id="richedit" contenteditable> -->
+<div style="height: 200px" class="editable" id="richedit">
+    bbbb
+</div>
+
+
+
+<script type="text/javascript" src="function.js"></script>
+
+<script type="text/javascript">
+
+
+// 14.5 富文本编辑
+
+// 14.5.1 使用contenteditable属性 
+    
+    var div = document.getElementById("richedit"); 
+
+    // div.contentEditable = "true";
+
+
+// 14.5.2 操作富文本 
+
+
+    EventUtil.addHandler(window, "load", function(){ 
+        div.contentEditable = "true";
+
+        //转换粗体文本 
+        // document.execCommand("bold", false, null);
+        
+        //转换斜体文本 
+        document.execCommand("italic", false, null);
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css"> 
+        #myDiv { 
+            background-color: blue; 
+            width: 200px; 
+            height: 50px; 
+        } 
+    </style>
+   <title></title>
+</head>
+<body>
+
+<div id="myDiv" style="background-color: red; border: 1px solid black">bbbb</div>
+
+<script type="text/javascript">
+
+// 12 DOM2 和 DOM3
+
+// 12.1 DOM变化
+
+    var supportsDOM2Core = document.implementation.hasFeature("Core", "2.0");  
+    var supportsDOM3Core = document.implementation.hasFeature("Core", "3.0"); 
+    var supportsDOM2HTML = document.implementation.hasFeature("HTML", "2.0"); 
+    var supportsDOM2Views = document.implementation.hasFeature("Views", "2.0"); 
+    var supportsDOM2XML = document.implementation.hasFeature("XML", "2.0");
+
+
+// 12.2.1 访问元素的样式
+    
+    var myDiv = document.getElementById("myDiv"); 
+     
+    // myDiv.style.backgroundColor = "red"; 
+    // myDiv.style.width = "200px"; 
+    // myDiv.style.height = "100px"; 
+    // myDiv.style.border = "1px solid black";
+
+    // alert(myDiv.style.backgroundColor); //"blue" 
+    // alert(myDiv.style.width); //"10px" 
+    // alert(myDiv.style.height);  //"25px"
+
+    // myDiv.style.cssText = "width: 25px; height: 100px; background-color: green"; 
+    // alert(myDiv.style.cssText);
+
+    // var prop, value, i, len;  
+    // for (i=0, len=myDiv.style.length; i < len; i++){ 
+    //     prop = myDiv.style[i];    //或者 myDiv.style.item(i) 
+    //     value = myDiv.style.getPropertyValue(prop); 
+    //     alert(prop + " : " + value); 
+    // }
+
+    // myDiv.style.removeProperty("background-color"); 
+
+    // 2. 计算的样式
+
+/*
+    var myDiv = document.getElementById("myDiv"); 
+    var computedStyle = document.defaultView.getComputedStyle(myDiv, null); 
+     
+    alert(computedStyle.backgroundColor);  // "red" 
+    alert(computedStyle.width);            // "200px"          
+    alert(computedStyle.height);           // "50px"    
+    alert(computedStyle.border);           // 在某些浏览器中是"1px solid black"
+*/     
+    
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

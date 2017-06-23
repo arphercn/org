@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+   <title></title>
+</head>
+<body>
+
+<div id="content">  
+    <p>This is a <strong>paragraph</strong> with a list following it.</p> 
+    <ul id="ul"> 
+        <li>Item 1</li> 
+        <li id="item2">Item 2</li> 
+        <li>Item 3</li> 
+    </ul> 
+</div>
+<input type="button" value="向下" onclick="down()">
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<form><input type="text"></input></form>
+<input type="button" value="向上" onclick="up()">
+
+<script type="text/javascript">
+
+// 11.3.6 插入标记
+
+// 1. innerHTML 属性
+ 
+    var div = document.getElementById("content");
+
+    // div.innerHTML = "Hello world!";
+    // div.innerHTML = "Hello & welcome, <b>\"reader\"!</b>"; 
+
+
+    // 大多数浏览器都支持以直观的方式通过 innerHTML 插入<style>元素
+    // div.innerHTML = "<style type=\"text/css\">body {background-color: red; }</style>";
+
+// 2. outerHTML 属性 
+
+    // IE4+、Safari 4+、Chrome和 Opera 8+,   Firefox 7及之前版本都不支持 outerHTML 属性
+
+    // div.outerHTML = "<p>This is a paragraph.</p>"; 
+     
+    //这行代码完成的操作与下面这些 DOM 脚本代码一样： 
+     
+    // var p = document.createElement("p"); 
+    // p.appendChild(document.createTextNode("This is a paragraph.")); 
+    // div.parentNode.replaceChild(p, div);
+
+// 3. insertAdjacentHTML()方法
+
+    // IE、Firefox 8+、Safari、Opera和 Chrome
+
+    var element = document.getElementById("item2");
+    //作为前一个同辈元素插入 
+    // element.insertAdjacentHTML("beforebegin", "<p>Hello world!</p>"); 
+     
+    //作为第一个子元素插入 
+    // element.insertAdjacentHTML("afterbegin", "<p>Hello world!</p>"); 
+     
+    //作为最后一个子元素插入 
+    // element.insertAdjacentHTML("beforeend", "<p>Hello world!</p>"); 
+     
+    //作为后一个同辈元素插入 
+    // element.insertAdjacentHTML("afterend", "<p>Hello world!</p>");
+
+// 4. 内存与性能问题
+
+    // 使用 innerHTML、outerHTML 属性和 insertAdjacentHTML()方法时， 最好先手工删除要被替换的元素的所有事件处理程序和 JavaScript对象属性
+
+/*
+    var itemsHtml = "";
+    for (var i=0, len=values.length; i < len; i++){ 
+        itemsHtml += "<li>" + values[i] + "</li>"; 
+    } 
+    ul.innerHTML = itemsHtml;
+*/
+
+// 11.3.7 scrollIntoView()方法
+
+    // IE、Firefox、Safari 和 Opera Chrome
+    
+    // 让元素可见
+    function down(){
+        document.forms[0].scrollIntoView(); 
+    }
+
+    function up(){
+        div.scrollIntoView(); 
+    }
+
+
+// 11.4 专有扩展 
+
+// 11.4.1 文档模式
+    // ie
+    // var mode = document.documentMode;  alert(mode);   
+
+// 1.4.2 children属性
+
+    //  IE5、 Firefox 3.5、 Safari 2 （但有 bug） 、 Safari 3 （完全支持） 、 Opera8和 Chrome（所有版本） 。IE8及更早版本的 children 属性中也会包含注释节点，但 IE9之后的版本则只返回元素节点。
+
+    var ul = document.getElementById("ul");
+    // var childCount = ul.children.length;   alert(childCount);
+    // var firstChild = ul.children[0];       alert(firstChild);
+
+
+// 11.4.3 contains()方法
+
+    // 支持 contains()方法的浏览器有 IE、Firefox 9+、Safari、Opera和 Chrome
+
+    console.log(document.documentElement);
+/*
+    alert(document.documentElement.contains(document.body));    //true
+    alert(ul.contains(element));    //true
+*/
+
+    // 通用的 contains 函数
+/*
+    function hasContains(refNode, otherNode){  
+        if (typeof refNode.contains == "function"){ 
+            return refNode.contains(otherNode); 
+        } else if (typeof refNode.compareDocumentPosition == "function"){ 
+            return !!(refNode.compareDocumentPosition(otherNode) & 16); 
+        } else { 
+            var node = otherNode.parentNode; 
+            do { 
+                if (node === refNode){ 
+                    return true; 
+                } else { 
+                    node = node.parentNode; 
+                } 
+            } while (node !== null);
+            return false; 
+        } 
+    }        
+
+    alert(hasContains(ul, element));    //true
+*/
+
+// 11.4.4 插入文本
+
+    // 支持 innerText 属性的浏览器包括 IE4+、Safari 3+、Opera 8+和 Chrome
+    // 支持textContent 属性的浏览器有 Firefox IE9+、Safari 3+、Opera 10+和 Chrome
+/*    
+    function getInnerText(element){ 
+        return (typeof element.textContent == "string") ? 
+            element.textContent : element.innerText; 
+    } 
+     
+    function setInnerText(element, text){ 
+        if (typeof element.textContent == "string"){ 
+            element.textContent = text; 
+        } else { 
+            element.innerText = text; 
+        } 
+    }
+
+    // div.innerText = div.innerHTML;
+
+    // alert(getInnerText(div));
+    // setInnerText(div, "Hello world!"); 
+    // alert(getInnerText(div));    //"Hello world!"    
+
+    // 避免跨浏览器兼容问题的最佳途径，从不包含行内样式或行内脚本的 DOM 子树副本或 DOM 片段中读取文本
+*/
+
+// 11.4.5 滚动
+
+    //将页面主体滚动 5 行 
+    // document.body.scrollByLines(5);
+
+    //在当前元素不可见的时候，让它进入浏览器的视口 
+    // document.images[0].scrollIntoViewIfNeeded(); 
+     
+    //将页面主体往回滚动 1 页 
+    // document.body.scrollByPages(-1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

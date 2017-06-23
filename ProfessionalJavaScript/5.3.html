@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+<pre>
+  
+</pre>
+<script type="text/javascript">
+// 5.3 Date 类型
+  
+  var now = new Date();  
+  var someDate = new Date(Date.parse("May 25, 2004")); 
+  var someDate = new Date("May 25, 2004");  // 在后台调用 Date.parse() 与前面的例子等价
+
+  // GMT 时间 2000 年 1 月 1 日午夜零时 
+  var y2k = new Date(Date.UTC(2000, 0));    
+  // GMT 时间 2005 年 5 月 5 日下午 5:55:55 
+  var allFives = new Date(Date.UTC(2005, 4, 5, 17, 55, 55))
+
+  // 本地时间 2000 年 1 月 1 日午夜零时 
+  var y2k = new Date(2000, 0);  
+  // 本地时间 2005 年 5 月 5 日下午 5:55:55 
+  var allFives = new Date(2005, 4, 5, 17, 55, 55)
+
+  //取得开始时间 
+  var start = Date.now();    
+  //调用函数 
+  doSomething();    
+  //取得停止时间 
+  var stop = Date.now(), 
+      result = stop – start;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

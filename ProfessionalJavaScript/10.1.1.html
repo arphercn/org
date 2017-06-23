@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+    <div id="myDiv">Some text</div>
+
+    <img src="myimage.gif" name="myImage">
+
+    <fieldset> 
+        <legend>Which color do you prefer?</legend> 
+        <ul> 
+            <li><input type="radio" value="red" name="color" id="colorRed"> 
+                <label for="colorRed">Red</label></li> 
+            <li><input type="radio" value="green" name="color" id="colorGreen"> 
+                <label for="colorGreen">Green</label></li> 
+            <li><input type="radio" value="blue" name="color" id="colorBlue"> 
+                <label for="colorBlue">Blue</label></li> 
+        </ul> 
+    </fieldset>    
+
+    <p>The current date and time is: 
+    <script type="text/javascript"> 
+        document.write("<strong>" + (new Date()).toString() + "</strong>"); 
+    </script> 
+    </p>
+
+    <script type="text/javascript"> 
+        document.write("<script type=\"text/javascript\" src=\"file.js\">" +    
+            "<\/script>"); 
+    </script>
+
+<!-- 
+    <p>This is some content that you won't get to see because it will be overwritten.</p> 
+    <script type="text/javascript"> 
+        window.onload = function(){ 
+            document.write("Hello world!"); 
+        }; 
+    </script>
+ -->
+<script type="text/javascript">
+
+// 10 DOM
+// 10.1.1 Node类型
+
+// 1. nodeName 和 nodeValue 属性
+ 
+// 2. 节点关系
+
+    // NodeList 是有生命、有呼吸的对象
+
+    // 将 NodeList 对象转换为数组
+/*
+    function convertToArray(nodes){ 
+        var array = null; 
+        try { 
+            array = Array.prototype.slice.call(nodes, 0); //针对非 IE 浏览器 
+        } catch (ex) { 
+            array = new Array(); 
+            for (var i=0, len=nodes.length; i < len; i++){ 
+                array.push(nodes[i]); 
+            } 
+        } 
+     
+        return array; 
+    }
+*/
+
+// 10.1.2 Document类型
+
+// 1. 文档的子节点
+
+/*
+    var html = document.documentElement;        //取得对<html>的引用 
+    alert(html === document.childNodes[1]);     //true 
+    alert(html === document.firstChild);        //true
+
+    var body = document.body;    //取得对<body>的引用
+*/
+
+// 2. 文档信息
+
+/*    
+    //取得文档标题 
+    var originalTitle = document.title; 
+     
+    //设置文档标题 
+    document.title = "New page title";
+
+
+    //所有这些信息都存在于请求的 HTTP 头部
+    //取得完整的 URL 
+    var url = document.URL;
+    alert(url);
+    alert(location.href);
+    //取得域名
+    var domain = document.domain;      
+    //取得来源页面的 URL 
+    var referrer = document.referrer;
+*/
+
+// 3. 查找元素
+/*
+    var div = document.getElementById("myDiv");
+   
+    // 不让表单字段的 name 特性与其他元素的 ID 相同   
+
+    var images = document.getElementsByTagName("img");
+    alert(images.length);          //输出图像的数量 
+    alert(images[0].src);          //输出第一个图像元素的 src 特性 
+    alert(images.item(0).src);     //输出第一个图像元素的 src 特性
+    var myImage = images.namedItem("myImage");
+    var myImage = images["myImage"];
+    alert(myImage.src);
+
+    var radios = document.getElementsByName("color");
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

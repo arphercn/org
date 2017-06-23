@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title></title>
+</head>
+<body>
+
+<form id="myForm" name="myForm" action="https://www.google.com/"  method="POST">
+
+    <div>
+        username <input type="text" name="username">
+    </div>
+    <div>
+        <input type="radio" name="color" value="red">Red 
+        <input type="radio" name="color" value="green">Green 
+        <input type="radio" name="color" value="blue">Blue 
+    </div>
+     
+    
+    <input type="submit" name="confirm" value="Submit Form"> 
+        
+</form>
+
+
+
+<script type="text/javascript" src="function.js"></script>
+
+<script type="text/javascript">
+
+
+
+// 14 表 单 脚 本
+
+// 14.1 表单的基础知识
+
+    var form = document.getElementById("myForm");
+    // var form = document.forms[0];            //取得页面中的第一个表单 
+    // var form = document.forms["myForm"];     //取得页面中名称为"formName"的表单
+
+// 14.1.1 提交表单
+
+/*
+    EventUtil.addHandler(form, "submit", function(event){ 
+     
+        //取得事件对象 
+        event = EventUtil.getEvent(event); 
+     
+        //阻止默认事件 
+        EventUtil.preventDefault(event); 
+    });
+*/
+/*   
+    //提交表单 
+    form.submit();
+*/
+
+// 14.1.2 重置表单 
+
+// 14.1.3 表单字段    
+
+/*
+    //取得表单中的第一个字段 
+    var field1 = form.elements[0];             console.log(field1);
+     
+    //取得名为"username"的字段 
+    var username = form.elements["username"];  console.log(username);
+    var color = form.elements["color"];        console.log(color);
+     
+    //取得表单中包含的字段的数量 
+    var fieldCount = form.elements.length;     console.log(fieldCount);       
+*/
+
+// 1. 共有的表单字段属性
+
+/*
+    var field = form.elements[0]; 
+     
+    //修改 value 属性 
+    field.value = "Another value"; 
+     
+    //检查 form 属性的值 
+    alert(field.form === form);   //true 
+     
+    //把焦点设置到当前字段 
+    field.focus(); 
+     
+    //禁用当前字段 
+    field.disabled = true;
+*/
+    
+   //避免多次提交表单
+/* 
+   EventUtil.addHandler(form, "submit", function(event){ 
+       event = EventUtil.getEvent(event); 
+       var target = EventUtil.getTarget(event); 
+    
+       //取得提交按钮 
+       var btn = target.elements["confirm"]; 
+    
+       //禁用它 
+       btn.disabled = true; 
+   });
+   // 不能通过 onclick 事件处理程序来实现这个功能
+*/
+
+// 2. 共有的表单字段方法
+
+    // 在页面加载完毕后，将焦点转移到表单中的第一个字段
+/*
+    EventUtil.addHandler(window, "load", function(event){ 
+        document.forms[0].elements["username"].focus(); 
+        // document.forms[0].elements["username"].blur(); 
+    });
+*/
+
+// 3. 共有的表单字段事件
+
+    // 假设有一个文本框，我们只允许用户输入数值
+/*
+    var textbox = document.forms[0].elements[0]; 
+     
+    EventUtil.addHandler(textbox, "focus", function(event){ 
+        event = EventUtil.getEvent(event);
+        var target = EventUtil.getTarget(event); 
+         
+        if (target.style.backgroundColor != "red"){ 
+            target.style.backgroundColor = "yellow"; 
+        } 
+    }); 
+     
+    EventUtil.addHandler(textbox, "blur", function(event){ 
+        event = EventUtil.getEvent(event); 
+        var target = EventUtil.getTarget(event); 
+         
+        if (/[^\d]/.test(target.value)){ 
+            target.style.backgroundColor = "red"; 
+        } else { 
+            target.style.backgroundColor = ""; 
+        } 
+    }); 
+     
+    EventUtil.addHandler(textbox, "change", function(event){ 
+        event = EventUtil.getEvent(event); 
+        var target = EventUtil.getTarget(event); 
+         
+        if (/[^\d]/.test(target.value)){ 
+            target.style.backgroundColor = "red"; 
+        } else { 
+            target.style.backgroundColor = ""; 
+        } 
+    });    
+*/
+
+// 14.2 文本框脚本
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

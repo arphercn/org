@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title></title>
+
+</head>
+<body>
+
+<form id="myForm" name="myForm" action="https://www.google.com/"  method="POST">
+
+    <div>
+        username <input type="text" name="username">
+    </div>
+    <div>
+        textbox1 <input type="text" name="textbox1" value="bbbb">
+    </div>
+    <div>
+        America telephone
+            <input type="text" name="tel1" id="txtTel1" maxlength="3"> 
+            -<input type="text" name="tel2" id="txtTel2" maxlength="3"> 
+            -<input type="text" name="tel3" id="txtTel3" maxlength="4">
+    </div>
+    <div>
+        <input type="radio" name="color" value="red">Red 
+        <input type="radio" name="color" value="green">Green 
+        <input type="radio" name="color" value="blue">Blue 
+    </div>
+ 
+    <input type="text" size="25" maxlength="50" value="initial value">    
+
+    <textarea rows="5" cols="25">initial value</textarea>
+    
+    <input type="submit" name="confirm" value="Submit Form"> 
+        
+</form>
+
+
+
+<script type="text/javascript" src="function.js"></script>
+
+<script type="text/javascript">
+
+// 14.2 文本框脚本
+
+    var textbox = document.forms[0].elements["textbox1"]; 
+
+/*
+    alert(textbox.value); 
+     
+    textbox.value = "Some new value";
+*/
+
+// 14.2.1 选择文本 
+
+/*    
+    
+    // textbox.select(); 
+
+    // 获得焦点是立即选中默认文字
+    EventUtil.addHandler(textbox, "focus", function(event){ 
+        event = EventUtil.getEvent(event); 
+        var target = EventUtil.getTarget(event); 
+         
+        target.select(); 
+    }); 
+*/
+
+// 1. 选择（select）事件 
+
+/*
+    EventUtil.addHandler(textbox, "select", function(event){ 
+        alert("Text selected" + textbox.value); 
+    });
+*/
+
+// 2. 取得选择的文本 
+
+/*
+    function getSelectedText(textbox){  
+        if (typeof textbox.selectionStart == "number"){ 
+            return textbox.value.substring(textbox.selectionStart, 
+                                           textbox.selectionEnd); 
+        } else if (document.selection){ 
+            return document.selection.createRange().text; 
+        } 
+    }
+
+    EventUtil.addHandler(textbox, "select", function(event){ 
+        alert(getSelectedText(textbox)); 
+    });
+*/
+
+// 3. 选择部分文本
+
+/*
+    function selectText(textbox, startIndex, stopIndex){ 
+        if (textbox.setSelectionRange){ 
+            textbox.setSelectionRange(startIndex, stopIndex); 
+        } else if (textbox.createTextRange){ 
+            var range = textbox.createTextRange(); 
+            range.collapse(true); 
+            range.moveStart("character", startIndex); 
+            range.moveEnd("character", stopIndex - startIndex); 
+            range.select();                     
+        }
+        textbox.focus(); 
+    }    
+
+    textbox.value = "Hello world!" 
+     
+    //选择所有文本 
+    selectText(textbox, 0, textbox.value.length); //"Hello world!" 
+     
+    //选择前 3 个字符 
+    selectText(textbox, 0, 3);     //"Hel" 
+     
+    //选择第 4 到第 6 个字符 
+    selectText(textbox, 4, 7);     //"o w"
+*/
+
+// 14.2.2 过滤输入
+
+// 1. 屏蔽字符
+
+/*    
+    // 只允许用户输入数值
+    EventUtil.addHandler(textbox, "keypress", function(event){ 
+        event = EventUtil.getEvent(event); 
+        var target = EventUtil.getTarget(event); 
+        var charCode = EventUtil.getCharCode(event); 
+     
+        if (!/\d/.test(String.fromCharCode(charCode)) && charCode > 9 && !event.ctrlKey){
+            EventUtil.preventDefault(event);
+            alert('please input number'); 
+        } 
+    });        
+*/
+
+// 2. 操作剪贴板
+
+    // 确保只有数值才会被粘贴到文本框中
+/*
+    EventUtil.addHandler(textbox, "paste", function(event){ 
+        event = EventUtil.getEvent(event); 
+        var text = EventUtil.getClipboardText(event); 
+     
+        if (!/^\d*$/.test(text)){ 
+            EventUtil.preventDefault(event); 
+        } 
+    });
+*/
+
+// 14.2.3 自动切换焦点
+
+/*
+    (function(){ 
+     
+        function tabForward(event){ 
+            event = EventUtil.getEvent(event); 
+            var target = EventUtil.getTarget(event); 
+     
+            if (target.value.length == target.maxLength){ 
+                var form = target.form; 
+     
+                for (var i=0, len=form.elements.length; i < len; i++) { 
+                    if (form.elements[i] == target) { 
+                        if (form.elements[i+1]){ 
+                            form.elements[i+1].focus(); 
+                        } 
+                        return; 
+                    } 
+                } 
+            } 
+        } 
+     
+        var textbox1 = document.getElementById("txtTel1"); 
+        var textbox2 = document.getElementById("txtTel2"); 
+        var textbox3 = document.getElementById("txtTel3"); 
+     
+        EventUtil.addHandler(textbox1, "keyup", tabForward); 
+        EventUtil.addHandler(textbox2, "keyup", tabForward); 
+        EventUtil.addHandler(textbox3, "keyup", tabForward); 
+     
+    })();    
+*/
+
+// 14.2.4 HTML5 约束验证API 
+
+    // Firefox 4+、Safari 5+、Chrome和 Opera 10+。
+
+// 1. 必填字段
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

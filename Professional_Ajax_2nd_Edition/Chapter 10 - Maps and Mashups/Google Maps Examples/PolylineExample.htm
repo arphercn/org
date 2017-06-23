@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+  <head>
+    <title>Google Maps Polyline Example</title>
+    <style type="text/css">
+      v\:* {
+          behavior:url(#default#VML);
+      }
+    </style>    
+    <script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key={your key}"></script>
+    <script type="text/javascript">
+    //<![CDATA[
+        window.onload = function () {
+        
+            if (GBrowserIsCompatible()) {
+                var oMap = new GMap2(document.getElementById("divMap"));
+                oMap.addControl(new GSmallMapControl());
+                oMap.addControl(new GMapTypeControl());
+                oMap.setCenter(new GLatLng(32, -92), 3);  
+                
+                var oPolyline = new GPolyline([
+                    new GLatLng(40.758224, -73.917404),
+                    new GLatLng(34.101509, -118.32691)
+                ], "#f00", 10);
+                
+                oMap.addOverlay(oPolyline);
+                
+            }
+                
+        }
+    //]]>
+    </script>
+  </head>
+  <body>
+    <div id="divMap" style="height: 400px; width: 400px"></div>
+  </body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Yahoo! Maps Marker Smart Window Example</title>
+    <script type="text/javascript" src="http://api.maps.yahoo.com/ajaxymap?v=3.4&appid={your id}"></script>
+    <script type="text/javascript">
+    //<![CDATA[
+    
+        var oMap = null; 
+        var oMarker = null;
+    
+        window.onload = function () {              
+            oMap = new YMap(document.getElementById("divMap"));
+            oMap.addTypeControl();
+            oMap.addZoomLong();
+            oMap.addPanControl();
+            oMap.drawZoomAndCenter(new YGeoPoint(32, -92), 16);    
+
+            oMarker = new YMarker(oMap.getCenterLatLon());
+            oMarker.addLabel("1");
+            YEvent.Capture(oMarker, EventsList.MouseClick, function () {
+                oMarker.openSmartWindow("Information about the marker.");
+            });      
+            YEvent.Capture(oMarker, EventsList.closeSmartWindow, function () {
+                alert("Closed smart window.");
+            });
+            oMap.addOverlay(oMarker);
+        }
+        
+        function openSmartWindow() {
+            oMarker.openSmartWindow("Information about the marker.");          
+        }
+        
+        function updateSmartWindow() {
+            oMarker.updateSmartWindow("Updated information about the marker.");          
+        }
+        
+        function closeSmartWindow() {
+            oMarker.closeSmartWindow();          
+        }        
+    //]]>
+    </script>
+  </head>
+  <body>
+    <div id="divMap" style="height: 400px; width: 400px"></div>
+    <input type="button" value="Open Smart Window" onclick="openSmartWindow()" />
+    <input type="button" value="Update Smart Window" onclick="updateSmartWindow()" />
+    <input type="button" value="Close Smart Window" onclick="closeSmartWindow()" />
+  </body>
+</html>

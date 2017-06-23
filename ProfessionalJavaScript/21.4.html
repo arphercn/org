@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title></title>
+
+</head>
+<body>
+
+<form id="myForm" name="myForm">
+   username <input type="text" name="username" value="bbbb"> 
+   email <input type="text" name="email" value="bbbb@qq.com"> 
+</form>
+
+<div id="status"></div>
+
+
+<script type="text/javascript" src="function.js"></script>
+<script type="text/javascript" src="json2.js"></script>
+
+<script type="text/javascript">
+
+// 21.4 跨源资源共享
+
+// 21.4.1 IE对CORS的实现
+
+    // IE8    
+/*
+    var xdr = new XDomainRequest(); 
+    xdr.onload = function(){ 
+        alert(xdr.responseText); 
+    }; 
+    xdr.onerror = function(){ 
+        alert("An error occurred."); 
+    }; 
+    xdr.open("post", "http://www.somewhere-else.com/page/"); 
+    xdr.contentType = "application/x-www-form-urlencoded"; 
+    xdr.send("name1=value1&name2=value2");
+*/
+
+// 21.4.2 其他浏览器对CORS的实现
+
+/*    
+    var xhr = createXHR(); 
+    xhr.onreadystatechange = function(){ 
+        if (xhr.readyState == 4){ 
+            if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304){ 
+                alert(xhr.responseText); 
+            } else { 
+                alert("Request was unsuccessful: " + xhr.status); 
+            } 
+        } 
+    }; 
+    xhr.open("get", "http://www.somewhere-else.com/page/", true); 
+    xhr.send(null);
+*/
+    //  不能使用 setRequestHeader()设置自定义头部。 
+    //  不能发送和接收 cookie。 
+    //  调用 getAllResponseHeaders()方法总会返回空字符串
+
+// 21.4.3 Preflighted Reqeusts 
+
+// 21.4.4 带凭据的请求
+    
+// 21.4.5 跨浏览器的CORS
+
+    // demo
+/*
+    function createCORSRequest(method, url){  
+        var xhr = new XMLHttpRequest(); 
+        if ("withCredentials" in xhr){ 
+            xhr.open(method, url, true); 
+        } else if (typeof XDomainRequest != "undefined"){ 
+            xhr = new XDomainRequest(); 
+            xhr.open(method, url)
+        } else { 
+            xhr = null; 
+        } 
+        return xhr; 
+    } 
+     
+    var request = createCORSRequest("get", "http://localhost:8889/example.php"); 
+    if (request){ 
+        request.onload = function(){ 
+            //对 request.responseText 进行处理
+            alert(request.responseText); 
+        };
+        request.onerror = function(){ 
+            alert("An error occurred."); 
+        }; 
+        request.send(); 
+    }        
+*/
+
+// 21.5 其他跨域技术 
+
+// 21.5.1 图像Ping
+
+/*
+    var img = new Image();  
+    img.onload = img.onerror = function(){ 
+        alert("Done!"); 
+    }; 
+    img.src = "http://localhost:8889/example.php?name=Nicholas";
+*/
+
+// 21.5.2 J SONP
+
+/*
+    function handleResponse(response){ 
+        alert("You’re at IP address " + response.ip + ", which is in " + 
+              response.city + ", " + response.region_name); 
+    } 
+     
+    var script = document.createElement("script"); 
+    script.src = "http://localhost:8889/example.php?callback=handleResponse"; 
+    document.body.insertBefore(script, document.body.firstChild);
+*/
+
+// 21.5.3 Comet 
+
+/*
+    function createStreamingClient(url, progress, finished){ 
+     
+        var xhr = new XMLHttpRequest(), 
+            received = 0; 
+     
+        xhr.open("get", url, true); 
+        xhr.onreadystatechange = function(){ 
+            var result; 
+     
+            if (xhr.readyState == 3){ 
+     
+                //只取得最新数据并调整计数器 
+                result = xhr.responseText.substring(received); 
+                received += result.length; 
+     
+                //调用 progress 回调函数 
+                progress(result); 
+     
+            } else if (xhr.readyState == 4){ 
+                finished(xhr.responseText); 
+            } 
+     
+        }; 
+        xhr.send(null); 
+        return xhr; 
+    } 
+     
+    var client = createStreamingClient("streaming.php", function(data){ 
+                    alert("Received: " + data); 
+                 }, function(data){ 
+                    alert("Done!"); 
+                 });
+*/
+
+// 21.5.4 服务器发送事件
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

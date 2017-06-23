@@ -1,0 +1,1 @@
+To run this example, upload the entire folder to a server and run JPSpanExample.php in your browser.

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<opml version="1.0">
+  <head>
+    <title>FooReader Feed List</title>
+  </head>
+  <body>
+	  <outline text="Yahoo! Top Stories" title="Yahoo! Top Stories" type="rss" xmlUrl="http://rss.news.yahoo.com/rss/topstories"></outline>
+	  <outline text="ForgetFoo" title="ForgetFoo" type="rss" xmlUrl="http://www.forgetfoo.com/rss/"></outline>
+	  <outline text="Nicholas C. Zakas" title="Nicholas C. Zakas" type="rss" xmlUrl="http://www.nczonline.net/rss/"></outline>
+	  <outline text="Jeremy McPeak" title="Jeremy McPeak" type="rss" xmlUrl="http://www.wdonline.com/rss/"></outline>
+  </body>
+</opml>

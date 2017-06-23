@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+<pre>
+  
+</pre>
+<script type="text/javascript">
+  //5.1 创建 Object 实例的方式有两种
+  /*
+    var person = new Object(); 
+    person.name = "Nicholas"; 
+    person.age = 29;
+
+    var person = { 
+        name : "Nicholas", 
+        age : 29 
+    };
+  */  
+  // demo 向函数传入大量可选参数  
+  /*
+    function displayInfo(args) { 
+        var output = ""; 
+     
+        if (typeof args.name == "string") {
+            output += "Name: " + args.name + "\n"; 
+        } 
+     
+        if (typeof args.age == "number") { 
+            output += "Age: " + args.age + "\n"; 
+        } 
+     
+        alert(output); 
+    } 
+     
+    displayInfo({  
+        name: "Nicholas",  
+        age: 29 
+    }); 
+     
+    displayInfo({ 
+        name: "Greg" 
+    });      
+  */  
+    // []可以使用变量
+    /* 
+    var person = new Object(); 
+    person.name = "Nicholas"; 
+    var propertyName = "name"; 
+    alert(person[propertyName]);  //"Nicholas"
+    */
+  //5.2 建数组的基本方式有两种
+  /*
+    var colors = new Array();
+    var colors = new Array("red", "blue", "green"); 
+    var colors = new Array(3);         // 创建一个包含 3 项的数组  new可省略
+    var names = new Array("Greg");     // 创建一个包含 1 项，即字符串"Greg"的数组  new可省略
+
+    var names = [];                      
+    var colors = ["red", "blue", "green"];
+
+    //数组的 length 属性很有特点,可以从数组的末尾移除项或向数组中添加新项
+    
+    var colors = ["red", "blue", "green"];     // 创建一个包含 3 个字符串的数组 
+    colors.length = 2; 
+    alert(colors[2]);                          //undefined
+
+    //利用 length 属性也可以方便地在数组末尾添加新项
+    
+    var colors = ["red", "blue", "green"]; // 创建一个包含 3 个字符串的数组 
+    colors[colors.length] = "black";       //（在位置 3）添加一种颜色 
+    colors[colors.length] = "brown";       //（在位置 4）再添加一种颜色
+  */
+ 
+  // 5.2.1 检测数组
+  /*
+    if (value instanceof Array){  
+        //对数组执行某些操作 
+    }
+
+    // ECMAScript 5新增了 Array.isArray()方法,不管它是在哪个全局执行环境中创建的
+    // 尚未实现这个方法中的浏览器中准确检测数组,请参考 22.1.1节
+    if (Array.isArray(value)){ 
+        //对数组执行某些操作 
+    } 
+  */
+ 
+  // 5.2.2 转换方法
+  /*
+    var colors = ["red", "blue", "green"];    
+    // 创建一个包含 3 个字符串的数组 
+    alert(colors.toString());     // red,blue,green 
+    alert(colors.valueOf());      // red,blue,green 
+    alert(colors);                // red,blue,green
+    
+    alert(colors.join(","));       //red,green,blue 
+    alert(colors.join("||"));      //red||green||blu
+
+    var person1 = { 
+        toLocaleString : function () { 
+            return "Nikolaos"; 
+        }, 
+         
+        toString : function() { 
+            return "Nicholas"; 
+        } 
+    }; 
+     
+    var person2 = { 
+        toLocaleString : function () { 
+            return "Grigorios"; 
+        }, 
+         
+        toString : function() { 
+            return "Greg"; 
+        } 
+    }; 
+     
+    // var people = [person1, person2]; 
+    // alert(people);                       
+    // //Nicholas,Greg 
+    // alert(people.toString());              //Nicholas,Greg 
+    // alert(people.toLocaleString());        //Nikolaos,Grigorios
+  */
+  
+  // 5.2.3 栈方法
+  /*
+    var colors = new Array();                  // 创建一个数组 
+    var count = colors.push("red", "green");   // 推入两项 
+    alert(count);  //2 
+     
+    count = colors.push("black");              // 推入另一项 
+    alert(count);     //3 
+     
+    var item = colors.pop();                  
+    // 取得最后一项 
+    alert(item);      //"black" 
+    alert(colors.length);   //2     
+  */  
+
+  // 5.2.4 队列方法
+  // <--
+  /*
+    var colors = new Array();                   //创建一个数组 
+    var count = colors.push("red", "green");    //推入两项 
+    alert(count);  //2 
+     
+    count = colors.push("black");               //推入另一项 
+    alert(count);     //3 
+     
+    var item = colors.shift();                  //取得第一项 
+    alert(item);      //"red" 
+    alert(colors.length); //2
+  */
+  // -->  
+  /* 
+    var colors = new Array();                     
+    //创建一个数组 
+    var count = colors.unshift("red", "green");      //推入两项 IE7有bug
+    alert(count);   //2
+    count = colors.unshift("black");                //推入另一项 
+    alert(count);   //3 
+     
+    var item = colors.pop();                       //取得最后一项 
+    alert(item);    //"green" 
+    alert(colors.length); //2  
+  */
+ 
+  // 5.2.5 重排序方法
+  /*
+    var values = [0, 10, 5, 1, 15]; 
+    values.sort(); 
+    alert(values);   //0,1,10,15,5  
+
+    function compare(value1, value2) { 
+        if (value1 < value2) { 
+            return -1; 
+        } else if (value1 > value2) { 
+            return 1; 
+        } else { 
+            return 0; 
+        } 
+    }
+
+    var values = [0, 10, 5, 1, 15]; 
+    values.sort(compare); 
+    alert(values);    // 0,1,5,10,15
+  */ 
+ 
+  // 5.2.8 迭代方法 ECMAScript 5
+  /*
+    var numbers = [1,2,3,4,5,4,3,2,1]; 
+     
+    var everyResult = numbers.every(function(item, index, array){ 
+        return (item > 2);  
+    }); 
+     
+    alert(everyResult);    //false 
+     
+    var someResult = numbers.some(function(item, index, array){ 
+        return (item > 2); 
+    }); 
+     
+    alert(someResult);   
+      //true
+    
+    var filterResult = numbers.filter(function(item, index, array){ 
+        return (item > 2); 
+    }); 
+     
+    alert(filterResult);  
+    //[3,4,5,4,3]
+
+    var mapResult = numbers.map(function(item, index, array){ 
+        return item * 2; 
+    }); 
+     
+    alert(mapResult);  //[2,4,6,8,10,8,6,4,2]
+     
+    numbers.forEach(function(item, index, array){ 
+        //执行某些操作  
+    })
+  */  
+
+  // 5.2.9 归并方法 ECMAScript 5
+     
+    var values = [1,2,3,4,5]; 
+    var sum = values.reduce(function(prev, cur, index, array){ 
+        return prev + cur;  
+    }); 
+    alert(sum); //15
+
+    var sum = values.reduceRight(function(prev, cur, index, array){ 
+        return prev + cur; 
+    }); 
+    alert(sum); //15
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

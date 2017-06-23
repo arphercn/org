@@ -1,0 +1,105 @@
+<html>  
+  <head> 
+    <title>Example HTML Page</title> 
+  </head> 
+  <body>
+    <pre style="font-family: 'Monaco'">
+      ps.chrome禁用js:开发模式->...setting->Preference->Debugger: Disable JavaScript
+      ps.一般把<\/script>页面最后，<\/body>标签前面
+
+      3.1.4 ECMAScript5 规定在顶部使用 "use strict"; 处理ECMAScript3 中一些不确定行为和对某些不安全操作抛出错误
+
+      3.4 ECMAScript 有5种基本数据类型 undefinded null boolean number string 和复杂数据类型 object
+
+      3.4.6 ECMAScript中 '' "" 含义相同,不同于PHP
+
+
+    </pre>
+    <script type="text/javascript">
+    // 注释中demo指最佳实践
+    // 3.3 变量
+    /*
+      "use strict";
+      function test(){ 
+         
+          message = "hi";          // 全局变量 ,未经声明strict下报ReferrenceError
+      } 
+      test(); 
+      alert(message);               // "hi"
+    */
+     
+     // 3.4.1 typeof
+    /* 
+      var message = "some string"; 
+      alert(typeof message);         // "string" typeof 是一个操作符而不是函数,圆括号不是必需的
+      alert(typeof null);            // "object" 有些老版本浏览器返回"function"
+    */  
+
+    // 3.4.2 undefined
+    /*
+      var message; 
+      alert(message);        // "undefined" 
+      alert(age);            // 这个变量没有声明,报错:Uncaught ReferenceError: age is not defined
+      alert(typeof message); // 未初始化 "undefined" 
+      alert(typeof age);     // 未声明 "undefined"       
+      var message='';        // demo: 这样,当typeof message时,报undefinded表明没有声明
+    */  
+
+    // 3.4.3 null
+    /*
+      var car = null;               // demo:如果定义的变量准备在将来用于保存对象时,定义为null
+      alert(car);                   // "null"
+      alert(typeof car);            // "object"
+      alert(null == undefined);     // true  undefined 值是派生自 null 值
+      
+      if (car != null){             // demo          
+          alert('bbbb'); 
+      }
+    */  
+   
+   // 3.4.5 number
+    /*  
+      var num1 = parseInt("1234blue", 10);       // demo// 1234
+      var num2 = parseInt("10", 10);             // demo //10 （按十进制解析)
+      var num1 = parseFloat("1234blue");         //1234 （整数） 
+      var num2 = parseFloat("0xA");              //0 
+      var num3 = parseFloat("22.5");             //22.5 
+      var num4 = parseFloat("22.34.5");          //22.34 
+      var num5 = parseFloat("0908.5");           //908.5 
+      var num6 = parseFloat("100.00");           //100 
+      alert(num6)
+    */
+   
+   // 3.4.6 string  
+
+      // 转换为字符串 demo
+    /*
+      var age = 11; 
+      var ageAsString = age.toString();         // 字符串"11" 
+      var found = true; 
+      var foundAsString = found.toString();     // 字符串"true"
+      
+      var value1 = 10; 
+      var value2 = true; 
+      var value3 = null; 
+      var value4; 
+       
+      alert(String(value1));     // "10" 
+      alert(String(value2));     // "true" 
+      alert(String(value3));     // "null" 
+      alert(String(value4));     // "undefined"
+    */ 
+   
+    // 3.6.5 for-in语句
+    /*
+      for (var propName in window) { 
+           document.write(propName + '<br>'); 
+      }
+    */   
+      
+    </script>
+    <noscript> 
+      <p>本页面需要浏览器支持（启用）JavaScript。 
+    </noscript> 
+  </body> 
+</html>

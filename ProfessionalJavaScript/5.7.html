@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+<pre>
+  
+</pre>
+<script type="text/javascript">
+
+// 5.7.1 Global对象
+
+  // 没有全局变量或全局函数；所有在全局作用域中定义的属性和函数，都是 Global 对象的属性
+  // 诸如 isNaN()、 isFinite()、 parseInt()以及 parseFloat()， 实际上全都是 Global对象的方法。
+
+  // 1. URI编码方法
+
+    // encodeURI()不会对本身属于 URI 的特殊字符进行编码，例如冒号、正斜杠、问号和井字号；
+    // 而 encodeURIComponent()则会对它发现的任何非标准字符进行编码
+
+  /*  
+    var uri = "http://www.wrox.com/index.php?illegal=value&age=9"; 
+     
+    //"http://www.wrox.com/illegal%20value.htm#start" 
+    alert(encodeURI(uri)); 
+     
+    //"http%3A%2F%2Fwww.wrox.com%2Fillegal%20value.htm%23start" 
+    alert(encodeURIComponent(uri));
+  */  
+
+  // 2. eval()方法
+    
+    // 大概也是整个 ECMAScript语言中最强大的一个方法
+    
+    // 当解析器发现代码中调用 eval()方法时，
+    // 它会将传入的参数当作实际的 ECMAScript语句来解析，然后把执行结果插入到原位置  
+  /*  
+    var msg = "hello world"; 
+    eval("alert(msg)");    //"hello world"
+  */  
+
+  // 4. window 对象
+  /*
+    var color = "red"; 
+     
+    function sayColor(){ 
+        alert(window.color); 
+    } 
+     
+    window.sayColor();  //"red"
+  */  
+  /*
+    var global = function(){ 
+        return this;  
+    }();
+    alert(global);
+  */  
+
+  // 4. random()方法
+  /*
+    function selectFrom(lowerValue, upperValue) { 
+        var choices = upperValue - lowerValue + 1; 
+        return Math.floor(Math.random() * choices + lowerValue); 
+    } 
+     
+    var num = selectFrom(2, 10); 
+    alert(num);   // 介于 2 和 10 之间（包括 2 和 10）的一个数值
+
+
+    var colors = ["red", "green", "blue", "yellow", "black", "purple", "brown"]; 
+    var color = colors[selectFrom(0, colors.length-1)]; 
+    alert(color);  // 可能是数组中包含的任何一个字符串
+  */  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

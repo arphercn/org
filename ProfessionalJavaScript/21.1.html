@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title></title>
+
+</head>
+<body>
+
+<form id="myForm" name="myForm">
+   username <input type="text" name="username" value="bbbb"> 
+   email <input type="text" name="email" value="bbbb@qq.com"> 
+</form>
+
+<div id="status"></div>
+
+
+<script type="text/javascript" src="function.js"></script>
+<script type="text/javascript" src="json2.js"></script>
+
+<script type="text/javascript">
+
+// 20 Ajax 与 Comet
+
+// 21.1 XMLHttpRequest 对象
+
+/*
+    function createXHR(){   
+        if (typeof XMLHttpRequest != "undefined"){ 
+            return new XMLHttpRequest(); 
+        } else if (typeof ActiveXObject != "undefined"){ 
+           if (typeof arguments.callee.activeXString != "string"){ 
+               var versions = [ "MSXML2.XMLHttp.6.0", "MSXML2.XMLHttp.3.0", 
+                                "MSXML2.XMLHttp"], 
+                   i, len; 
+     
+               for (i=0,len=versions.length; i < len; i++){ 
+                   try { 
+                       new ActiveXObject(versions[i]); 
+                       arguments.callee.activeXString = versions[i]; 
+                       break; 
+                   } catch (ex){ 
+                       //跳过 
+                   } 
+               } 
+           } 
+     
+           return new ActiveXObject(arguments.callee.activeXString); 
+        } else { 
+            throw new Error("No XHR object available."); 
+        } 
+    } 
+*/    
+    // var xhr = createXHR();
+    // console.log(xhr); 
+
+
+// 21.1.1 XHR的用法
+
+    // xhr.setRequestHeader("MyHeader", "MyValue");   // 设置自定义的请求头部信息
+
+// 21.1.3 GET请求
+
+    // xhr.open("get", "example.php?name1=value1&name2=value2", true);
+
+    // demo
+/*
+    function addURLParam(url, name, value) {  
+        url += (url.indexOf("?") == -1 ? "?" : "&"); 
+        url += encodeURIComponent(name) + "=" + encodeURIComponent(value); 
+        return url; 
+    }
+
+    var url = "example.php"; 
+     
+    //添加参数 
+    url = addURLParam(url, "name", "Nicholas"); 
+    url = addURLParam(url, "book", "Professional JavaScript"); 
+     
+    //初始化请求 
+    xhr.open("get", url, false);
+    xhr.send(null);
+*/
+
+// 21.1.4 POST请求
+
+/*    
+    function submitData(){  
+        var xhr = createXHR(); 
+        xhr.onreadystatechange = function(){ 
+            if (xhr.readyState == 4){ 
+                if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304){ 
+                    alert(xhr.responseText); 
+
+                    var myHeader = xhr.getResponseHeader("Content-Type"); console.log(myHeader);
+                    var allHeaders = xhr.getAllResponseHeaders();       console.log(allHeaders);
+
+                } else { 
+                    alert("Request was unsuccessful: " + xhr.status); 
+                } 
+            } 
+        }; 
+     
+        xhr.open("post", "example.php", true); 
+        // 如果不设置 Content-Type 头部信息，发送给服务器的数据就不会出现在$_POST 超级全局变
+        // 量中。这时候，要访问同样的数据，就必须借助$HTTP_RAW_POST_DATA。
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); 
+        var form = document.getElementById("myForm"); 
+        xhr.send(serialize(form)); 
+    }
+
+    submitData();
+*/
+
+
+// 21.2 XMLHttpRequest 2 级
+
+// 21.2.1 FormData
+
+    // 支持 FormData 的浏览器有 Firefox 4+、Safari 5+、Chrome和 Android 3+版 WebKit
+/*    
+    var data = new FormData(); 
+    data.append("name", "Nicholas");
+
+    var data = new FormData(document.forms['myForm']);
+    xhr.send(data);
+*/
+
+// 21.2.2 超时设定
+
+// 21.2.3 overrideMimeType()方法
+
+// 21.3.1 load事件
+
+// 21.3.2 progress事件 
+
+/*
+    var xhr = createXHR(); 
+    xhr.onload = function(event){ 
+        if ((xhr.status >= 200 && xhr.status < 300) || 
+                xhr.status == 304){ 
+            alert(xhr.responseText); 
+        } else { 
+            alert("Request was unsuccessful: " + xhr.status); 
+        } 
+    }; 
+    xhr.onprogress = function(event){ 
+        var divStatus = document.getElementById("status"); 
+        if (event.lengthComputable){ 
+            divStatus.innerHTML = "Received " + event.position + " of " + 
+                event.totalSize +" bytes"; 
+        } 
+    }; 
+     
+    xhr.open("get", "example.php", true); 
+    xhr.send(null);
+*/
+
+
+</script>
+</body>
+</html>

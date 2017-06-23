@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+<pre>
+  
+</pre>
+<script type="text/javascript">
+
+//5.6 基本包装类型
+
+  /* 
+  var s1 = "some text"; 
+  var s2 = s1.substring(2);
+
+  // 第二行 可以想象成是执行了下列 ECMAScript代码
+
+  var s1 = new String("some text"); 
+  var s2 = s1.substring(2); 
+  s1 = null;
+  */
+ 
+  // 引用类型与基本包装类型的主要区别就是对象的生存期
+  /*
+  var s1 = "some text"; 
+  s1.color = "red"; 
+  alert(s1.color);  //undefined
+
+
+  var obj = new Object("some text"); 
+  alert(obj instanceof String);   //true
+
+
+  var value = "25"; 
+  var number = Number(value);  //转型函数 
+  alert(typeof number);        //"number" 
+   
+  var obj = new Number(value); //构造函数 
+  alert(typeof obj);           //"object" 
+  */
+
+// 5.6.1 Boolean类型
+ 
+  /*
+  var falseObject = new Boolean(false); 
+  var result = falseObject && true; 
+  alert(result);  //true 
+   
+  var falseValue = false; 
+  result = falseValue && true; 
+  alert(result);  //false
+
+
+  alert(typeof falseObject);   //object 
+  alert(typeof falseValue);    //boolean 
+  alert(falseObject instanceof Boolean); //true 
+  alert(falseValue instanceof Boolean);  //false
+
+  // 建议是永远不要使用 Boolean 对象
+  */
+
+// 5.6.2 Number类型
+  
+  /*
+  var num = 99; 
+  alert(num.toPrecision(1));  
+  //"1e+2" 
+  alert(num.toPrecision(2));  
+  //"99" 
+  alert(num.toPrecision(3));  
+  //"99.0"
+
+  // 不建议直接实例化 Number 类型
+
+  var numberObject = new Number(10); 
+  var numberValue = 10; 
+  alert(typeof numberObject);   //"object" 
+  alert(typeof numberValue);    //"number" 
+  alert(numberObject instanceof Number);  //true 
+  alert(numberValue instanceof Number);   //false
+  */
+
+// 5.6.3 String类型
+  /*
+  var stringObject = new String("hello world");
+  
+  var stringValue = "hello world"; 
+  alert(stringValue.length);     //"11" 
+
+  var stringValueCn = "你好 世界"; 
+  alert(stringValueCn.length);     //"5"
+
+  // 1. 字符方法
+  
+  var stringValue = "hello world";
+  alert(stringValue.charAt(1));   //"e" 
+
+  // 2. 字符串操作方法
+
+  var stringValue = "hello "; 
+  var result = stringValue.concat("world"); 
+  alert(result);          
+  //"hello world" 
+  alert(stringValue);      //"hello"
+  */
+  // 实践中使用更多的还是加号操作符 （+） 
+
+  // ECMAScript还提供了三个基于子字符串创建新字符串的方法：slice()、substr()和 substring()
+
+  // 3. 字符串位置方法
+  /*
+  var stringValue = "Lorem ipsum dolor sit amet, consectetur adipisicing elit"; 
+  var positions = new Array(); 
+  var pos = stringValue.indexOf("e"); 
+   
+  while(pos > -1){ 
+      positions.push(pos); 
+      pos = stringValue.indexOf("e", pos + 1); 
+  } 
+       
+  alert(positions);    //"3,24,32,35,52"
+  */
+  // 4. trim()方法 ECMAScript 5
+  
+  // 5. 字符串大小写转换方法
+  /*  
+  var stringValue = "hello world"; 
+  alert(stringValue.toLocaleUpperCase());  //"HELLO WORLD" 
+  alert(stringValue.toUpperCase());        //"HELLO WORLD" 
+  alert(stringValue.toLocaleLowerCase());  //"hello world" 
+  alert(stringValue.toLowerCase());        //"hello world"
+  // 在不知道自己的代码将在哪种语言环境中运行的情况下，还是使用针对地区的方法更稳妥一些
+  */
+
+  // 6. 字符串的模式匹配方法 待学
+  
+  // 7. localeCompare()方法
+
+  // 8. fromCharCode()方法 
+  
+  // 9. HTML 方法  尽量不使用
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

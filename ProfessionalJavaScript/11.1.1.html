@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+
+<p>
+    <strong>s1</strong>
+    <strong>s2</strong>
+    <strong>s3</strong>
+</p>
+
+<div id="bbbb" class="bd user disabled">删除一个类名</div>
+
+<input id="myButton"></input>
+
+<div id="myDiv" data-appId="12345" data-myname="Nicholas"></div>
+
+<script type="text/javascript">
+
+// 11 DOM 扩展
+
+// 11.1 选择符 API
+
+    // https://www.w3.org/TR/selectors-api/
+
+    // 支持 Selectors API Level 1的有 IE 8+、Firefox 3.5+、Safari 3.1+、Chrome和 Opera 10+
+
+// 11.1.1 querySelector()方法
+
+/*
+    //取得 body 元素 
+    var body = document.querySelector("body"); alert(body);
+     
+    //取得 ID 为"myDiv"的元素 
+    var myDiv = document.querySelector("#myDiv"); 
+     
+    //取得类为"selected"的第一个元素 
+    var selected = document.querySelector(".selected"); 
+     
+    //取得类为"button"的第一个图像元素 
+    var img = document.body.querySelector("img.button"); 
+*/
+
+// 11.1.2 querySelectorAll()方法
+
+/*
+    // //取得某<div>中的所有<em>元素（类似于 getElementsByTagName("em")） 
+    // var ems = document.getElementById("myDiv").querySelectorAll("em"); 
+     
+    // //取得类为"selected"的所有元素 
+    // var selecteds = document.querySelectorAll(".selected"); 
+
+    // demo     
+    //取得所有<p>元素中的所有<strong>元素 
+    var strongs = document.querySelectorAll("p strong"); 
+
+    var i, len; 
+    for (i=0, len=strongs.length; i < len; i++){  
+        strong = strongs[i];   //或者 strongs.item(i) 
+        strong.className = "important"; 
+    }
+*/
+
+// 11.2 元素遍历
+
+    // 支持 Element Traversal 规范的浏览器有 IE 9+、Firefox 3.5+、Safari 4+、Chrome和 Opera 10+
+/*
+    var element = document.querySelector("p");   
+    var child = element.firstElementChild; 
+    while(child != element.lastElementChild){ 
+
+        child.id = "bbbb"; 
+        i++;
+
+        child = child.nextElementSibling; 
+    }
+
+    child.id = "bbbb";
+*/
+
+// 11.3 HTML5
+
+// 11.3.1 与类相关的扩充 
+
+// 1. getElementsByClassName()方法 
+
+    // 支持 getElementsByClassName() 有 IE 9+、Firefox 3+、Safari 3.1+、Chrome和Opera 9.5+
+/*
+    //取得所有类中包含"username"和"current"的元素，类名的先后顺序无所谓 
+    var allCurrentUsernames = document.getElementsByClassName("username current"); 
+     
+    //取得 ID 为"myDiv"的元素中带有类名"selected"的所有元素 
+    var selected = document.getElementById("myDiv").getElementsByClassName("selected");
+*/
+
+// 2. classList 属性
+
+    //删除"user"类 
+/*     
+    //首先，取得类名字符串并拆分成数组 
+    var div = document.getElementById("bbbb");
+    var classNames = div.className.split(/\s+/); 
+     
+    //找到要删的类名 
+    var pos = -1,  
+        i, 
+        len; 
+    for (i=0, len=classNames.length; i < len; i++){ 
+        if (classNames[i] == "user"){ 
+            pos = i; 
+            break; 
+        } 
+    } 
+     
+    //删除类名 
+    classNames.splice(pos,1); 
+     
+    //把剩下的类名拼成字符串并重新设置 
+    div.className = classNames.join(" ");
+*/
+
+    // 支持 classList 属性的浏览器有 Firefox 3.6+和 Chrome
+/*
+     var div = document.getElementById("bbbb");
+    //删除"disabled"类 
+    div.classList.remove("disabled"); 
+     
+    //添加"current"类 
+    div.classList.add("current"); 
+     
+    //切换"user"类 // arpher测试 无效
+    div.classList.toggle("user"); 
+     
+    //确定元素中是否包含既定的类名 
+    if (div.classList.contains("bd") && !div.classList.contains("disabled")){ 
+        //执行操作 
+    } 
+     
+    //迭代类名 
+    for (var i=0, len=div.classList.length; i < len; i++){ 
+        doSomething(div.classList[i]); 
+    }
+*/
+
+// 11.3.2 焦点管理
+
+    // 实现了这两个属性的浏览器的包括 IE 4+、Firefox 3+、Safari 4+、Chrome和 Opera 8+
+
+/*
+    var button = document.getElementById("myButton"); 
+    // button.focus(); 
+    alert(document.activeElement === button);   //true
+
+    alert(document.hasFocus());  //true
+*/
+
+// 11.3.3 HTMLDocument的变化
+
+// 1. readyState 属性
+
+    // IE4+、Firefox 3.6+、Safari、Chrome和 Opera 9+。 
+
+/*    
+    if (document.readyState == "loading"){  
+        alert('bbbb');
+    }
+    console.log(document.readyState);
+*/
+
+// 2. 兼容模式
+
+     // Firefox、Safari 3.1+、Opera和 Chrome
+/*
+    if (document.compatMode == "CSS1Compat"){ 
+        alert("Standards mode"); 
+    } else { 
+        alert("Quirks mode"); 
+    } 
+
+*/
+
+// 3. head 属性 
+
+    // Chrome和 Safari 5
+ 
+    // var head = document.head || document.getElementsByTagName("head")[0];
+
+// 11.3.4 字符集属性
+
+    // document.charset 属性的浏览器有 IE 、Firefox、Safari、Opera 和 Chrome
+/*
+    alert(document.charset); //"UTF-16" 
+    document.charset = "UTF-8";
+*/
+    // 支持document.defaultCharset 属性的浏览器有 IE、Safari 和 Chrome
+/*
+    if (document.charset != document.defaultCharset){  
+        alert("Custom character set being used."); 
+    }
+*/
+
+// 11.3.5 自定义数据属性
+  
+    // Firefox 6+和 Chrome
+    //本例中使用的方法仅用于演示 
+/*     
+    var div = document.getElementById("myDiv"); 
+     
+    //取得自定义属性的值 
+    var appId = div.dataset.appId; 
+    var myName = div.dataset.myname; 
+     
+    //设置值 
+    div.dataset.appId = 23456; 
+    div.dataset.myname = "Michael"; 
+     
+    //有没有"myname"值呢？ 
+    if (div.dataset.myname){
+        alert("Hello, " + div.dataset.myname); 
+    }
+*/
+
+</script>
+</body>
+</html>

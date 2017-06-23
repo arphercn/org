@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title></title>
+
+</head>
+<body>
+
+
+
+
+<script type="text/javascript" src="function.js"></script>
+<script type="text/javascript" src="json2.js"></script>
+
+<script type="text/javascript">
+
+// 20 JSON 是一种数据结构
+
+// 20.1 语法
+
+// 20.2 解析与序列化
+
+// 20.2.1 JSON对象
+    
+    // IE 8+、Firefox 3.5+、Safari 4+、Chrome和 Opera 10.5+
+
+    // 对于不能原生支持 JSON 解析的浏览器，使用这个 shim是最佳选择
+    // https://github.com/douglascrockford/JSON-js
+
+
+    var book = {  
+                    title: "Professional JavaScript", 
+                    authors: [ 
+                       "Nicholas C. Zakas" ,
+                       "Jim Green"
+                    ], 
+                    edition: 3, 
+                    year: 2011 
+               }; 
+     
+    // var jsonText = JSON.stringify(book);
+    // console.log(jsonText);
+
+    // var jsonObj = JSON.parse(jsonText);
+    // console.log(jsonObj);
+
+/*
+    var myData = JSON.parse('["Date(09/09/2001)"]', function (key, value) {
+         var d;
+         if (typeof value === "string" &&
+                 value.slice(0, 5) === "Date(" &&
+                 value.slice(-1) === ")") {
+             d = new Date(value.slice(5, -1));
+             if (d) {
+                 return d;
+             }
+         }
+         return value;
+     });
+
+    console.log(myData);
+*/
+
+// 20.2.2 序列化选项 
+
+// 1. 过滤结果
+
+    // 在序列化 JavaScript对象时，所有函数及原型成员都会被有意忽略，不体现在结果中。此外，值为
+    // undefined 的任何属性也都会被跳过
+
+ 
+    // var jsonText = JSON.stringify(book, ["title", "edition"]);
+
+/*
+    var jsonText = JSON.stringify(book, function(key, value){ 
+        switch(key){ 
+            case "authors": 
+                return value.join(",") 
+     
+            case "year": 
+                return 5000; 
+     
+            case "edition": 
+                return undefined; 
+     
+            default: 
+                return value; 
+        } 
+    });
+
+    console.log(jsonText);
+*/
+
+// 2. 字符串缩进
+
+    // var jsonText = JSON.stringify(book, null, 4);
+    // console.log(jsonText);   
+
+// 3. toJSON()方法
+
+/*    
+    var book = { 
+                "title": "Professional JavaScript", 
+                 "authors": [ 
+                     "Nicholas C. Zakas" 
+                ], 
+                edition: 3, 
+                year: 2011, 
+                 toJSON: function(){
+                          return this.title; 
+                     } 
+               }; 
+     
+    var jsonText = JSON.stringify(book);
+    console.log(jsonText);                
+*/
+
+    // 序列化该对象的顺序如下
+    // (1) 如果存在 toJSON()方法而且能通过它取得有效的值，则调用该方法。否则，返回对象本身。 
+    // (2) 如果提供了第二个参数，应用这个函数过滤器。传入函数过滤器的值是第(1)步返回的值。 
+    // (3) 对第(2)步返回的每个值进行相应的序列化。 
+    // (4) 如果提供了第三个参数，执行相应的格式化
+
+
+// 20.2.3 解析选项
+
+    // 在将日期字符串转换为 Date 对象时，经常要用到还原函数
+/*
+    var book = {  
+                  "title": "Professional JavaScript", 
+                   "authors": [ 
+                       "Nicholas C. Zakas" 
+                    ], 
+                    edition: 3, 
+                    year: 2011, 
+                    releaseDate: new Date(2011, 11, 1) 
+               }; 
+     
+    var jsonText = JSON.stringify(book); 
+     
+    var bookCopy = JSON.parse(jsonText, function(key, value){ 
+        if (key == "releaseDate"){ 
+            return new Date(value); 
+        } else { 
+            return value; 
+        }
+    }); 
+
+    console.log(bookCopy);     
+    alert(bookCopy.releaseDate.getFullYear());    
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

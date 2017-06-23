@@ -1,0 +1,28 @@
+top -b -n 2 > ./top.txt 將top进行2次，输出到top.txt
+top -p 9071 查看单个PID的信息
+-r 修改NI的数值
+
+netstat -tlnp 找出目前系统上已在监听的网络联机及其PID
+
+dmesg | grep hda
+dmesg | grep sda 列出被检测到的硬件
+demsg | grep eth 列出被检测到的网卡
+
+vmstat 查看cpu状态
+vmstat 1 3  每秒一次，共计三次
+vmstat 2 每两秒更新一次
+
+vmstat -d 系统上面所有磁盘的读写状态
+
+fuser 通过文件或文件系统找出正在使用该档案的程序
+fuser -uv . 当前目录使用PID/所属帐号/权限
+fuser -mvu /proc 找出进行/proc文件系统的存储的程序
+
+lsof 列出系统上所有被开启的档案和装置
+lsof -u root -a -U
+lsof +d /dev
+lsof -u root | grep vim
+
+grep http /etc/services  查看服务的端口号
+
+ubuntu chkconfig替代sudo sysv-rc-conf --list
