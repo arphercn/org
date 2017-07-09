@@ -1,0 +1,438 @@
+;https://gist.github.com/dioxide/5803220
+;;;;;;;;;;;;;;
+;; 简介
+;;;;;;;;;;;;;;
+; 本文并非是对英文版 php.ini 的简单翻译，而是参考了众多资料以后，结合自己的理解，增加了许多内容，
+; 包括在原有 php.ini 基础上增加了一些实用模块的配置说明，同时对文件内容的安排进行了调整。
+; 由于作者不喜欢 no-free 的玩意儿，所以删除了除 MySQL 和 PostgreSQL 以外的其他数据库模块配置选项。
+
+;;;;;;;;;;;;;;;;;
+;; 关于php.ini
+;;;;;;;;;;;;;;;;;
+; 这个文件必须命名为'php.ini'并放置在httpd.conf中的PHPIniDir指令指定的目录中。
+; 最新版本的php.ini可以在下面两个位置查看：
+; http://cvs.php.net/viewvc.cgi/php-src/php.ini-recommended?view=co
+; http://cvs.php.net/viewvc.cgi/php-src/php.ini-dist?view=co
+
+;;;;;;;;;;;;
+;; 语法 ;;
+;;;;;;;;;;;;
+; 该文件的语法非常简单。空白字符和以分号开始的行被简单地忽略。
+; 章节标题(例如: [php])也被简单地忽略，即使将来它们可能有某种意义。
+;
+; 设置指令的格式如下：
+; directive = value
+; 指令名(directive)是大小写敏感的！所以"foo=bar"不同于"FOO=bar"。
+; 值(value)可以是：
+; 1. 用引号界定的字符串(如："foo")
+; 2. 一个数字(整数或浮点数，如：0, 1, 34, -1, 33.55)
+; 3. 一个PHP常量(如：E_ALL, M_PI)
+; 4. 一个INI常量(On, Off, none)
+; 5. 一个表达式(如：E_ALL & ~E_NOTICE)
+;
+; INI文件中的表达式仅使用：位运算符、逻辑非、圆括号：
+; | 位或
+; & 位与
+; ~ 位非
+; ! 逻辑非
+;
+; 布尔标志用 On 表示打开，用 Off 表示关闭。
+;
+; 一个空字符串可以用在等号后不写任何东西表示，或者用 none 关键字：
+; foo = ; 将foo设为空字符串
+; foo = none ; 将foo设为空字符串
+; foo = "none" ; 将foo设为字符串'none'
+;
+; 如果你在指令值中使用动态扩展(PHP扩展或Zend扩展)中的常量，
+; 那么你只能在加载这些动态扩展的指令行之后使用这些常量。
+
+;;;;;;;;;;;;;;;;;;
+;; httpd.conf ;;
+;;;;;;;;;;;;;;;;;;
+; 还可以在httpd.conf中覆盖php.ini的值，以进行更灵活的配置：
+; php_value name value ;设置非bool型的指令，将value设为none则清除先前的设定
+; php_flag name on|off ;仅用于设置bool型的指令
+;
+; PHP常量(如E_ALL)仅能在php.ini中使用，在httpd.conf中必须使用相应的掩码值。
+; 带"SYS"标志的指令只能在httpd.conf中的全局配置部分使用，
+; 带"ini"标志的指令不能在httpd.conf中使用，它们仅能用于php.ini中。
+
+;==========================================================================================
+;;=====================================配置指令详解========================================
+;==========================================================================================
+; 以下每个指令的设定值都与 PHP-5.2 内建的默认值相同。
+; 也就是说，如果'php.ini'不存在，或者你删掉了某些行，默认值与之相同。
+
+;;;;;;;;;;;;;;
+;; Apache ;;
+;;;;;;;;;;;;;;
+[Apache]
+; 仅在将PHP作为Apache模块时才有效。
+
+engine = On
+; 是否启用PHP解析引擎。
+; 可以在httpd.conf中基于目录或者虚拟主机来打开或者关闭PHP解析引擎。
+
+last_modified = Off
+; 是否在Last-Modified应答头中放置该PHP脚本的最后修改时间。
+
+xbithack = Off
+; 是否不管文件结尾是什么，都作为PHP可执行位组来解析。
+
+child_terminate = Off
+; PHP脚本在请求结束后是否允许使用apache_child_terminate()函数终止子进程。
+; 该指令仅在UNIX平台上将PHP安装为Apache1.3的模块时可用。其他情况下皆不存在。
+
+;;;;;;;;;;;;;;;
+;; PHP核心 ;;
+;;;;;;;;;;;;;;;
+
+[PHP-Core-DateTime]
+; 前四个配置选项目前仅用于date_sunrise()和date_sunset()函数。
+
+date.default_latitude = 31.7667
+; 默认纬度
+
+date.default_longitude = 35.2333
+; 默认经度
+
+date.sunrise_zenith = 90.583333
+; 默认日出天顶
+
+date.sunset_zenith = 90.583333
+; 默认日落天顶
+
+date.timezone =
+; 未设定TZ环境变量时用于所有日期和时间函数的默认时区。
+; 中国大陆应当使用"PRC"
+; 应用时区的优先顺序为：
+; 1. 用date_default_timezone_set()函数设定的时区(如果设定了的话)
+; 2. TZ 环境变量(如果非空的话)
+; 3. 该指令的值(如果设定了的话)
+; 4. PHP自己推测(如果操作系统支持)
+; 5. 如果以上都不成功，则使用 UTC
+
+[PHP-Core-Assert]
+
+assert.active = On
+; 是否启用assert()断言评估
+
+assert.bail = Off
+; 是否在发生失败断言时中止脚本的执行
+
+assert.callback =
+; 发生失败断言时执行的回调函数
+
+assert.quiet_eval = Off
+; 是否使用安静评估(不显示任何错误信息，相当于error_reporting=0)。
+; 若关闭则在评估断言表达式的时候使用当前的error_reporting指令值。
+
+assert.warning = On
+; 是否对每个失败断言都发出警告
+
+[PHP-Core-SafeMode]
+; 安全模式是为了解决共享服务器的安全问题而设立的。
+; 但试图在PHP层解决这个问题在结构上是不合理的，
+; 正确的做法应当是修改web服务器层和操作系统层。
+; 因此在PHP6中废除了安全模式，并打算使用open_basedir指令取代之。
+
+safe_mode = Off
+;SYS
+; 是否启用安全模式。
+; 打开时，PHP将检查当前脚本的拥有者是否和被操作的文件的拥有者相同，
+; 相同则允许操作，不同则拒绝操作。
+
+safe_mode_gid = Off
+;SYS
+; 在安全模式下，默认在访问文件时会做UID比较检查。
+; 但有些情况下严格的UID检查反而是不适合的，宽松的GID检查已经足够。
+; 如果你想将其放宽到仅做GID比较，可以打开这个参数。
+
+safe_mode_allowed_env_vars = "PHP_"
+;SYS
+; 在安全模式下，用户仅可以更改的环境变量的前缀列表(逗号分隔)。
+; 允许用户设置某些环境变量，可能会导致潜在的安全漏洞。
+; 注意: 如果这一参数值为空，PHP将允许用户更改任意环境变量！
+
+safe_mode_protected_env_vars = "LD_LIBRARY_PATH"
+;SYS
+; 在安全模式下，用户不能更改的环境变量列表(逗号分隔)。
+; 这些变量即使在safe_mode_allowed_env_vars指令设置为允许的情况下也会得到保护。
+
+safe_mode_exec_dir = "/usr/local/php/bin"
+;SYS
+; 在安全模式下，只有该目录下的可执行程序才允许被执行系统程序的函数执行。
+; 这些函数是：system, escapeshellarg, escapeshellcmd, exec, passthru,
+; proc_close, proc_get_status, proc_nice, proc_open, proc_terminate, shell_exec
+
+safe_mode_include_dir =
+;SYS
+; 在安全模式下，该组目录和其子目录下的文件被包含时，将跳过UID/GID检查。
+; 换句话说，如果此处的值为空，任何UID/GID不符合的文件都不允许被包含。
+; 这里设置的目录必须已经存在于include_path指令中或者用完整路径来包含。
+; 多个目录之间用冒号(Win下为分号)隔开。
+; 指定的限制实际上是一个前缀，而非一个目录名，
+; 也就是说"/dir/incl"将允许访问"/dir/include"和"/dir/incls"
+; 如果您希望将访问控制在一个指定的目录，那么请在结尾加上斜线。
+
+sql.safe_mode = Off
+;SYS
+; 是否使用SQL安全模式。
+; 如果打开，指定默认值的数据库连接函数将会使用这些默认值代替支持的参数。
+; 对于每个不同数据库的连接函数，其默认值请参考相应的手册页面。
+
+[PHP-Core-Safe]
+
+allow_url_fopen = On
+;ini
+; 是否允许打开远程文件
+
+allow_url_include = Off
+;SYS
+; 是否允许include/require远程文件。
+
+disable_classes =
+;ini
+; 该指令接受一个用逗号分隔的类名列表，以禁用特定的类。
+
+disable_functions =
+;ini
+; 该指令接受一个用逗号分隔的函数名列表，以禁用特定的函数。
+
+enable_dl = On
+;SYS
+; 是否允许使用dl()函数。dl()函数仅在将PHP作为apache模块安装时才有效。
+; 禁用dl()函数主要是出于安全考虑，因为它可以绕过open_basedir指令的限制。
+; 在安全模式下始终禁用dl()函数，而不管此处如何设置。
+
+expose_php = On
+;ini
+; 是否暴露PHP被安装在服务器上的事实(在http头中加上其签名)。
+; 它不会有安全上的直接威胁，但它使得客户端知道服务器上安装了PHP。
+
+open_basedir =
+;SYS
+; 将PHP允许操作的所有文件(包括文件自身)都限制在此组目录列表下。
+; 当一个脚本试图打开一个指定目录树之外的文件时，将遭到拒绝。
+; 所有的符号连接都会被解析，所以不可能通过符号连接来避开此限制。
+; 特殊值'.'指定了存放该脚本的目录将被当做基准目录。
+; 但这有些危险，因为脚本的工作目录可以轻易被chdir()改变。
+; 对于共享服务器，在httpd.conf中灵活设置该指令将变得非常有用。
+; 在Windows中用分号分隔目录，UNIX系统中用冒号分隔目录。
+; 作为Apache模块时，父目录中的open_basedir路径将自动被继承。
+; 指定的限制实际上是一个前缀，而非一个目录名，
+; 也就是说"/dir/incl"将允许访问"/dir/include"和"/dir/incls"，
+; 如果您希望将访问控制在一个指定的目录，那么请在结尾加上一个斜线。
+; 默认是允许打开所有文件。
+
+[PHP-Core-Error]
+
+error_reporting = E_ALL & ~E_NOTICE
+; 错误报告级别是位字段的叠加，推荐使用 E_ALL | E_STRICT
+; 1 E_ERROR 致命的运行时错误
+; 2 E_WARNING 运行时警告(非致命性错误)
+; 4 E_PARSE 编译时解析错误
+; 8 E_NOTICE 运行时提醒(经常是bug，也可能是有意的)
+; 16 E_CORE_ERROR PHP启动时初始化过程中的致命错误
+; 32 E_CORE_WARNING PHP启动时初始化过程中的警告(非致命性错)
+; 64 E_COMPILE_ERROR 编译时致命性错
+; 128 E_COMPILE_WARNING 编译时警告(非致命性错)
+; 256 E_USER_ERROR 用户自定义的致命错误
+; 512 E_USER_WARNING 用户自定义的警告(非致命性错误)
+; 1024 E_USER_NOTICE 用户自定义的提醒(经常是bug，也可能是有意的)
+; 2048 E_STRICT 编码标准化警告(建议如何修改以向前兼容)
+; 4096 E_RECOVERABLE_ERROR 接近致命的运行时错误，若未被捕获则视同E_ERROR
+; 6143 E_ALL 除E_STRICT外的所有错误(PHP6中为8191,即包含所有)
+
+track_errors = Off
+; 是否在变量$php_errormsg中保存最近一个错误或警告消息。
+
+display_errors = On
+; 是否将错误信息作为输出的一部分显示。
+; 在最终发布的web站点上，强烈建议你关掉这个特性，并使用错误日志代替(参看下面)。
+; 在最终发布的web站点打开这个特性可能暴露一些安全信息，
+; 例如你的web服务上的文件路径、数据库规划或别的信息。
+
+display_startup_errors = Off
+; 是否显示PHP启动时的错误。
+; 即使display_errors指令被打开，关闭此参数也将不显示PHP启动时的错误。
+; 建议你关掉这个特性，除非你必须要用于调试中。
+
+report_memleaks = On
+; 是否报告内存泄漏。这个参数只在以调试方式编译的PHP中起作用，
+; 并且必须在error_reporting指令中包含 E_WARNING
+
+report_zend_debug = On
+; 尚无说明文档
+
+html_errors = On
+; 是否在出错信息中使用HTML标记。
+; 注意: 不要在发布的站点上使用这个特性！
+
+docref_root = ;"http://localhost/phpmanual/"
+docref_ext = ;".html"
+; 如果打开了html_errors指令，PHP将会在出错信息上显示超连接，
+; 直接链接到一个说明这个错误或者导致这个错误的函数的页面。
+; 你可以从http://www.php.net/docs.php下载php手册，
+; 并将docref_root指令指向你本地的手册所在的URL目录。
+; 你还必须设置docref_ext指令来指定文件的扩展名(必须含有'.')。
+; 注意: 不要在发布的站点上使用这个特性。
+
+error_prepend_string = ;"" ; 用于错误信息前输出的字符串 error_append_string = ;""
+; 用于错误信息后输出的字符串
+
+xmlrpc_errors = Off
+xmlrpc_error_number = 0
+; 尚无文档
+
+[PHP-Core-Logging]
+
+define_syslog_variables = Off
+; 是否定义各种系统日志变量，如：$LOG_PID, $LOG_CRON 等等。
+; 关掉它以提高效率的好主意。
+; 你可以在运行时调用define_syslog_variables()函数来定义这些变量。
+
+error_log =
+; 将错误日志记录到哪个文件中。该文件必须对Web服务器用户可写。
+; syslog 表示记录到系统日志中(NT下的事件日志, Unix下的syslog(3))
+; 如果此处未设置任何值，则错误将被记录到Web服务器的错误日志中。
+
+log_errors = Off
+; 是否在日志文件里记录错误，具体在哪里记录取决于error_log指令。
+; 强烈建议你在最终发布的web站点时使用日志记录错误而不是直接输出，
+; 这样可以让你既知道那里出了问题，又不会暴露敏感信息。
+
+log_errors_max_len = 1024
+; 设置错误日志中附加的与错误信息相关联的错误源的最大长度。
+; 这里设置的值对显示的和记录的错误以及$php_errormsg都有效。
+; 设为 0 可以允许无限长度。
+
+ignore_repeated_errors = Off
+; 记录错误日志时是否忽略重复的错误信息。
+; 错误信息必须出现在同一文件的同一行才被被视为重复。
+
+ignore_repeated_source = Off
+; 是否在忽略重复的错误信息时忽略重复的错误源。
+
+[PHP-Core-Mail]
+; 要使邮件函数可用，PHP必须在编译时能够访问sendmail程序。
+; 如果使用其它的邮件程序，如qmail或postfix，确保使用了相应的sendmail包装。
+; PHP首先会在系统的PATH环境变量中搜索sendmail，接着按以下顺序搜索：
+; /usr/bin:/usr/sbin:/usr/etc:/etc:/usr/ucblib:/usr/lib
+; 强烈建议在PATH中能够找到sendmail。
+; 另外，编译PHP的用户必须能够访问sendmail程序。
+
+SMTP = "localhost"
+; mail()函数中用来发送邮件的SMTP服务器的主机名称或者IP地址。仅用于win32。
+
+smtp_port = 25
+; SMTP服务器的端口号。仅用于win32。
+
+sendmail_from =
+; 发送邮件时使用的"From:"头中的邮件地址。仅用于win32
+; 该选项还同时设置了"Return-Path:"头。
+
+sendmail_path = "-t -i"
+;SYS
+; 仅用于unix，也可支持参数(默认的是'sendmail -t -i')
+; sendmail程序的路径，通常为"/usr/sbin/sendmail或/usr/lib/sendmail"。
+; configure脚本会尝试找到该程序并设定为默认值，但是如果失败的话，可以在这里设定。
+; 不使用sendmail的系统应将此指令设定为sendmail替代程序(如果有的话)。
+; 例如，Qmail用户通常可以设为"/var/qmail/bin/sendmail"或"/var/qmail/bin/qmail-inject"。
+; qmail-inject 不需要任何选项就能正确处理邮件。
+
+mail.force_extra_parameters =
+; 作为额外的参数传递给sendmail库的强制指定的参数附加值。
+; 这些参数总是会替换掉mail()的第5个参数，即使在安全模式下也是如此。
+
+[PHP-Core-ResourceLimit]
+
+default_socket_timeout = 60
+; 默认socket超时(秒)
+
+max_execution_time = 30
+; 每个脚本最大允许执行时间(秒)，0 表示没有限制。
+; 这个参数有助于阻止劣质脚本无休止的占用服务器资源。
+; 该指令仅影响脚本本身的运行时间，任何其它花费在脚本运行之外的时间，
+; 如用system()/sleep()函数的使用、数据库查询、文件上传等，都不包括在内。
+; 在安全模式下，你不能用ini_set()在运行时改变这个设置。
+
+memory_limit = 16M
+; 一个脚本所能够申请到的最大内存字节数(可以使用K和M作为单位)。
+; 这有助于防止劣质脚本消耗完服务器上的所有内存。
+; 要能够使用该指令必须在编译时使用"--enable-memory-limit"配置选项。
+; 如果要取消内存限制，则必须将其设为 -1 。
+; 设置了该指令后，memory_get_usage()函数将变为可用。
+
+max_input_time = -1
+; 每个脚本解析输入数据(POST, GET, upload)的最大允许时间(秒)。
+; -1 表示不限制。
+
+post_max_size = 8M
+; 允许的POST数据最大字节长度。此设定也影响到文件上传。
+; 如果POST数据超出限制，那么___FCKpd___0
+POST和___FCKpd___0
+FILES将会为空。
+; 要上传大文件，该值必须大于upload_max_filesize指令的值。
+; 如果启用了内存限制，那么该值应当小于memory_limit指令的值。
+
+realpath_cache_size = 16K
+;SYS
+; 指定PHP使用的realpath(规范化的绝对路径名)缓冲区大小。
+; 在PHP打开大量文件的系统上应当增大该值以提高性能。
+
+realpath_cache_ttl = 120
+;SYS
+; realpath缓冲区中信息的有效期(秒)。
+; 对文件很少变动的系统，可以增大该值以提高性能。
+
+[PHP-Core-FileUpLoad]
+
+file_uploads = On
+;SYS
+; 是否允许HTTP文件上传。
+; 参见upload_max_filesize, upload_tmp_dir, post_max_size指令
+
+upload_max_filesize = 2M
+; 允许上传的文件的最大尺寸。
+
+upload_tmp_dir =
+;SYS
+; 文件上传时存放文件的临时目录(必须是PHP进程用户可写的目录)。
+; 如果未指定则PHP使用系统默认的临时目录。
+
+[PHP-Core-MagicQuotes]
+; PHP6将取消魔术引号，相当于下列指令全部为 Off
+
+magic_quotes_gpc = On
+; 是否对输入的GET/POST/Cookie数据使用自动字符串转义( ' " \ NULL )。
+; 这里的设置将自动影响 ___FCKpd___0
+GEST ___FCKpd___0
+POST ___FCKpd___0
+COOKIE 数组的值。
+; 若将本指令与magic_quotes_sybase指令同时打开，则仅将单引号(')转义为('')，
+; 其它特殊字符将不被转义，即( " \ NULL )将保持原样！！
+; 建议关闭此特性，并使用自定义的过滤函数。
+
+magic_quotes_runtime = Off
+; 是否对运行时从外部资源产生的数据使用自动字符串转义( ' " \ NULL )。
+; 若打开本指令，则大多数函数从外部资源(数据库,文本文件等)返回数据都将被转义。
+; 例如：用SQL查询得到的数据，用exec()函数得到的数据，等等
+; 若将本指令与magic_quotes_sybase指令同时打开，则仅将单引号(')转义为('')，
+; 其它特殊字符将不被转义，即( " \ NULL )将保持原样！！
+; 建议关闭此特性，并视具体情况使用自定义的过滤函数。
+
+magic_quotes_sybase = Off
+; 是否采用Sybase形式的自动字符串转义(用 '' 表示 ')
+
+[PHP-Core-HighLight]
+
+highlight.bg = "#FFFFFF"
+highlight.comment = "#FF8000"
+highlight.default = "#0000BB"
+highlight.html = "#000000"
+highlight.keyword = "#007700"
+highlight.string = "#DD0000"
+; 语法高亮模式的色彩(通常用于显示 .phps 文件)。
+; 只要能被接受的东西就能正常工作。 
+ 

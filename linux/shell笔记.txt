@@ -1,0 +1,109 @@
+目录文件  cat /etc/shells
+切换sh exit
+echo [][内容] 输出命令 -e支持\ (-表-)
+		\a警告 \b退格 \c取消换行 \e取消 
+		\f换页 \n换行 \r回车 \t制表符 \v垂直指标符
+		\0nnn 八进制 \xhh 16进制
+history [] [历史命令保存文件]
+		-c清空 -w 家目录.bash_history缓存中写入文件
+		/etc/profile修改默认保存HISTSIZE1000条,重启生效
+		!serv代替最后输入的service network start
+命令别名 alias 别名='原命令'  设定别名
+			 alias 查询 
+		/家目录/.bashrc
+命令执行顺序 路径>别名>内部命令[如cd]>环境变量定义的
+快捷键   ctrl+A移到开头 ctrl+E移到行尾 ctrl+C终止命令
+	     ctrl+L清除屏幕 ctrl+U剪切行前 ctrl+K剪切行后
+	     ctrl+Y粘贴内容 ctrl+R搜索历时 ctrl+D退出终端
+	     ctrl+Z暂停
+输出重定向  正确命令 > 文件   覆盖 例ls > abc
+			正确命令 >> 文件  追加   date > bcd
+			错误命令 2> 文件	   
+			错误命令 2>> 文件
+正确错误同时保存 命令 &> 文件  覆盖
+				 命令 &>> 文件  追加
+				 命令>>文件一 2>>文件二
+ls &>/dev/null  执行后输出丢到垃圾箱
+输入重定向   命令 < 文件 把文件作为命令输入 例：wc < install.log
+			wc [] [文件名] 统计行号 单词数 字符数
+			
+;多命令顺序执行 &&逻辑与  ||逻辑或
+dd if=输入文件 of=输出文件 bs=字节数 count=个数   复制磁盘等
+		 date;dd if=/dev/zero of=/root/testfile bs=1k count=100000;date
+		 命令 && echo yes || echo no  正确时yes 错误时no
+管道符  命令1 | 命令2    命令1的正确输出作为命令2的操作对象(1必须正确)
+		ll -a /etc/ | more 分屏显示
+		netstat -an | grep "ESTABLISHED" 显示所有的连接
+grep [] "搜索内容"  在文件中搜索显示搜索内容
+	     -i忽略大小写 -n行号 -v反向查找 --color=auto 
+通配符  匹配文件名
+		?任意一个字符 *零或多个字符 []里面任意一个字符
+		[-]例如[a-z] [^]取反[^0-9]
+		(*禁rm -rf /禁*)
+特殊符号
+		'直接输出' "$name特殊符号有意义" `系统命令`
+		#注释  $name  \转义符
+		例：abc=`date`即abc=$(date)
+			echo $abc
+变量
+	规则:默认是字符串，数值变量需指定，
+		 变量值 有空格用''或""括起来，可以用\
+		 增加变量值 "$变量名"或${变量名}
+			aa=123 aa="$aa"456 aa=${aa}789 echo $aa
+		 命令结果赋予变量 用``或$()包含命令
+			例name=$(date) echo $name 
+		 环境变量名建议大写
+	分类:自定义变量 
+			局部当前shell生效
+		 环境变量
+			子shell也生效
+			声明:export 变量名=变量值
+			pstree确定进程数
+				例：bash;name=sc;export age=18;sex=nan;
+					export sex;#自定义变量变为环境变量
+					bash;#进入子shell
+					patree;set#查看
+			env:查看环境变量
+			unset $sex:删除
+			PATH:系统查找命令的路径
+				例：快捷hello.sh
+					定义个hello.sh;chmod 755 hello.sh;
+					cp hello.sh /bin/;cd /home/;
+					hello.sh;rm -rf /bin/hell.sh
+				叠加："$PATH":/root/sh
+					例：临时生效hello.sh
+						PATH="$PATH":/root;echo $PATH;hello.sh
+			PS1:定义系统提示符的变量(env查不到，set可以)
+			文件：
+				source 配置文件 或.空格配置文件   就不用重启了
+				
+		 位置参数变量 变量名不能自定义 作用固定
+			$n
+				例：vi canshu1.sh
+						#!/bin/bash
+						echo $0
+						echo $1
+						echo $2
+						echo $3
+					chmod 755.chanshu1.sh;./chanshu1.sh 11 22 33;
+				例：计算器
+					vi cal.sh
+						#!/bin/bash
+						sum=$(( $1+$2 ));
+						echo "sum is :$sum"
+					chmod 755.sh; ./cal.sh 11 22
+			$* $@ $#区别 例 见(-表-)
+		 预定义变量 同上
+			$? 最后一次执行命令的返回状态
+				例：ls; echo $?; lkfjk; echo $?;
+			$$	当前进程的进程号(PID) 例见(-表-)
+			$! 后台运行的最后一个进程的进程号
+		 read [] [变量名] 接受键盘输入
+			-p "提示信息"    -t 30 等30s   
+			-n -s屏幕隐藏信息
+	查看：set
+	删除：unset name
+		
+
+			
+	   

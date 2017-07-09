@@ -367,7 +367,69 @@ git下载基于其中一个分支开发
 $ git config --global user.name "Your Name"
 $ git config --global user.email "email@example.com"		
 
-				
+
+git部署服务器
+** 个人简单
+http://jser.me/2013/12/29/%E5%88%A9%E7%94%A8git%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8.html
+服务器端操作
+首先创建一个裸库，为什么是裸库？因为这个库不是真正用来修改的，我们也不允许在服务器上修改代码，我们只是把它当作一个代码中转的地方
+
+cd /opt
+mkdir git-pro
+cd git-pro
+git init --bare
+添加我们的hook
+
+cd hooks
+touch post-receive
+编辑post-receive的内容为下面的，其中opt/git-pro，是我们存放网站代码地方
+
+env -i git archive master | tar -x -C /opt/git-pro
+echo "远程更新完毕" 
+本地git的操作
+本地我们只需要添加一个远程库，在需要部署的时候push到远程库就行了,下面我们添加了一个名为publish的远程库
+
+git remote add publish root@192.168.0.107:/opt/git-pro
+git push publish master
+可以强化的地方
+这里演示的是一个简单的小网站的部署过程，复杂的情况下我们还可以添加静态资源版本更新，服务器重启等等，举一反三， 最大程序自动化我们的工作
+
+** 多人
+https://linux.cn/article-7800-1.html#3_7195
+创建 gituser 用户
+adduser gituser
+
+创建一个 ~/.ssh 的框架
+$ su - gituser
+$ mkdir .ssh && chmod 700 .ssh
+$ touch .ssh/authorized_keys
+$ chmod 600 .ssh/authorized_keys
+
+开放权限允许bob
+cat ~/path/to/id_rsa.bob.pub >> /home/gituser/.ssh/authorized_keys
+		
+# echo `which git-shell` >> /etc/shells
+usermod -s git-shell gituser
+
+usermod -a -G gituser arpher
+
+以 root 身份创建一个空的仓库
+# git init --bare /opt/jupiter.git
+# chown -R gituser:gituser /opt/jupiter.git
+# chmod -R 770 /opt/jupiter.git
+
+测试
+git clone ssh://192.168.0.107:/opt/arpher.git
+或者
+# git remote add origin ssh://192.168.0.107:/opt/arpher.git
+cd arpher.git
+编辑
+git add .
+git commit -m 'bbbb'
+git push
+
+** Bitbucket Server 安装
+http://blog.topspeedsnail.com/archives/8865
 * linux note
 老鸟建议
 	最小安装  尽量不yum卸载

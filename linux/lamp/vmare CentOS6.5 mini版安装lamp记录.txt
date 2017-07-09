@@ -1,0 +1,12 @@
+1,安装CentOS6.5 mini版本(参考<兄弟连新版Linux视频教程 2.3 Linux系统安装-Linux系统安装>)
+  (a,在设置用户名 安装位置 勾选第三项 自定义的)
+  (b,自定义盘符大小:先boot 200m 后swap分区1000m 后1000m home分区
+     最后剩余空间 / 分区)
+2.配置IP ifconfig eth0 192.168.159.2(ip查找方法<IP(wmare)配置:3行>)
+  xshell登录
+3,配置yum光盘源(参考<Linux笔记137行>)
+  a,虚拟机插入光盘: 虚拟机-设置-硬件 CD/DVD 右边勾选 已连接
+  b,挂载光盘
+  c,yum list 查看yum配置生效
+4,yum install vim
+5.参考<CentOS-6.5-安装与配置LAMP(160807测试成功)>安装成功(需取消防火墙)

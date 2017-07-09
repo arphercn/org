@@ -1,0 +1,58 @@
+VMware host-only(仅主机模式)链接网络
+	win7 cmd 
+		ipconfig 查看VMnet1 IPv4地址 192.168.32.1
+	VMware
+		编辑->虚拟网络编辑器  vmnet1-仅主机... 连接-勾 DHCP-勾
+		虚拟机->设置->网络适配器->已连接 仅主机模式
+	linux 
+		ifconfig eth0 192.168.32.2
+	Xshell
+		连接192.168.32.2 root root
+	注意:192.168.32必须相同表示同一网段,后面一位数才不同
+	
+VMware nat模式链接网络
+	VMware 
+		编辑->虚拟网络编辑器  vmnet8-nat模式 连接-勾 DHCP-勾
+		虚拟机->设置->网络适配器->已连接 nat模式
+	win7 cmd 
+		ipconfig 查看VMnet8 IPv4地址 192.168.229.1
+	linux 
+		ifconfig eth0 192.168.229.200
+	Xshell
+		连接192.168.229.200 root root
+	注意:192.168.229必须相同表示同一网段,后面一位数才不同
+
+VMware 桥接
+VMware 
+		虚拟机->编辑->虚拟网络编辑器
+			桥接到 本地的网卡
+			vmnet8-nat模式 连接-勾 DHCP-勾
+		虚拟机->设置->网络适配器->已连接 nat模式
+	win7 cmd 
+		ipconfig 查看本地连接 IPv4地址 169.254.36.46
+	linux 
+		ifconfig eth0 169.254.36.200
+网络配置IP
+	setup  设置ip  子网掩码 网关 DNS
+	/etc/sysconfig/network-scripts/ifcfg-eth0
+		增加设置
+			ONBOOT=yes
+			IPADDR=192.168.1.200
+			GATEWAY=192.168.1.1
+			NETMASK=255.255.255.0
+			DNS1=118.118.118.11
+	
+网络配置文件
+/etc/sysconfig/network  保存主机名
+/etc/resolv.conf   保存DNS
+
+servic network restart
+
+
+网卡禁用ifdown eth0   和ifconfig eth0 down差不多
+网卡开启ifup eth0 
+	如果网卡开启不了,提示failed,
+		或者VMware 虚拟机->设置->网络适配器->已连接时报错
+	---------------------------------------------------
+	--解决方法:编辑->虚拟网络编辑器  ->  还原默认设置--
+	---------------------------------------------------

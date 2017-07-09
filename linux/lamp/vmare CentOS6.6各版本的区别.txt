@@ -1,0 +1,11 @@
+相同点
+都已配置防火墙
+
+不同:
+1.mini版
+最小化安装
+2.basic版
+安装了基本服务
+3.Web Server版
+安装了httpd
+未安装mysqld

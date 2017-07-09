@@ -1,0 +1,139 @@
+如何查看apache,php,mysql的编译参数
+	源码包进入./configure --help
+	或者
+		查看nginx编译参数：/usr/local/nginx/sbin/nginx -V
+		查看apache编译参数：cat /usr/local/apache24/build/config.nice
+		查看php编译参数：/usr/local/php56/bin/php -i | grep configure
+
+参考http://www.tuicool.com/articles/3a2QF3
+1准备安装包
+	yum install pcre-devel zlib-devel openssl-devel
+	
+	cd /usr/local/src
+	wget http://mirrors.cnnic.cn/apache//apr/apr-1.5.2.tar.gz
+	wget http://mirrors.cnnic.cn/apache//apr/apr-util-1.5.4.tar.gz
+	
+	安装apr
+		tar -zxvf apr-1.5.2.tar.gz
+		cd apr-1....
+		./configure --prefix=/usr/local/apr
+		make && make install
+		cd ..
+	安装apr
+		tar -zxvf apr-util-1.5.4.tar.gz
+		./configure --prefix=/usr/local/apr-util --with-apr=/usr/local/apr
+		make && make install
+		cd ..
+2安装
+	官方各种版本https://archive.apache.org/dist/httpd/
+	wget http://mirrors.hust.edu.cn/apache//httpd/httpd-2.4.23.tar.gz
+	tar -zxvf httpd/httpd-2.4.23.tar.gz
+	cd httpd...
+	./configure --prefix=/usr/local/apache --sysconfdir=/etc/httpd-2.4.23 --enable-so --enable-ssl --enable-cgi --enable-rewrite --enable-deflate --with-z --with-pcre --with-apr=/usr/local/apr --with-apr-util=/usr/local/apr-util/ --enable-modules=most --enable-mpms-shared=all --with-mpm=event
+	
+	
+	配置
+		vim /etc/httpd-2.4.23/httpd.conf
+			ServerName localhost:80
+				参考http://suo.iteye.com/blog/1096296
+			# ServerRoot "/usr/local/apache"下面加上
+			# PidFile "/var/run/httpd.pid"
+		    User daemon        改为 User apache
+			Group daemon       改为 Group apache					
+
+	添加用户
+		groupadd apache
+		useradd -r -g apache apache
+		chown -R apache:apache /usr/local/apache24
+		
+		
+再次编译安装apache2.47
+	参考
+		https://segmentfault.com/a/1190000005166845
+		https://www.junorz.com/index.php/archives/279/
+		https://my.oschina.net/yongyi/blog/608496
+		http://www.tuicool.com/articles/7FRrAzf
+	安装pcre
+		wget "https://sourceforge.net/projects/pcre/files/pcre/8.39/pcre-8.39.tar.gz/download" pcre-8.39.tar.gz 
+
+		tar -zxvf pcre-8.39.tar.gz
+		./configure --help
+		./configure --prefix=/usr/local/pcre
+		make && make install
+	安装apache
+		cd /usr/local/src
+		rm -rf /usr/local/apache
+		rm -rf /etc/httpd-2.4.23
+		rm -rf httpd-2.4.23
+		tar -zxvf httpd...
+		cd httpd..
+		./configure --prefix=/usr/local/apache24  --with-apr=/usr/local/apr --with-apr-util=/usr/local/apr-util --with-pcre=/usr/local/pcre --enable-so --enable-rewrite --enable-ssl --enable-mods-shared=all --enable-expires --with-mpm=prefork
+		
+			注./configure 是用来生成Makefile的，一般只要执行成功了那么就不再需要./configure 了,make才会生成中间文件，才需要进行make clean删除中间文件
+	
+	配置开机启动
+		cp /usr/local/apache24/bin/apachectl /etc/init.d/httpd
+		vim /etc/init.d/httpd脚本 在开始处#!/bin/bash之后的行后插入
+			# 增加服务
+			chkconfig --add httpd
+			chkconfig --level 2345 httpd on
+	添加环境变量
+		vim /etc/profile
+		修该最后
+			export PATH=/usr/local/mysql/bin:/usr/local/apache24/bin:$PATH
+		执行source /etc/profile
+		测试 httpd -t 成功
+	添加链接
+		ln -sv /usr/local/apache24/conf/httpd.conf /etc/httpd.conf
+	启动
+		service httpd restart
+		systemctl restart httpd.service
+		systemctl -l status httpd.service
+		
+		启动/usr/local/apache24/bin/apachectl -f /usr/local/apache24/conf/httpd.conf
+			或apachectl -f /etc/httpd.conf
+				注:apachectl添加到了环境变量	/etc/httpd.conf是软连接
+		暴力停止 /usr/local/apache24/bin/apachectl -k restart
+				apachectl -k stop
+		优雅停止 apachectl -k graceful-stop
+		优雅的重启 apachectl -k graceful
+		暴力重启  apachectl -k restart
+	查看
+		查看pid位置
+			/usr/local/apache24/bin/apachectl -V |grep pid
+		查看端口
+			netstat -luntp | grep 80
+
+
+			
+调试总结:
+	出现一个bug,调了两天,终于解决了,我的天
+	bug描述:apache24装好,配置PHP完后,总是会重启后可以访问phpinfo.php,过一会后会出现无法访问 / 目录的提示,
+	调试过程:首先卸载apache24,重装了一遍,没卵用
+			google各种配置帮助,试过,没卵用
+			配置了虚拟主机,没卵用
+			
+			最后,装了个apache22,修改ServerName ip地址:80
+				重启,解决端口占用:
+					参考https://blog.longwin.com.tw/2012/06/linux-kill-process-by-name-2012/
+ps -A | grep apache | awk '{print $1}' | xargs # 列出 PID
+3090 3141 3143 3144 3145
+ps aux | grep apache | awk '{print $2}' | xargs # 列出 PID
+3090 3141 3143 3144 3145
+ps aux | grep apache | awk '{print $2}' | xargs kill -9 # 列出 PID 並砍掉 Process
+			
+			在重启,ps aux | grep httpd  或 netstat -tunl | grep 80 发现没效果
+				查看日志 cat logs/error_log 发现
+Name or service not known: mod_unique_id: unable to find IPv4 address of "aliyun"
+					参考http://blog.csdn.net/lxy1981/article/details/2315536
+						修改/etc/hosts，添加一行127.0.0.1    aliyun
+			
+			最后,启动apache22 成功,PHP配置好后,浏览phpinfo.php一直可以解析
+				我来个操  操操操
+			最后,切换到apache24,发现也成功,可以确定是hosts文件没添加aliyun的原因
+	总结:apache24最新版本不适合用来学习,日志错误提示不完善,导致我白白花了两天
+		apache22最新版更新到去年,相对可以接受
+		
+		学习软件不能太旧的,也不能用最新的 ,可以折中一下,用去年的或上一版的就好
+
+

@@ -1,0 +1,309 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+        <title>Discuz! 环境搭建_Discuz! 资料库</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+		<meta name="keywords" content="Discuz! 本地搭建,Discuz!环境搭建" /> 
+		<meta name="description" content="本教程旨在帮助 Discuz! 站长学习如何搭建配置Discuz!环境。" /> 
+		<link rel="stylesheet" href="../../common.css" />
+		<link rel="stylesheet" href="../style_part.css" />
+		<script src="../../base.js" type="text/javascript"></script>
+    </head>
+    <body>
+	<div id="header">
+		<div class="hd wp cl">
+			<h1 class="z"><a href="../../index.htm">Discuz! 资料库文档索引</a></h1>
+			<h2><a href="#">Discuz! X资料库 —— 系统部署</a></h2>
+		</div>
+	</div>
+	<div id="topnv"><iframe id="nviframe" src="../topnv.htm" height="45px" width="100%" frameborder="0" scrolling="no"></iframe></div>
+	<div class="main cl">
+		<div id="sd" class="indexlist z">
+			<h2 class="nvtitle"><span>环境搭建</span></h2>
+			<ul>
+				<li class="a"><h3><a href="env_linux.htm">Linux 部署</a></h3></li>
+				<li><h3><a href="env_windows.htm">Windows 部署</a></h3></li>
+			</ul>
+		</div>
+		<div class="content">
+			<h2 class="nvtitle">Linux 服务器部署标准</h2>
+			<div class="mainc">
+				<p>Discuz! X 是一款以 PHP 为编程语言，以 MySQL 为数据库，并使用 Apache/IIS/Nginx（任意一种即可） 提供 web 服务的产品。要搭建 Discuz! X 站点，服务器必须安装由 PHP、MySQL、Apache/IIS/Nginx 构成的环境。其中，IIS 主要用于 Windows 服务器，Apache、Nginx 多用于 Linux 服务器（即 LAMP 和 LNMP）。</p>
+				<p>Linux 服务器部署时，需要按照一定的部署顺序，即：<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#init">系统环境初始化</a> -> <a href="#download">Apache/Nginx、MySQL、PHP 程序包下载</a> -> <a href="#install">Apache/Nginx、MySQL、PHP 安装</a>
+				</p>
+				<p>下面以在 Linux 服务器上部署 Apache、MySQL、PHP 为例，演示搭建环境的具体过程。</p>
+				<h3 class="nvtwo">系统约定</h3>
+						
+				<table border="0" cellspacing="0" cellpadding="0" class="msgtable">
+					<tr>
+						<td>软件源代码包存放位置</td>
+						<td>/usr/local/src</td>
+					</tr>
+					<tr>
+						<td>Apache、MySQL、PHP 源码包编译安装位置(prefix)</td>
+						<td>/usr/local/Comsenz/software_name</td>
+					</tr>
+					<tr>
+						<td>脚本以及维护程序存放位置</td>
+						<td>/usr/local/Comsenz/sbin</td>
+					</tr>
+					<tr>
+						<td>MySQL 数据库位置</td>
+						<td>/data/mysql（可按情况设置）</td>
+					</tr>
+					<tr>
+						<td>Apache 网站根目录</td>
+						<td>/data/wwwroot（可按情况设置）</td>
+					</tr>
+					<tr>
+						<td>Apache 虚拟主机日志根目录</td>
+						<td>/data/wwwroot/logs（可按情况设置）</td>
+					</tr>
+					<tr>
+						<td>Apache 运行账户</td>
+						<td>www:www</td>
+					</tr>
+				</table><br />
+				<h3 class="nvtwo" id="init">系统环境初始化</h3>
+				<h5>1、检查系统是否正常</h5>
+					<p>more /var/log/messages（检查有无系统级错误信息）</p>
+					<p>dmesg （检查硬件设备是否有错误信息）</p>
+					<p>cat /proc/cpuinfo (检查 CPU 频率是否正常)</p>
+					<p>top (按 1 检测 CPU 核数是否正常，内存大小是否正常)</p>
+					<p>ifconfig（检查网卡设置是否正确）</p>
+					<p>ping www.qq.com（检查网络是否正常）</p>
+				
+				<h5>2、关闭不需要的服务</h5>
+					<p>执行 ntsysv 命令：</p>
+					<p>ntsysv</p>
+					<p>在服务设置界面，设置各项服务的开关。以下仅列出需要启动的服务，未列出的服务一律推荐关闭：</p>
+					<p>atd</p>
+					<p>crond</p>
+					<p>irqbalance</p>
+					<p>microcode_ctl</p>
+					<p>network</p>
+					<p>sendmail</p>
+					<p>sshd</p>
+					<p>syslog</p>
+					<p>关闭 SElinux ，关闭方法如下：</p>
+					<p>修改 /etc/selinux/config 文件中的 SELINUX= 为 disabled。</p>
+					
+				<h5>3、更换快速下载源</h5>
+					<p>mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.old</p>
+					<p>cd /etc/yum.repos.d/</p>
+					<p>wget http://c.sihost.net/CentOS-Base-sohu.repo</p>
+					<p>mv CentOS-Base-sohu.repo CentOS-Base.repo</p>
+					<p>yum clean</p>
+					<p>yum -y update</p>
+					<p>lsb_release -a</p>
+					<p>yum -y erase mysql</p>
+					<p>yum -y erase php</p>
+					<p>yum -y erase httpd</p>
+				
+				<h5>4、使用 yum 程序安装所需开发包（以下为标准的 RPM 包名称）</h5>
+					<p>yum -y install ntp make openssl openssl-devel pcre pcre-devel libpng libpng-devel libtiff-devel libjpeg-6b libjpeg-devel-6b freetype freetype-devel gd gd-devel fontconfig-devel zlib zlib-devel libevent-devel gcc gcc-c++ flex bison bzip2-devel libXpm libXpm-devel ncurses ncurses-devel libmcrypt libmcrypt-devel libxml2 libxml2-devel imake autoconf automake screen sysstat compat-libstdc++-33 curl curl-devel</p>
+					
+				<h5>5、定时校正服务器时钟，定时与中国国家授时中心授时服务器同步</h5>
+					<p>编辑计划任务：</p>
+					<p>crontab –e</p>
+					<p>加入下面一行：</p>
+					<p>*/30 * * * * ntpdate 210.72.145.44 > /dev/null 2>&1</p>
+					<p>编辑完成后，保存即可。</p>
+					
+				<h5 id="download">6、下载程序包</h5>
+					<p>Apache</p>
+					<p>推荐稳定版 2.2.21，下载地址为 <a href="http://archive.apache.org/dist/httpd/">http://archive.apache.org/dist/httpd/</a></p>
+
+					<p>PHP</p>
+					<p>推荐稳定版 5.2.17，下载地址为 <a href="http://cn.php.net/downloads.php">http://cn.php.net/downloads.php</a></p>
+
+					<p>Mysql</p>
+					<p>推荐稳定版 5.5.18，下载地址为 <a href="http://www.mysql.com/downloads/mysql/">http://www.mysql.com/downloads/mysql/</a></p>
+
+					<p>文中的配置文件和脚本限于篇幅，请到以下地址下载（仅支持 Linux 下使用 wget 下载）</p>
+
+					<p>Apache控制脚本，下载地址为 <a href="http://c.sihost.net/jb/httpd">http://c.sihost.net/jb/httpd</a></p>
+					
+					<p>Apache配置文件，下载地址为 <a href="http://c.sihost.net/jb/httpd.conf">http://c.sihost.net/jb/httpd.conf</a></p>
+
+					<p>单独下载各程序及文件的方式较为繁琐，我们将上面所需程序和文件整理成下载列表，如下：</p>
+					<p><a href="http://c.sihost.net/lamp_tools.list">http://c.sihost.net/lamp_tools.list</a></p>
+
+					<p>在 /usr/local/src 目录下执行下面两个命令，下载 lamp_tools.list 及该列表中的程序：</p>
+					<p>wget http://c.sihost.net/lamp_tools.list</p>
+
+					<p>wget -i lamp_tools.list</p>
+
+				<h5>7、创建 web 运行用户</h5>
+					<p>groupadd www</p>
+					<p>useradd -g www www</p>
+					<p>mkdir -p /data/wwwroot</p>
+					<p>chmod +w /data/wwwroot</p>
+					<p>chown www:www /data/wwwroot -R</p>
+
+				<h5>8、重新启动</h5>
+					<p>init 6</p><br />
+				
+				<h3 class="nvtwo" id="install">编译安装环境</h3>
+				<h5>1、安装 MySQL</h5>
+					<p>cd /usr/local/src</p>
+					<p>tar zxvf cmake-2.8.5.tar.gz</p>
+					<p>cd cmake-2.8.5/</p>
+					<p>./configure</p>
+					<p>gmake &&gmake install </p>
+					<p>groupadd mysql</p>
+					<p>useradd -g mysql mysql</p>
+					<p>mkdir -p /data/mysql</p>
+					<p>chown -R mysql:mysql /data/mysql</p>
+					<p>cd /usr/local/src</p>
+					<p>tar zxvf mysql-5.5.18.tar.gz</p>
+					<p>cd mysql-5.5.18</p>
+					<p>cmake . -DCMAKE_INSTALL_PREFIX=/usr/local/Comsenz/mysql -DMYSQL_DATADIR=/data/mysql -DSYSCONFDIR=/usr/local/Comsenz/etc/ -DWITH_BLACKHOLE_STORAGE_ENGINE=1</p>
+					<p>make && make install</p>
+					<p>cd /usr/local/Comsenz/mysql</p>
+					<p>./scripts/mysql_install_db --user=mysql</p>
+					<p>cp ./support-files/mysql.server /etc/rc.d/init.d/mysqld</p>
+					<p>chmod 755 /etc/rc.d/init.d/mysqld</p>
+					<p>chkconfig --add mysqld</p>
+					<p>chkconfig --level 3 mysqld on</p>
+					<p>编辑 /etc/rc.d/init.d/mysqld，找到</p>
+					<p>basedir=<br />
+					datadir=</p>
+					<p>改成</p>
+					<p>basedir=/usr/local/Comsenz/mysql<br />
+					datadir=/data/mysql</p>
+					<p>然后在 Comsenz 目录下创建 etc 目录，并将 MySQL 配置文件拷贝到该目录下：</p>
+					<p>mkdir -p /usr/local/Comsenz/etc</p>
+					<p>cp ./support-files/my-huge.cnf /usr/local/Comsenz/etc/my.cnf</p>
+					<p>编辑配置文件 /usr/local/Comsenz/etc/my.cnf，在 [mysqld] 段增加</p>
+					<p>datadir = /data/mysql</p>
+					<p>wait-timeout = 10</p>
+					<p>max_connections = 512</p>
+					<p>max_connect_errors = 10000000</p>
+					<p>local-infile=0</p>
+					<p>在 [mysqld] 段修改</p>
+					<p>max_allowed_packet = 16M</p>
+					<p>thread_cache_size = CPU个数*2</p>
+					<p>将 log-bin 注释</p>
+					<p>mv /usr/local/Comsenz/mysql/data/* /data/mysql</p>
+					<p>service mysqld start</p>
+					<p>bin/mysqladmin -u root password 'admin999'</p>
+					<p>其中 admin999 是要设置的 root 密码。</p>
+				
+				<h5>2、安装 Apache</h5>
+					<p>cd /usr/local/src/</p>
+					<p>tar zxvf httpd-2.2.21.tar.gz</p>
+					<p>cd httpd-2.2.21</p>
+					<p>./configure --prefix=/usr/local/Comsenz/apache --enable-module=rewrite --disable-access --disable-auth --disable-charset-lite --disable-include --disable-log-config --disable-env --disable-setenvif --disable-mime --disable-status --disable-autoindex --disable-asis --disable-cgid --disable-cgi --disable-negotiation --disable-dir --disable-actions --disable-userdir --disable-alias --enable-so --enable-mods-shared='access auth auth_anon auth_dbm auth_digest dav dav_fs actions alias asis autoindex cache cern_meta cgi charset_lite deflate dir disk_cache env expires file_cache headers include info log_config logio mime mime_magic negotiation rewrite setenvif speling status unique_id userdir usertrack vhost_alias'</p>
+					<p>make && make install</p>
+					<p>cd /usr/local/src/</p>
+					<p>mv /usr/local/Comsenz/apache/conf/httpd.conf /usr/local/Comsenz/apache/conf/httpd.conf.old</p>
+					<p>cp -f /usr/local/src/httpd.conf /usr/local/Comsenz/apache/conf/httpd.conf</p>
+					<p>cp -f /usr/local/src/httpd /etc/init.d/httpd</p>
+					<p>chmod 755 /etc/init.d/httpd</p>
+					<p>chkconfig --add httpd</p>
+					<p>chkconfig httpd on</p>
+				
+				<h5>3、编译安装 PHP 所需的支持库</h5>
+					<p>tar zxvf libiconv-1.14.tar.gz</p>
+					<p>cd libiconv-1.14/</p>
+					<p>./configure --prefix=/usr/local</p>
+					<p>make && make install</p>
+					<p>cd /usr/local/src/</p>
+					<p>tar zxvf libmcrypt-2.5.8.tar.gz</p>
+					<p>cd libmcrypt-2.5.8</p>
+					<p>./configure</p>
+					<p>make && make install</p>
+					<p>/sbin/ldconfig</p>
+					<p>cd libltdl/</p>
+					<p>./configure --enable-ltdl-install</p>
+					<p>make && make install</p>
+					<p>cd /usr/local/src/</p>
+					<p>tar zxvf mhash-0.9.9.9.tar.gz</p>
+					<p>cd mhash-0.9.9.9/</p>
+					<p>./configure</p>
+					<p>make && make install</p>
+					<p>cd /usr/local/src/</p>
+					<p>64bit 系统执行下面的:</p>
+					<p>ln -s /usr/local/lib/libmcrypt.la /usr/lib64/libmcrypt.la</p>
+					<p>ln -s /usr/local/lib/libmcrypt.so /usr/lib64/libmcrypt.so</p>
+					<p>ln -s /usr/local/lib/libmcrypt.so.4 /usr/lib64/libmcrypt.so.4</p>
+					<p>ln -s /usr/local/lib/libmcrypt.so.4.4.8 /usr/lib64/libmcrypt.so.4.4.8</p>
+					<p>ln -s /usr/local/lib/libmhash.a /usr/lib64/libmhash.a</p>
+					<p>ln -s /usr/local/lib/libmhash.la /usr/lib64/libmhash.la</p>
+					<p>ln -s /usr/local/lib/libmhash.so /usr/lib64/libmhash.so</p>
+					<p>ln -s /usr/local/lib/libmhash.so.2 /usr/lib64/libmhash.so.2</p>
+					<p>ln -s /usr/local/lib/libmhash.so.2.0.1 /usr/lib64/libmhash.so.2.0.1</p>
+					<p>ln -s /usr/local/bin/libmcrypt-config /usr/bin/libmcrypt-config</p>
+					<p>ln -s /usr/local/lib/libiconv.so.2 /usr/lib64/libiconv.so.2</p><br />
+					<p>32bit 系统执行下面的:</p>
+					<p>ln -s /usr/local/lib/libmcrypt.la /usr/lib/libmcrypt.la</p>
+					<p>ln -s /usr/local/lib/libmcrypt.so /usr/lib/libmcrypt.so</p>
+					<p>ln -s /usr/local/lib/libmcrypt.so.4 /usr/lib/libmcrypt.so.4</p>
+					<p>ln -s /usr/local/lib/libmcrypt.so.4.4.8 /usr/lib/libmcrypt.so.4.4.8</p>
+					<p>ln -s /usr/local/lib/libmhash.a /usr/lib/libmhash.a</p>
+					<p>ln -s /usr/local/lib/libmhash.la /usr/lib/libmhash.la</p>
+					<p>ln -s /usr/local/lib/libmhash.so /usr/lib/libmhash.so</p>
+					<p>ln -s /usr/local/lib/libmhash.so.2 /usr/lib/libmhash.so.2</p>
+					<p>ln -s /usr/local/lib/libmhash.so.2.0.1 /usr/lib/libmhash.so.2.0.1</p>
+					<p>ln -s /usr/local/bin/libmcrypt-config /usr/bin/libmcrypt-config</p>
+					<p>ln -s /usr/local/lib/libiconv.so.2 /usr/lib/libiconv.so.2</p>
+					<p>tar zxvf mcrypt-2.6.8.tar.gz</p>
+					<p>cd mcrypt-2.6.8</p>
+					<p>/sbin/ldconfig</p>
+					<p>./configure</p>
+					<p>make && make install</p>
+
+				<h5>4、编译安装PHP</h5>
+					<p>cd /usr/local/src</p>
+					<p>tar zxvf php-5.2.17.tar.gz</p>
+					<p>cd php-5.2.17</p>
+					<p>./configure --prefix=/usr/local/Comsenz/php5 --with-config-file-path=/usr/local/Comsenz/etc --enable-mbstring --enable-ftp --with-gd --with-jpeg-dir=/usr --with-png-dir=/usr --enable-magic-quotes --with-mysql=/usr/local/Comsenz/mysql --with-pear --enable-sockets --with-ttf --with-freetype-dir=/usr --enable-gd-native-ttf --with-zlib --enable-sysvsem --enable-exif --enable-sysvshm --with-libxml-dir=/usr --with-apxs2=/usr/local/Comsenz/apache/bin/apxs --with-iconv=/usr/local/libiconv --with-iconv-dir=/usr/local --with-xmlrpc --enable-xml --enable-shmop --enable-zip --with-mhash --with-mcrypt --enable-discard-path --enable-bcmath --enable-inline-optimization --with-curl --with-curlwrappers --enable-mbregex --with-openssl</p>
+					<p>make &&make install</p>
+					<p>./libtool --finish /usr/local/src/php-5.2.17/libs</p>
+					<p>cp php.ini-dist /usr/local/Comsenz/etc/php.ini</p>
+					<p>echo 'ulimit -SHn 65535' >> /etc/rc.local</p>
+
+				<h5>5、安装 PHP 扩展模块（需要此功能的 Discuz! X 用户选装）</h5>
+					<p>安装 APC</p>
+					<p>cd /usr/local/src</p>
+					<p>tar zxvf APC-3.1.9.tgz</p>
+					<p>cd APC-3.1.9</p>
+					<p>/usr/local/Comsenz/php5/bin/phpize</p>
+					<p>./configure --enable-apc --enable-mmap --enable-apc-spinlocks --disable-apc-pthreadmutex --with-php-config=/usr/local/Comsenz/php5/bin/php-config</p>
+					<p>make &&make install</p>
+					<p>编辑配置文件 /usr/local/Comsenz/etc/php.ini，查找</p>
+					<p>extension_dir =  </p>
+					<p>在下面一行添加</p>
+					<p>extension_dir = "/usr/local/Comsenz/php5/lib/php/extensions/no-debug-non-zts-20060613/"</p>
+					<p>extension="apc.so"</p>
+					<p>apc.enabled = 1</p>
+					<p>apc.shm_size = 64M</p>
+					<p>apc.stat = 1</p>
+					<p>编辑完成后，保存。</p>
+				
+				<h5>6、查看确认 LAMP 环境信息、提升 PHP 安全性</h5>
+					<p>保存以下内容为 info.php 到 /data/www/，检查 phpinfo 中的各项信息是否正确。</p>
+					<p>&lt;?</p>
+					<p>phpinfo();</p>
+					<p>?&gt;</p>
+					<p>确认 PHP 能够正常工作后，编辑 /usr/local/Comsenz/etc/php.ini 进行设置提升 PHP 安全性。查找</p>
+					<p>disable_functions =</p>
+					<p>修改成</p>
+					<p>disable_functions = passthru,exec,system,chroot,scandir,chgrp,chown,escapeshellcmd,escapeshellarg,shell_exec,proc_get_status,ini_alter,ini_alter,ini_restore,dl,pfsockopen,openlog,syslog,readlink,symlink,leak,popepassthru,stream_socket_server,popen</p>
+					<p>然后重启 web 服务：</p>
+					<p>service httpd restart</p><br />
+
+			</div>
+		</div>
+	</div>
+	<div id="scrolltop"><span id="gotop" hidefocus="true"><a title="返回顶部" onclick="window.scrollTo('0','0')" class="scrolltopa"></a></span><span><a title="反馈意见" href="http://www.discuz.net/thread-3202846-1-1.html" target="_blank" class="feedback"></a></span><span><a title="返回首页" href="../../index.htm" class="gohome"></a></span></div>
+	<script type="text/javascript">_attachEvent(window, 'scroll', function(){showTopLink();});</script><script type="text/javascript">_attachEvent(window, 'load', function(){fixTip();});</script>
+	<div id="ft" class="wp">
+		<div class="wrap">
+			<p id="copyright">版权所有 &copy;2001-2013 <a href="http://www.comsenz.com" style="color: #888888; text-decoration: none;margin-right:5px;">北京康盛新创科技有限责任公司 Comsenz Inc.</a> <script type="text/javascript" src="http://tajs.qq.com/stats?sId=20647248" charset="UTF-8"></script></p>
+		</div>
+	</div>
+</body>
+</html>

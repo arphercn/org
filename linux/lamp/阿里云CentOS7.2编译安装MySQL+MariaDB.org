@@ -1,0 +1,226 @@
+	阿里云CentOS 7.2 编译LAMP环境
+	
+1 查看防火墙状态
+	修改主机名 hostnamectl set-hostname aliyun
+				reboot
+	查看所有打开的端口 firewall-cmd --zone=dmz --list-ports
+	selinux状态可以通过以下命令查看 sestatus
+	
+** 2 编译MariaDB mariadb-10.1.13.tar.gz 失败
+	2.1 下载
+		官网下载地址https://downloads.mariadb.org/mariadb/+releases/
+			说明:进入相应版本页面后,可以在右面的checkbox选择
+			Generic Linux版本指编译过的版本,Source Code指源码包
+		由于下载慢 选择国内镜像http://mirrors.ctyun.cn/MariaDB/mariadb-10.1.13.tar.gz
+		
+		通过参考UPUPW5.6 和镜像的资源版本,我选择10.1.13版本
+		
+			cd /usr/local/src/
+			wget http://mirrors.ctyun.cn/MariaDB/mariadb-10.1.13/source/mariadb-10.1.13.tar.gz
+
+			cd mariadb...
+	2.2编译安装
+		参考
+			https://mariadb.com/kb/zh-cn/installing-mariadb-alongside-mysql/
+			https://typecodes.com/web/centos7compilemysql5.html
+			个人笔记 <CentOS6.5下编译安装MySQL 5.6.20(已测试)>
+		
+		安装编译代码需要的包
+			参考https://mariadb.com/kb/en/mariadb/Build_Environment_Setup_for_Linux/
+			其中tar make openssl通过rpm -q tar格式查看已安装,可以不必再安装
+				yum -y install git gunzip gcc bison libncurses zlib-dev cmake jemalloc
+			参考http://dev.mysql.com/doc/refman/5.5/en/source-configuration-options.html
+			查看编译参数 cmake . -LH 报错
+				参考http://www.jb51.net/article/42548.htm
+					yum -y install gcc-c++
+					期间可能需要rm -rf CMakeCache.txt
+			再次 cmake . -LH 按提示
+				yum -y install ncurses-devel
+			再次 cmake . -LH 按提示
+				yum install libxml2-devel
+			再次 cmake . -LH 无错误提示了 ,最后可以ccmake . 来查看编译参数
+			参考个人笔记
+cmake \
+-DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
+-DMYSQL_DATADIR=/usr/local/mysql/data \
+-DSYSCONFDIR=/etc \
+-DWITH_MYISAM_STORAGE_ENGINE=1 \
+-DWITH_INNOBASE_STORAGE_ENGINE=1 \
+-DWITH_MEMORY_STORAGE_ENGINE=1 \
+-DWITH_ARCHIVE_STORAGE_ENGINE=1 \
+-DWITH_PARTITION_STORAGE_ENGINE=1 \
+-DWITH_BLACKHOLE_STORAGE_ENGINE=1 \
+-DWITH_READLINE=1 \
+-DENABLE_DOWNLOADS=1 \
+-DENABLED_LOCAL_INFILE=1 \
+-DMYSQL_UNIX_ADDR=/var/lib/mysql/mysql.sock \
+-DMYSQL_TCP_PORT=3306 \
+-DEXTRA_CHARSETS=all \
+-DDEFAULT_CHARSET=utf8 \
+-DDEFAULT_COLLATION=utf8_general_ci \
+-DWITHOUT_TOKUDB=1
+				
+				出现警告TokuDB is enabled, but jemalloc is not.  This configuration is not supported
+					参考https://www.zhihu.com/question/36662393
+					可以加个参数 -DWITHOUT_TOKUDB=1，这样可以不安装tokudb引擎
+					需要rm -rf CMakeCache.txt,再次cmake \ ...... 
+					提示Systemd features not enabled 不用管
+		2.3配置
+			2.3.1 创建一个名为mysql且没有登录权限的用户和一个名为mysql的用户组
+				groupadd -r mysql
+				useradd -r -g mysql -s /usr/sbin/nologin mysql
+					备注:useradd -r 创建系统用户,不生成家mysql目录,所以不用-M
+			进入安装路径，执行初始化配置脚本，创建系统自带的数据库和表
+				cd /usr/local/mysql
+				scripts/mysql_install_db --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data --user=mysq
+					注 my.cnf 在/etc目录下
+
+         总结：yum -y install git gunzip gcc bison libncurses zlib-dev cmake jemalloc ncurses-devel libxml2-devel
+			
+			
+		 最后表示:16.11.11耗时一晚上一上午,失败
+** 安装MariaDB mariadb-10.2.6.tar.gz （17.07.08）失败
+groupadd mysql
+useradd -g mysql mysql
+
+
+  wget https://mirrors.tuna.tsinghua.edu.cn/mariadb//mariadb-10.2.6/source/mariadb-10.2.6.tar.gz (updated 17.7.8)
+
+  tar zxvf maria..
+  参考《MariaDB入门很简单》
+  cmake .
+  make 
+  make install 
+配置文件
+ cp support-files/my-medium.cnf /usr/local/mysql/my.cnf 为root和mysql用户的局部配置文件
+     /etc/my.cnf 为全局文件
+使用mysql用户的权限创建数据库
+
+./scripts/mysql_install_db --user=mysql
+提示
+Installing MariaDB/MySQL system tables in '/var/lib/mysql' ...
+OK
+
+To start mysqld at boot time you have to copy
+support-files/mysql.server to the right place for your system
+
+PLEASE REMEMBER TO SET A PASSWORD FOR THE MariaDB root USER !
+To do so, start the server, then issue the following commands:
+
+'./bin/mysqladmin' -u root password 'new-password'
+'./bin/mysqladmin' -u root -h aliyun password 'new-password'
+
+Alternatively you can run:
+'./bin/mysql_secure_installation'
+
+which will also give you the option of removing the test
+databases and anonymous user created by default.  This is
+strongly recommended for production servers.
+
+See the MariaDB Knowledgebase at http://mariadb.com/kb or the
+MySQL manual for more instructions.
+
+You can start the MariaDB daemon with:
+cd '.' ; ./bin/mysqld_safe --datadir='/var/lib/mysql'
+
+You can test the MariaDB daemon with mysql-test-run.pl
+cd './mysql-test' ; perl mysql-test-run.pl
+
+设置安装权限 
+chown -R root .
+chown -R mysql data
+chgrp -R mysql .
+启动MariaDB
+./bin/mysqld_safe --datadir='/var/lib/mysql'
+ 根据提示
+   mkdir /var/log/mariadb
+   chown mysql /var/log/mariadb
+   chgrp mysql /var/log/mariadb
+最后提示
+170708 17:48:59 mysqld_safe Logging to '/var/log/mariadb/mariadb.log'.日志位置
+170708 17:48:59 mysqld_safe Starting mysqld daemon with databases from /var/lib/mysql 数据库位置
+
+
+
+
+
+** mariadb-5.5.56.tar.gz
+https://mirrors.tuna.tsinghua.edu.cn/mariadb//mariadb-5.5.56/source/mariadb-5.5.56.tar.gz
+
+cmake .
+  make 
+  make install 
+配置文件
+ cp support-files/my-medium.cnf /usr/local/mysql/my.cnf 为root和mysql用户的局部配置文件
+     /etc/my.cnf 为全局文件
+使用mysql用户的权限创建数据库
+
+./scripts/mysql_install_db --user=mysql
+提示
+Installing MariaDB/MySQL system tables in '/var/lib/mysql' ...
+170709 23:07:07 [Note] ./bin/mysqld (mysqld 5.5.56-MariaDB) starting as process 24409 ...
+OK
+Filling help tables...
+170709 23:07:07 [Note] ./bin/mysqld (mysqld 5.5.56-MariaDB) starting as process 24417 ...
+OK
+
+To start mysqld at boot time you have to copy
+support-files/mysql.server to the right place for your system
+
+PLEASE REMEMBER TO SET A PASSWORD FOR THE MariaDB root USER !
+To do so, start the server, then issue the following commands:
+
+'./bin/mysqladmin' -u root password 'new-password'
+'./bin/mysqladmin' -u root -h aliyun password 'new-password'
+
+Alternatively you can run:
+'./bin/mysql_secure_installation'
+
+which will also give you the option of removing the test
+databases and anonymous user created by default.  This is
+strongly recommended for production servers.
+
+See the MariaDB Knowledgebase at http://mariadb.com/kb or the
+MySQL manual for more instructions.
+
+You can start the MariaDB daemon with:
+cd '.' ; ./bin/mysqld_safe --datadir='/var/lib/mysql'
+
+You can test the MariaDB daemon with mysql-test-run.pl
+cd './mysql-test' ; perl mysql-test-run.pl
+
+
+参考https://blog.linuxeye.cn/352.html
+cp support-files/my-small.cnf /etc/my.conf
+cp support-files/mysql.server /etc/init.d/mysqld
+chmod +x /etc/init.d/mysqld
+chkconfig --add mysqld
+chkconfig mysqld on
+
+启动 /etc/init.d/mysqld start
+设置 './bin/mysql_secure_installation'
+** 最后参考<CentOS6.5下编译安装MySQL5.6.20(已测试)>安装MySQL5.6.34版本
+	下载方法:
+		进官网->点download->点community-> 点MySQL Community Server
+			->Looking for previous GA versions?->选sourse code
+			wget http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.20.tar.gz
+
+		MySQL5.6.34版安装前需要yum -y install auoconf
+		
+		MySQL5.6.34初始化配置时和5.6.20版需要多加一个参数,不然会启动失败
+			参考http://blog.csdn.net/dapeng0112/article/details/37053407
+			改为scripts/mysql_install_db --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data --user=mysql --ldata=/var/lib/mysql
+
+
+
+			
+
+			
+
+			
+			
+			
+
+		
+		
+		
