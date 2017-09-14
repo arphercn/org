@@ -1,39 +1,14 @@
-修改主机名
-hostnamectl set-hostname aliyun
 
-配置ssh
-预备工作： 
-1.root登陆服务器 
-ssh root@服务器IP 
-然后输入阿里云配置的密码 
-2.增加普通新用户 
-useradd 新用户名 
-passwd 新用户名 
-利用useradd添加用户，passwd给这个用户设置密码 
-3.公钥写入~/.ssh/authorized_keys 
-客户端： 
-cd ~/.ssh 
-scp -P 22 id_rsa.pub 新用户名@IP地址:~/.ssh/id_rsa.pub 
-服务器端： 
-ssh 新用户名@服务器IP 
-mkdir ~/.ssh 
-chmod 700 .ssh //-rwx------ (700) -- 只有属主有读、写、执行权限。 
-cd ~/.ssh 
-cat id_rsa.pub >> authorized_keys 
-chmod 600 ./authorized_keys //-rw------- (600) -- 只有属主有读写权限。
- 	  参考https://www.douban.com/doulist/44111547/
-
-
-停掉apache
+* 停掉apache
 	查看是否自启动chkcongig --list
 	停止apachectl stop
 
+
+* 本次安装nginx-1.10.2版
 参考
 	https://nginx.org/en/docs/configure.html
-	http://www.nginx.cn/install
-
-本次安装nginx-1.10.2版
-	下载
+	http://www.nginx.cn/install	
+下载
 		wget https://nginx.org/download/nginx-1.10.2.tar.gz
 	
 	根据官方文档,安装前需要准备openssl pcre zlib程序
@@ -80,7 +55,34 @@ chmod 600 ./authorized_keys //-rw------- (600) -- 只有属主有读写权限。
 	启动
 		/usr/local/nginx/nginx
 		
-安装PHP
+* 安装PHP php-7.0.21
+参考http://www.cnblogs.com/freeweb/p/5425554.html
+
+yum -y install libxml2
+yum -y install libxml2-devel
+
+yum -y install openssl
+yum -y install openssl-devel
+yum -y install curl
+yum -y install curl-devel
+yum -y install libjpeg
+yum -y install libjpeg-devel
+yum -y install libpng
+yum -y install libpng-devel
+yum -y install freetype
+yum -y install freetype-devel
+yum -y install pcre
+yum -y install pcre-devel
+yum -y install libxslt
+yum -y install libxslt-devel
+yum -y install bzip2
+yum -y install bzip2-devel
+php7默认不支持mysql 支持mysqli
+./configure --prefix=/usr/local/php --with-curl --with-freetype-dir --with-gd --with-gettext --with-iconv-dir --with-kerberos --with-libdir=lib64 --with-libxml-dir --with-mysqli --with-openssl --with-pcre-regex --with-pdo-mysql --with-pdo-sqlite --with-pear --with-png-dir --with-jpeg-dir --with-xmlrpc --with-xsl --with-zlib --with-bz2 --with-mhash --enable-fpm --enable-bcmath --enable-libxml --enable-inline-optimization --enable-gd-native-ttf --enable-mbregex --enable-mbstring --enable-opcache --enable-pcntl --enable-shmop --enable-soap --enable-sockets --enable-sysvsem --enable-sysvshm --enable-xml --enable-zip
+make
+make install
+
+安装后php-fpm目录 /usr/local/bin/
 
 		cd /usr/local/nginx/		
 			注:conf/目录下nginx.conf 和nginx.conf.default完全相同
@@ -90,12 +92,12 @@ chmod 600 ./authorized_keys //-rw------- (600) -- 只有属主有读写权限。
 			server_name  aliyun;
 			
 			location / {
-				root   html/arpher.com;
+				root   html;
 				index  index.php;
 			}
 			
 			location ~ \.php$ {
-				root           html/arpher.com;
+				root           html;
 				fastcgi_pass   127.0.0.1:9000;
 				fastcgi_index  index.php;
 				fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;

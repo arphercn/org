@@ -1,0 +1,206 @@
+
+* aliyun设置
+	修改主机名 hostnamectl set-hostname aliyun
+				reboot
+	查看所有打开的端口 firewall-cmd --zone=dmz --list-ports
+	selinux状态可以通过以下命令查看 sestatus
+* 配置ssh
+预备工作： 
+1.root登陆服务器 
+ssh root@服务器IP 
+然后输入阿里云配置的密码 
+2.增加普通新用户 
+useradd 新用户名 
+passwd 新用户名 
+利用useradd添加用户，passwd给这个用户设置密码 
+3.公钥写入~/.ssh/authorized_keys 
+客户端： 
+cd ~/.ssh 
+scp -P 22 id_rsa.pub 新用户名@IP地址:~/.ssh/id_rsa.pub 
+服务器端： 
+ssh 新用户名@服务器IP 
+mkdir ~/.ssh 
+chmod 700 .ssh //-rwx------ (700) -- 只有属主有读、写、执行权限。 
+cd ~/.ssh 
+cat id_rsa.pub >> authorized_keys 
+chmod 600 ./authorized_keys //-rw------- (600) -- 只有属主有读写权限。
+ 	  参考https://www.douban.com/doulist/44111547/
+
+* mariadb-5.5.56.tar.gz 安装
+https://mirrors.tuna.tsinghua.edu.cn/mariadb//mariadb-5.5.56/source/mariadb-5.5.56.tar.gz
+
+cmake .
+  make 
+  make install 
+配置文件
+ cp support-files/my-medium.cnf /usr/local/mysql/my.cnf 为root和mysql用户的局部配置文件
+     /etc/my.cnf 为全局文件
+使用mysql用户的权限创建数据库
+
+./scripts/mysql_install_db --user=mysql
+提示
+Installing MariaDB/MySQL system tables in '/var/lib/mysql' ...
+170709 23:07:07 [Note] ./bin/mysqld (mysqld 5.5.56-MariaDB) starting as process 24409 ...
+OK
+Filling help tables...
+170709 23:07:07 [Note] ./bin/mysqld (mysqld 5.5.56-MariaDB) starting as process 24417 ...
+OK
+
+To start mysqld at boot time you have to copy
+support-files/mysql.server to the right place for your system
+
+PLEASE REMEMBER TO SET A PASSWORD FOR THE MariaDB root USER !
+To do so, start the server, then issue the following commands:
+
+'./bin/mysqladmin' -u root password 'new-password'
+'./bin/mysqladmin' -u root -h aliyun password 'new-password'
+
+Alternatively you can run:
+'./bin/mysql_secure_installation'
+
+which will also give you the option of removing the test
+databases and anonymous user created by default.  This is
+strongly recommended for production servers.
+
+See the MariaDB Knowledgebase at http://mariadb.com/kb or the
+MySQL manual for more instructions.
+
+You can start the MariaDB daemon with:
+cd '.' ; ./bin/mysqld_safe --datadir='/var/lib/mysql'
+
+You can test the MariaDB daemon with mysql-test-run.pl
+cd './mysql-test' ; perl mysql-test-run.pl
+
+
+参考https://blog.linuxeye.cn/352.html
+cp support-files/my-small.cnf /etc/my.conf
+cp support-files/mysql.server /etc/init.d/mysqld
+chmod +x /etc/init.d/mysqld
+chkconfig --add mysqld
+chkconfig mysqld on
+
+启动 /etc/init.d/mysqld start
+设置 './bin/mysql_secure_installation'
+
+
+* 本次安装nginx-1.10.2版
+参考
+	https://nginx.org/en/docs/configure.html
+	http://www.nginx.cn/install	
+下载
+		wget https://nginx.org/download/nginx-1.10.2.tar.gz
+	
+	根据官方文档,安装前需要准备openssl pcre zlib程序
+		检查程序是否安装方法
+			1.查看/usr/local/下有没有源码安装过
+			2.查看rpm -ql zlib是否yum安装过或系统已自带
+				发现zlib已安装,就可以不指定zlib路径了,同样发现openssl, pcre均已安装
+					./configure后会提示using system zlib library
+			
+	安装
+		查看官方文档
+		--conf-path  By default the file is named prefix/conf/nginx.conf
+		--pid-path By default the file is named prefix/logs/nginx.pid
+
+参考apache配置安装pcre,
+安装pcre
+		wget https://sourceforge.net/projects/pcre/files/pcre/8.39/pcre-8.39.tar.gz 
+
+		tar -zxvf pcre-8.39.tar.gz
+		./configure --help
+		./configure --prefix=/usr/local/pcre
+		make && make install
+	yum安装openssl-devel
+		
+		./configure --sbin-path=/usr/local/nginx/nginx --with-http_ssl_module --with-pcre=/usr/local/src/pcre-8.39
+			注意:--with-pcre=/usr/local/src/pcre-8.39指的是源码路径，因为pcre对性能稍有影响
+			
+		提示
+			  nginx path prefix: "/usr/local/nginx"
+			  nginx binary file: "/usr/local/nginx/nginx"
+			  nginx modules path: "/usr/local/nginx/modules"
+			  nginx configuration prefix: "/usr/local/nginx/conf"
+			  nginx configuration file: "/usr/local/nginx/conf/nginx.conf"
+			  nginx pid file: "/usr/local/nginx/logs/nginx.pid"
+			  nginx error log file: "/usr/local/nginx/logs/error.log"
+			  nginx http access log file: "/usr/local/nginx/logs/access.log"
+			  nginx http client request body temporary files: "client_body_temp"
+			  nginx http proxy temporary files: "proxy_temp"
+			  nginx http fastcgi temporary files: "fastcgi_temp"
+			  nginx http uwsgi temporary files: "uwsgi_temp"
+			  nginx http scgi temporary files: "scgi_temp"
+
+        make && make install
+	启动
+		/usr/local/nginx/nginx
+		
+* 安装PHP php-7.0.21
+参考http://www.cnblogs.com/freeweb/p/5425554.html
+
+yum -y install libxml2
+yum -y install libxml2-devel
+
+yum -y install openssl
+yum -y install openssl-devel
+yum -y install curl
+yum -y install curl-devel
+yum -y install libjpeg
+yum -y install libjpeg-devel
+yum -y install libpng
+yum -y install libpng-devel
+yum -y install freetype
+yum -y install freetype-devel
+yum -y install pcre
+yum -y install pcre-devel
+yum -y install libxslt
+yum -y install libxslt-devel
+yum -y install bzip2
+yum -y install bzip2-devel
+php7默认不支持mysql 支持mysqli
+./configure --prefix=/usr/local/php --with-curl --with-freetype-dir --with-gd --with-gettext --with-iconv-dir --with-kerberos --with-libdir=lib64 --with-libxml-dir --with-mysqli --with-openssl --with-pcre-regex --with-pdo-mysql --with-pdo-sqlite --with-pear --with-png-dir --with-jpeg-dir --with-xmlrpc --with-xsl --with-zlib --with-bz2 --with-mhash --enable-fpm --enable-bcmath --enable-libxml --enable-inline-optimization --enable-gd-native-ttf --enable-mbregex --enable-mbstring --enable-opcache --enable-pcntl --enable-shmop --enable-soap --enable-sockets --enable-sysvsem --enable-sysvshm --enable-xml --enable-zip
+make
+make install
+
+安装后php-fpm目录 /usr/local/bin/
+
+		cd /usr/local/nginx/		
+			注:conf/目录下nginx.conf 和nginx.conf.default完全相同
+				注:可以使用diff工具验证
+		vim conf/nginx.conf		
+		修改
+			server_name  aliyun;
+			
+			location / {
+				root   html;
+				index  index.php;
+			}
+			
+			location ~ \.php$ {
+				root           html;
+				fastcgi_pass   127.0.0.1:9000;
+				fastcgi_index  index.php;
+				fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+				include        fastcgi_params;
+			}
+	编辑phpinfo文件测试
+		touch html/arpher.com/index.php
+			<?php phpinfo(); ?>
+	启动php-fpm 
+          pkillall php-fpm
+          /usr/local/bin/php-fpm start
+	重启nginx
+		./nginx -s reload
+		
+	操作
+		./nginx			启动
+		./nginx -s quit  优雅关闭
+		./nginx -s reload 重新优雅载入配置文件
+		./nginx -s reopen 重新打开日志
+		
+					
+
+	
+
+
+
+

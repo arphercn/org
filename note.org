@@ -1,5 +1,325 @@
-* 安装 apache2 php7 ThinkPHP Laravel
-环境 
+* js location
+location.reload()
+* jquery
+plugins  https://plugins.jquery.com/
+pace.min.js   页面加载提示进度条
+jquery-1.9.1.min.js   1.9是最后支持ie678的版本
+jquery-migrate-1.1.0.min.js   提供到此版本的api缺失
+jquery.slimscroll.min.js   在固定区域里显示文本，超出添加滑块
+jquery.cookie.js    cookie
+jquery.gritter.js    session消息提示
+jquery.dataTables.js  
+dataTables.bootstrap.min.js    datatables
+sweetalert.js   警告框（删除时等）
+
+
+** each
+var arrSource=[]
+
+    // 授权
+    $(document).on('click','.auth',function(){  
+     $(this).parents('tr').children('td').each(function (i) {
+
+            arrSource[i] = []
+            if(i==0){
+                console.log(arrSource[i].push($(this).children(0).val()))
+            }else{
+
+                arrSource[i].push($(this).html())
+            }
+        });
+    })
+* laravel
+** 单个项目ajax删除实现
+           $.ajaxSetup({
+                headers:{
+                    'X-CSRF-TOKEN':'{!! csrf_token() !!}'
+                }
+            })
+                        $.ajax({
+                            url:'/admin/catalog/'+data.id,
+                            type:'POST',
+                            data:'_method=DELETE',
+                            success:function(data){
+                                console.log(data)
+                                $.gritter.add({
+                                    title: '操作消息！',
+                                    text: '删除成功'
+                                });
+                                location.reload()  //刷新时弹出消息来不及显示，需要通过php端来实现跳转才好
+                            },
+                            error:function(xhr){
+                                console.log('error')
+                                console.log(xhr)
+                            }
+                        })//end ajax
+** 开启项目
+编写.env
+composer dump-autoload
+php artisan key:genarate
+
+** url
+<a href="{{ URL::to('admin/source/iauth').'?'.http_build_query(['id'=>$data->source_id, 'title'=>$data->title, 'update'=>$data->updated_at]) }}"  data-id="{{ $data->source_id }}" data-title="{{ $data->title }}" data-update="{{ $data->updated_at }}" class="btn btn-inverse m-r-5 m-b-5">资源授权</a>
+                                    
+** 调试
+ FatalThrowableError in 2154f392745gf102547be138a945a11b58e5649203.php line 2: Call to undefined method Illuminate\View\Factory::getFirstLoop()
+php artisan view:clear
+
+* datatable
+结合daterangepicker实现Datatables表格带参数查询 http://datatables.club/example/user_share/send_extra_param.html
+
+DOM / jQuery events 获取一行的数据
+DataTables events  点击搜索，分页等事件
+Column rendering 可以渲染链接的列，按钮等
+Setting defaults 设置所有datatable的相同的共同的一些参数
+Row created callback 对每一列的数据处理显示 比如判断大小
+Footer callback 计算每页价格的总计
+Custom toolbar elements 定义div button标签到datatable里
+Generated content for a column  按钮操作，获取数据
+Custom data source property  ajax获取的数据是对象格式，对象有属性比如{"data":[[...],[...]]}
+Deferred rendering for speed  延迟加载，datatable只渲染当前页面的数据，提高速度
+
+Row selection (multiple rows) 获取所选数据
+
+Select
+单选，全选等按钮 已选择状态 Buttons 
+重新加载时可以维护已选择的不消失 Retain selection on reload
+点击按钮获取datatable数据 Get selected items
+
+例子
+操作按钮用js表现，checkbox第一列
+"columnDefs": [
+                    {
+                        "render": function ( data, type, row ) {
+                            return ' <a href="{{ $_SERVER['HTTP_HOST'] }}/admin/catalog/'+row.id+'/edit">' +
+                                '<button id="'+row.id+'" class="btn btn-xs btn-success">' +
+                                '<i class="fa fa-pencil"></i> 编辑 </button></a> ' +
+                                ' <button id="'+row.id+'" class="btn btn-xs btn-danger">' +
+                                '<i class="fa fa-trash"></i> 删除 </button> ';
+                        },
+                        "targets": 4
+                    },
+                    {
+                        render: function ( data, type, row ) {
+                            return '';
+                        },
+                        orderable: false,
+                        className: 'select-checkbox cursor-pointer',
+                        targets:   0
+                    }
+]
+* js添加删除class
+var classVal = document.getElementById("id").getAttribute("class");
+
+//删除的话
+classVal = classVal.replace("someClassName","");
+document.getElementById("id").setAttribute("class",classVal );
+
+//添加的话
+classVal = classVal.concat(" someClassName");
+document.getElementById("id").setAttribute("class",classVal );
+
+//替换的话
+classVal = classVal.replace("someClassName","otherClassName");
+document.getElementById("id").setAttribute("class",classVal );
+* scrollTop
+https://stackoverflow.com/questions/16475198/jquery-scrolltop-animation
+
+$("html, body").animate({ scrollTop: 50 }, 300);
+* checkbox
+** jquery
+
+$("input[type='checkbox']").prop("checked");  //选中复选框为true，没选中为false
+$("input[type='checkbox']").prop("disabled", false);
+$("input[type='checkbox']").prop("checked", true);
+
+
+    $(function(){
+        $('#sourceAll').click(function(ev){
+            $('INPUT[name="chk"]').attr('checked',$('#sourceAll').prop('checked'));  //attr可以改为prop试试
+        });
+
+        $('INPUT[name="chk"]').click(function(ev){
+            $('#sourceAll').attr('checked',
+                $('INPUT[name="chk"]:checked').length == $('INPUT[name="chk"]').length);
+        });
+    });
+
+	$('input[name="chkUsers"]:checked').each(function () {
+            id_array.push($(this).val());
+    });
+
+** js
+    全选
+    $("#sourceAll").click(function() {
+        if (this.checked) {
+            allCheck('chk',true);
+        } else {
+            allCheck('chk',false);
+        }
+    })
+
+    function allCheck(name,boolValue) {
+        var allvalue = document.getElementsByName(name);
+        for (var i = 0; i < allvalue.length; i++) {
+            if (allvalue[i].type == "checkbox")
+                allvalue[i].checked = boolValue;
+        }
+    }
+
+
+       var checkbox=document.getElementsByName('chkUsers');
+        for(var i=0;i<checkbox.length;i++){
+            if(checkbox[i].checked==true){
+                id_array.push(checkbox[i].value);
+            }
+        }
+
+
+
+    var chkallUsersDom = document.getElementById('chkallUsers')
+    var chkUsersDom = document.getElementsByName('chkUsers')
+
+    EventUtil.addHandler(chkallUsersDom, "click", function(event){
+
+        if(chkallUsersDom.checked){
+            for(var i=0; i<chkUsersDom.length; i++){
+                chkUsersDom[i].checked=true
+
+                var node = chkUsersDom[i].parentNode.parentNode
+                var classVal = node.getAttribute('class')
+                classVal = classVal.concat(" someClassName")
+                node.setAttribute("class", classVal)
+            }
+        }else{
+            for(var i=0; i<chkUsersDom.length; i++){
+                chkUsersDom[i].checked=false
+
+                var node = chkUsersDom[i].parentNode.parentNode
+                var classVal = node.getAttribute('class')
+                classVal = classVal.replace("someClassName","")
+                node.setAttribute("class", classVal)
+            }
+        }
+    });
+* cookie
+//http://www.cnblogs.com/Darren_code/archive/2011/11/24/Cookie.html
+
+    function getCookie(c_name){
+        if (document.cookie.length>0){
+            c_start=document.cookie.indexOf(c_name + "=")
+            if (c_start!=-1){
+                c_start=c_start + c_name.length+1
+                c_end=document.cookie.indexOf(";",c_start)
+                if (c_end==-1) c_end=document.cookie.length
+                return unescape(document.cookie.substring(c_start,c_end))
+            }
+        }
+        return ""
+    }
+
+    function setCookie(c_name, value, expiredays){
+　　　　var exdate=new Date();
+// 　　　　exdate.setDate(exdate.getDate() + expiredays);
+        exdate.setHours(exdate.getHours() + expiredays);
+　　　　document.cookie=c_name+ "=" + escape(value) + ((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
+　　}
+* ajax上传文件
+** laravel
+ $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $("input[name='_token']").val()
+            }
+        });
+
+        $('#pic').on('click', function(){
+
+            $('#photo_upload').trigger('click');
+
+            $('#photo_upload').on('change', function(){
+                var obj = this;
+                var formData = new FormData();
+                formData.append('thumb', this.files[0]);
+
+                $.ajax({
+                    url: '/admin/source/uploadPic/',
+                    type: 'post',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend:function(){
+                        $('#pic').attr('src', '/img/uploading.png');
+                    },
+                    success: function(data){
+                        if(data['ServerNo']=='200'){
+                            $('#pic').attr('src', '/uploads/'+data['ResultData']);
+                            $('#thumb').val(data['ResultData']);
+                            $(obj).off('change');
+                        }else{
+                            alert(data['ResultData']);
+                        }
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        $('#pic').attr('src', '/img/error.png');
+                        var number = XMLHttpRequest.status;
+                        alert("错误号"+number+"文件上传失败!");
+                    },
+                    async: true
+                });
+            });
+        });
+
+注:url项/admin/source/uploadPic/ 前面和后面的/可以去掉测试有不同的效果，比如form里action有/source/144 的情况，file按钮在form里时
+
+/**
+     * 检查文件
+     *
+     * @param $file
+     * @return array
+     */
+    private function checkFile($file)
+    {
+        if ($file->getClientSize() > $file->getMaxFilesize()) {
+            return ['status' => false, 'msg' => '文件大小不能大于2M'];
+        }
+
+        if (!$file->isValid()) {
+            return ['status' => false, 'msg' => '上传文件不符合要求'];
+        }
+
+        return ['status' => true];
+    }
+
+    /**
+     * 文件上传
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function uploadPic(Request $request)
+    {
+        $file = $request->file('thumb');
+
+        $check = $this->checkFile($file);
+
+        if(!$check['status']){
+            return response()->json(['ServerNo' => '400','ResultData' => $check['msg']]);
+        }
+
+        $path = public_path('uploads');
+        $postfix = $file->getClientOriginalExtension();
+        $fileName = md5(time().rand(0,10000)).'.'.$postfix;
+
+        if(!$file->move($path,$fileName)){
+            return response()->json(['ServerNo' => '400','ResultData' => '文件保存失败']);
+        }else{
+            return response()->json(['ServerNo' => '200','ResultData' => $fileName]);
+        }
+
+    }
+
+* 安装 ubuntu apache2 nginx php7 ThinkPHP Laravel
+** apache2
 参考 https://www.howtoing.com/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04/
     https://www.howtoing.com/how-to-set-up-apache-virtual-hosts-on-ubuntu-16-04/
 
@@ -19,9 +339,16 @@ sudo ufw app list
 sudo ufw allow in "Apache Full"
 
 测试 http://locahost
+管理方法 sudo apache2ctl restart/stop/reload
+** nginx 
+error: 重启后进入localhost/phpmyadmin 出现nginx forbidden
+vim /etc/nginx/sites-enabled/default
+把80改为8000
+修改 index index.nginx-debian.html;
+管理方法 启动 sudo nginx
+sudo nginx -s reload/reopen
 
-
-安装PHP
+** 安装PHP
 
 sudo apt-get install php libapache2-mod-php php-mcrypt
 
@@ -74,6 +401,12 @@ vim /var/www/hourlyrate-admin/php/phpinfo.php
 测试 http://sz.rr/phpinfo.php
      http://sz.rr
 
+加入项目目录不同，单独的目录，会出现
+error:You don't have permission to access / on this server
+参考：https://askubuntu.com/questions/617190/how-to-setup-apache2-virtualhosts-on-your-home-directory-on-ubuntu-14-04
+vim /etc/apache2/apache2.conf
+copy <Directory /balabala>...</Directory>一份对应的目录
+
 ** 调试ThinkPHP
  报错： _STORAGE_WRITE_ERROR_:./Application/Runtime... 
  解决： mkdir ./Application/Runtime
@@ -108,6 +441,21 @@ vim /var/www/hourlyrate-admin/php/phpinfo.php
     vim /etc/apache2/sites-available/pangu.rr.conf 
     复制粘贴 /var/www/api-backend/public
     ok
+
+* laravel+angular+adminlte
+管理 php artisan serve
+  查看命令选项 php artisan help make:model
+              php artisan make:model source
+source_id  和sourceId 的注意事项
+source-list.component.js 的data.source_id
+config/route.config.js  
+source-edit.component.js
+** 修改datatable 的默认英文如Previous为中文
+google 搜索datatables文档
+文档中找language 的菜单
+http://l-lin.github.io/angular-datatables/archives/#!/api
+ctrl+F 搜索lang
+然后到文档中修改
 * Ubuntu vim emacs 翻译工具安装
 安装ui版 sudo apt install stardict
   安装本地词典 http://download.huzheng.org/
@@ -270,3 +618,61 @@ docker build -t nginx:v3 .
 
 强制关闭并删除正在运行的程序docker rm -f $(docker ps -q)
 
+* node ubuntu安装
+sudo apt install 的版本太旧
+
+cd /usr/local/src
+搜索nodejs镜像
+sudo wget https://npm.taobao.org/mirrors/node/v6.11.0/node-v6.11.0-linux-x64.tar.gz
+tar zxvf
+mv node... node
+cd
+vim ~/.bashrc
+export  PATH=/usr/local/node/bin:$PATH
+
+source .bashrc
+
+
+命令行工具 cnpm
+还可以通过定制的 cnpm 命令来直接从淘宝镜像源安装模块，参考 https://npm.taobao.org/
+# 安装 cnpm
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+# 通过 cnpm 命令替代 npm 命令安装模块
+cnpm install express
+参考 https://blog.niceue.com/front-end-development/using-domestic-npm-images.html
+
+* 如何为sudo命令定义PATH环境变量
+添加所需要的路径(如 /usr/local/bin）到"secure_path"下，在开篇所遇见的问题就将迎刃而解。
+Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
+http://www.linuxidc.com/Linux/2014-09/106076.htm
+
+* mysql 调试
+ubuntu 下
+ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+解决 systemctl start mysql
+** 导出
+mysqldump -h 192.168.100.159 -u www.data.c -p www.data.c > lbb.sql
+                                用户         数据库名
+然后输入密码       
+* apt 
+彻底删除 sudo apt purge 
+* 安装php
+
+* bower 
+bower install jstree --save 总是报错
+使用bower install jstree 在bower_components生成jstree目录
+在次bower install jstree --save 在bower.js添加jstree项
+
+*
+_token:QwHpXHfs3zcfOV6baj5AWbwKoWiMrWnYBkadG9Nr
+type:3
+pic:11.jpg
+thumb:0a170361d6a54e64305500f0d8e554ee.jpg
+title:a111
+media_disk:2
+act_src:a111
+share:1
+description:ddddddddddddddd111
+attach:111
+* unzip 压缩解压中文
+unzip -O cp936 UE.zip
