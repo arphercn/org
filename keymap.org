@@ -179,6 +179,7 @@ cong 从 丛 匆 葱 聪
 dun  吨 顿 盾 蹲 敦
 dong 懂 东 动 洞 董 冬
 * git
+** 
 		    状态    git status
 工作区添加到暂存    git add readme.txt
 					git add .
@@ -231,14 +232,14 @@ dong 懂 东 动 洞 董 冬
 	2或者第一次时   git remote add origin git@github.com:arphercn/bbbb.git
 	
 	
-一般远程流程
+** 一般远程流程
 	1 建远程仓库 (勾选README.md)
 	2 克隆到本地	git clone git@github.com:arpher/ffff.git
 					(如果https 需要以后输入密码push)
 	3 进入目录		cd ffff
 	4 操作,提交		git push origin master
 	
-分支
+** 分支
 查看分支：				git branch
 创建分支：				git branch <name>
 切换分支：				git checkout <name>
@@ -246,7 +247,7 @@ dong 懂 东 动 洞 董 冬
 合并某分支到当前分支：	git merge <name>
 删除分支：				git branch -d <name
 
-合并
+** 合并
 当合并时出现冲突时
 	查看哪个文件		git status
 	在文件处理完冲突	git add .
@@ -255,10 +256,10 @@ dong 懂 东 动 洞 董 冬
 	加上--no-ff参数
 	合并后的历史有分支	git merge --no-ff -m "merge with no-ff" feature1
 查看合并分支			git log --graph --pretty=oneline --abbrev-commit
-创建远程origin的release分支到本地	git checkout -b release origin/release
+** 创建远程origin的release分支到本地	git checkout -b release origin/release
 
 
-实际项目开发流程(分支管理策略)
+** 实际项目开发流程(分支管理策略)
 	1 github上创建仓库,
 		勾选README.md
 	2 克隆到本地		git clone git@github.com:arphercn/cccc.git
@@ -297,7 +298,7 @@ dong 懂 东 动 洞 董 冬
 						
 						
 						
-git多账户管理
+** git多账户管理
 	因为多了一个bearpher@github账户,所以在同一台电脑下push到这个账户时会收到
 		ERROR: Permission to bearpher/hello.git denied to arphercn.
 		的错误提示,所以为此账户添加ssh
@@ -338,7 +339,7 @@ git多账户管理
 			[remote "origin"]
 				url = git@bearpher.github.com:bearpher/hello.git
 
-git下载基于其中一个分支开发
+** git下载基于其中一个分支开发
 	克隆 实际上是克隆了所以远程的分支
 		git clone git@github.com:arphercn/cccc.git
 	查看所有分支
@@ -358,12 +359,12 @@ git下载基于其中一个分支开发
 		http://justlpf.blog.51cto.com/3889157/1217508
 
 		
-.gitignore文件不工作		
+** .gitignore文件不工作		
 	git rm --cached file/path/to/be/ignored						
 
-阮一峰 常用 Git 命令清单	
+** 阮一峰 常用 Git 命令清单	
 	http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html		
-
+** 
 $ git config --global user.name "Your Name"
 $ git config --global user.email "email@example.com"		
 
@@ -430,6 +431,11 @@ git push
 
 ** Bitbucket Server 安装
 http://blog.topspeedsnail.com/archives/8865
+** 创建远程服务器
+在 远程根目录创建裸仓库 git init --bare demo.git
+                 （裸仓库没有工作区）
+https://www.kancloud.cn/kancloud/igit/46716
+https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/00137583770360579bc4b458f044ce7afed3df579123eca000
 * linux note
 老鸟建议
 	最小安装  尽量不yum卸载
