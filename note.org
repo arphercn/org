@@ -445,7 +445,7 @@ http://www.dewen.net.cn/q/1511/%E5%A6%82%E4%BD%95%E5%AF%B9php+%E5%81%9A%E4%BA%8C
 
 #+END_SRC
 * json php格式转化
-
+```
 js
 JSON 字符串 -> JavaScript 对象
     JSON.parse()
@@ -458,7 +458,7 @@ Converting an array/stdClass -> array
     $array = json_decode(json_encode($booking), true);
 stdClass -> array  一维
 $array = (array)$stdClass;
-...
+```
 * jquery
 plugins  https://plugins.jquery.com/
 pace.min.js   页面加载提示进度条
