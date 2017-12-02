@@ -1,6 +1,6 @@
 * 博客安装
 hexo安装
-# 参考http://www.jianshu.com/p/ed32ac187dbc
+# 参考 http://www.jianshu.com/p/ed32ac187dbc
 mkdir hexo
 cd hexo
 sudo cnpm install -g hexo
@@ -18,9 +18,10 @@ hexo new = hexo n
 
 更多参考 https://xuanwo.org/2015/03/26/hexo-intor/
 
-* 树
-*** 最后应用版 从数组看依次取出10条id,在根据id取出相应的父节点数据，最后过滤10条里的重复数组
-
+* 树型结构数据呈现
+*** 可分页版 
+#  从数组看依次取出10条id,在根据id取出相应的父节点数据，最后过滤10条里的重复数组
+#+BEGIN_SRC php
     private function createTree($array, $pid = 0)
     {
         $ret = array();
@@ -248,13 +249,14 @@ hexo new = hexo n
             'data' => $arr
         ];
     }
-php函数
-二维数组惟一过滤
+#+END_SRC
+# php函数二维数组惟一过滤
+# refer
 http://www.dewen.net.cn/q/1511/%E5%A6%82%E4%BD%95%E5%AF%B9php+%E5%81%9A%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E7%9A%84array_unique
 
-
-*** 最后整理版 控制器二维变嵌套，再变一维，再变二维返回前端
-//php函数  
+*** 不可分页版
+# 控制器二维变嵌套，再变一维，再变二维返回前端
+#+BEGIN_SRC php 
   function createTree($array, $pid = 0)
     {
         $ret = array();
@@ -327,9 +329,8 @@ http://www.dewen.net.cn/q/1511/%E5%A6%82%E4%BD%95%E5%AF%B9php+%E5%81%9A%E4%BA%8C
 
         return view('admin.comments.index',['tree'=>$tree]);
     }
-
-
-*** 网络原版
+#+END_SRC
+*** 参考版 json树形数组->html
 
         var menulist = {
             "menulist": [
@@ -377,12 +378,12 @@ http://www.dewen.net.cn/q/1511/%E5%A6%82%E4%BD%95%E5%AF%B9php+%E5%81%9A%E4%BA%8C
             }
          }
 
-http://www.cnblogs.com/hxhbluestar/archive/2011/11/17/2252009.html
-** 递归json to html
+# refer http://www.cnblogs.com/hxhbluestar/archive/2011/11/17/2252009.html
+*** 递归json to html
 *** 优化版：php二维数组处理返回嵌套数组，前端循环变量显示
+#+BEGIN_SRC php
 
-php.....
-function createTree($array, $pid = 0){
+    function createTree($array, $pid = 0){
         $ret = array();
 
         foreach($array as $key => $value){
@@ -413,14 +414,15 @@ function createTree($array, $pid = 0){
         return view('admin.comments.index',['tree'=>$tree]);
     }
 
-html.....
-<button id="click">click</button>
+#+END_SRC
+#+BEGIN_SRC js
+
+            <button id="click">click</button>
                         <div id="tree">
 
                         </div>
 
-js.....
-var tree = {}
+            var tree = {}
                 tree.list = {!! $tree !!}
 
             $("#click").click(function () {
@@ -440,7 +442,10 @@ var tree = {}
                     }
                 }
             }
+
+#+END_SRC
 * json php格式转化
+
 js
 JSON 字符串 -> JavaScript 对象
     JSON.parse()
@@ -453,6 +458,7 @@ Converting an array/stdClass -> array
     $array = json_decode(json_encode($booking), true);
 stdClass -> array  一维
 $array = (array)$stdClass;
+...
 * jquery
 plugins  https://plugins.jquery.com/
 pace.min.js   页面加载提示进度条
@@ -495,8 +501,6 @@ https://stackoverflow.com/questions/16475198/jquery-scrolltop-animation
 $("html, body").animate({ scrollTop: 50 }, 300);
 
 * datatable
-结合daterangepicker实现Datatables表格带参数查询 http://datatables.club/example/user_share/send_extra_param.html
-
 DOM / jQuery events 获取一行的数据
 DataTables events  点击搜索，分页等事件
 Column rendering 可以渲染链接的列，自定义列，按钮等
@@ -516,6 +520,9 @@ Select
 点击按钮获取datatable数据 Get selected items
 
 例子
+
+** 结合daterangepicker实现Datatables表格带参数查询
+ http://datatables.club/example/user_share/send_extra_param.html
 ** 操作按钮用js表现，checkbox第一列
                     "columnDefs": [
                     {
@@ -862,8 +869,8 @@ answ 删掉页面的data-sort-id，导致的冲突解决
 ** $('.selectpicker').selectpicker('render');加上后好像与$.ajax方法冲突
 
 * Composer 安装与使用
-参考 https://pkg.phpcomposer.com/
-     https://laravel-china.org/topics/1901/correct-method-for-installing-composer-expansion-pack
+  参考 https://pkg.phpcomposer.com/
+  https://laravel-china.org/topics/1901/correct-method-for-installing-composer-expansion-pack
 
 ** composer 安装
 php -r "copy('https://install.phpcomposer.com/installer', 'composer-setup.php');"
@@ -1058,7 +1065,7 @@ http://www.piaoyi.org/php/Laravel-created_at-updated_at-timestamp.html
     }
 
 ** 只有前端交互，可预览
-#+BEGIN_SRC javascript
+#+BEGIN_SRC js
                             <div class="form-group" id="areaPic">
                                 <label class="control-label col-md-2 col-sm-2" for="thumb">资源缩略图 </label>
                                 <div class="col-md-8 col-sm-8">
@@ -1196,7 +1203,7 @@ http://www.piaoyi.org/php/Laravel-created_at-updated_at-timestamp.html
     }
 
 #+END_SRC
-* laravel+angular+adminlte
+* laravel angular adminlte
 管理 php artisan serve
   查看命令选项 php artisan help make:model
               php artisan make:model source
@@ -1617,6 +1624,76 @@ man 模式下 !sdcv hello
       (concat "sdcv -n " 
               (buffer-substring begin end))))))
 
+* 翻墙 ubuntu
+# http://blog.csdn.net/wf632856695/article/details/72819402
+更新软件源
+apt-get update
+安装pip环境
+apt-get install python-pip
+安装shadowsocks
+pip install shadowsocks
+此时，如果出现了提示版本太低，则按照提示更新
+pip install --upgrade pip
+
+解决pip install 时locale.Error: unsupported locale setting
+# http://blog.csdn.net/qq_33232071/article/details/51108062
+export LC_ALL=C
+如果提示没有setuptools模块，则安装setuptools
+pip install setuptools
+如果刚才shadowsocks安装成功则跳过这一步，某则继续安装shadowsocks
+pip install shadowsocks
+编辑配置文件
+ vim /etc/shadowsocks.json
+添加：
+
+{
+    "server":"45.76.157.31",
+    "server_port":8388,
+    "local_address": "127.0.0.1",
+    "local_port":1080,
+    "password":"flzx3qc",
+    "timeout":300,
+    "method":"aes-256-cfb"
+}
+
+name	info
+server	服务器 IP (IPv4/IPv6)，注意这也将是服务端监听的 IP 地址
+server_port	服务器端口
+local_port	本地端端口
+password	用来加密的密码
+timeout	超时时间（秒）
+method	加密方法，可选择 “bf-cfb”, “aes-256-cfb”, “des-cfb”, “rc4″, 等等。默认是一种不安全的加密，推荐用 “aes-256-cfb”
+
+赋予文件权限
+chmod 755 /etc/shadowsocks.json
+
+# 安装以支持这些加密方式
+# apt-get install python–m2crypto
+
+后台运行
+ssserver -c /etc/shadowsocks.json -d start
+
+停止命令
+ssserver -c /etc/shadowsocks.json -d stop
+
+设置开机自启动
+vim /etc/rc.local
+加上如下命令：
+
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+ssserver -c /etc/shadowsocks.json -d start
+exit 0
 * 工具
 ** ftp
 filezilla
