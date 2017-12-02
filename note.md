@@ -16,7 +16,7 @@
 </li>
 </ul>
 </li>
-<li><a href="#sec-3">3. json php格式转化</a></li>
+<li><a href="#sec-3">3. json php数据格式转化</a></li>
 <li><a href="#sec-4">4. jquery</a>
 <ul>
 <li><a href="#sec-4-1">4.1. each</a></li>
@@ -570,20 +570,22 @@ function showall(menu<sub>list</sub>, parent) {
         }
     }
 
-# json php格式转化<a id="sec-3" name="sec-3"></a>
+# json php数据格式转化<a id="sec-3" name="sec-3"></a>
 
 js  
 JSON 字符串 -> JavaScript 对象  
-    JSON.parse()  
+
+    JSON.Parse()
+
 JavaScript 对象 -> JSON 字符串  
-    JSON.stringify()  
+`JSON.stringify()`   
 php  
 Converting an array/stdClass -> stdClass  
-    $stdClass = json<sub>decode</sub>(json<sub>encode</sub>($booking));  
+   = $stdClass = json<sub>decode</sub>(json<sub>encode</sub>($booking)); =  
 Converting an array/stdClass -> array  
-    $array = json<sub>decode</sub>(json<sub>encode</sub>($booking), true);  
+   ~ $array = json<sub>decode</sub>(json<sub>encode</sub>($booking), true);~  
 stdClass -> array  一维  
-$array = (array)$stdClass;  
+`$array = (array)$stdClass;`  
 
 # jquery<a id="sec-4" name="sec-4"></a>
 

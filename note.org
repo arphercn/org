@@ -445,20 +445,23 @@ http://www.dewen.net.cn/q/1511/%E5%A6%82%E4%BD%95%E5%AF%B9php+%E5%81%9A%E4%BA%8C
             }
 
 #+END_SRC
-* json php格式转化
+* json php数据格式转化
 
 js
 JSON 字符串 -> JavaScript 对象
-    JSON.parse()
+#+BEGIN_EXAMPLE
+JSON.Parse()
+#+END_EXAMPLE
+
 JavaScript 对象 -> JSON 字符串	
-    JSON.stringify()	
+~JSON.stringify()~	
 php
 Converting an array/stdClass -> stdClass
-    $stdClass = json_decode(json_encode($booking));
+   = $stdClass = json_decode(json_encode($booking)); =
 Converting an array/stdClass -> array
-    $array = json_decode(json_encode($booking), true);
+   ~ $array = json_decode(json_encode($booking), true);~
 stdClass -> array  一维
-$array = (array)$stdClass;
+~$array = (array)$stdClass;~
 
 * jquery
 plugins  https://plugins.jquery.com/
