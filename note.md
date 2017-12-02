@@ -1,140 +1,10 @@
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">1. 博客安装</a></li>
-<li><a href="#sec-2">2. 树型结构数据呈现</a>
-<ul>
-<li>
-<ul>
-<li><a href="#sec-2-0-1">2.0.1. 可分页版</a></li>
-<li><a href="#sec-2-0-2">2.0.2. 不可分页版</a></li>
-<li><a href="#sec-2-0-3">2.0.3. 参考版 json树形数组-&gt;html</a></li>
-<li><a href="#sec-2-0-4">2.0.4. 递归json to html</a></li>
-<li><a href="#sec-2-0-5">2.0.5. 优化版：php二维数组处理返回嵌套数组，前端循环变量显示</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#sec-3">3. json php数据格式转化</a></li>
-<li><a href="#sec-4">4. jquery</a>
-<ul>
-<li><a href="#sec-4-1">4.1. each</a></li>
-<li><a href="#sec-4-2">4.2. class的选择点击事件</a></li>
-<li><a href="#sec-4-3">4.3. jquery手册提示</a></li>
-</ul>
-</li>
-<li><a href="#sec-5">5. scrollTop</a></li>
-<li><a href="#sec-6">6. datatable</a>
-<ul>
-<li><a href="#sec-6-1">6.1. 结合daterangepicker实现Datatables表格带参数查询</a></li>
-<li><a href="#sec-6-2">6.2. 操作按钮用js表现，checkbox第一列</a></li>
-<li><a href="#sec-6-3">6.3. 修改datatable 的默认英文如Previous为中文</a></li>
-<li><a href="#sec-6-4">6.4. datatables + vue 实现增加删除列表功能</a></li>
-</ul>
-</li>
-<li><a href="#sec-7">7. js location</a></li>
-<li><a href="#sec-8">8. js添加删除class</a></li>
-<li><a href="#sec-9">9. bower</a></li>
-<li><a href="#sec-10">10. checkbox</a>
-<ul>
-<li><a href="#sec-10-1">10.1. jquery</a></li>
-<li><a href="#sec-10-2">10.2. js</a></li>
-</ul>
-</li>
-<li><a href="#sec-11">11. cookie</a></li>
-<li><a href="#sec-12">12. color-admin</a>
-<ul>
-<li><a href="#sec-12-1">12.1. 多个表格，不能绘制显示</a></li>
-<li><a href="#sec-12-2">12.2. div js click on 等事件失效</a></li>
-<li><a href="#sec-12-3">12.3. \(('.selectpicker').selectpicker('render');加上后好像与\).ajax方法冲突</a></li>
-</ul>
-</li>
-<li><a href="#sec-13">13. Composer 安装与使用</a>
-<ul>
-<li><a href="#sec-13-1">13.1. composer 安装</a></li>
-<li><a href="#sec-13-2">13.2. 正确的 Composer 扩展包安装方法</a></li>
-</ul>
-</li>
-<li><a href="#sec-14">14. laravel</a>
-<ul>
-<li><a href="#sec-14-1">14.1. laravel-my</a></li>
-<li><a href="#sec-14-2">14.2. 单个项目ajax删除实现</a></li>
-<li><a href="#sec-14-3">14.3. 开启项目流程</a></li>
-<li><a href="#sec-14-4">14.4. url带参数</a></li>
-<li><a href="#sec-14-5">14.5. 调试</a></li>
-<li><a href="#sec-14-6">14.6. 任务调度</a></li>
-<li><a href="#sec-14-7">14.7. 时间 created<sub>at</sub> updated<sub>at</sub></a></li>
-</ul>
-</li>
-<li><a href="#sec-15">15. laravel ajax上传文件</a>
-<ul>
-<li><a href="#sec-15-1">15.1. 直接上传到服务器交互</a></li>
-<li><a href="#sec-15-2">15.2. 只有前端交互，可预览</a></li>
-</ul>
-</li>
-<li><a href="#sec-16">16. laravel angular adminlte</a></li>
-<li><a href="#sec-17">17. 安装 ubuntu apache2 nginx php7 ThinkPHP Laravel</a>
-<ul>
-<li><a href="#sec-17-1">17.1. apache2</a></li>
-<li><a href="#sec-17-2">17.2. nginx</a></li>
-<li><a href="#sec-17-3">17.3. 安装PHP</a></li>
-<li><a href="#sec-17-4">17.4. 调试ThinkPHP</a></li>
-<li><a href="#sec-17-5">17.5. 调试Laravel</a></li>
-</ul>
-</li>
-<li><a href="#sec-18">18. mysql</a>
-<ul>
-<li><a href="#sec-18-1">18.1. 命令</a></li>
-<li><a href="#sec-18-2">18.2. mysql 紧急停止</a></li>
-<li><a href="#sec-18-3">18.3. 调试</a></li>
-<li><a href="#sec-18-4">18.4. 导出</a></li>
-<li><a href="#sec-18-5">18.5. 批量插入测试数据</a>
-<ul>
-<li><a href="#sec-18-5-1">18.5.1. 复制 一个存储过程生成1000万条数据的方法 </a></li>
-<li><a href="#sec-18-5-2">18.5.2. 测试</a></li>
-</ul>
-</li>
-<li><a href="#sec-18-6">18.6. 统计</a></li>
-<li><a href="#sec-18-7">18.7. 关于mysql时间类型datetime与timestamp范围</a></li>
-<li><a href="#sec-18-8">18.8. 数据库设计书推荐</a></li>
-</ul>
-</li>
-<li><a href="#sec-19">19. nginx</a></li>
-<li><a href="#sec-20">20. docker</a></li>
-<li><a href="#sec-21">21. ubuntu</a>
-<ul>
-<li><a href="#sec-21-1">21.1. boot磁盘满</a></li>
-<li><a href="#sec-21-2">21.2. 壁纸</a></li>
-<li><a href="#sec-21-3">21.3. apt彻底删除</a></li>
-</ul>
-</li>
-<li><a href="#sec-22">22. 如何为sudo命令定义PATH环境变量</a></li>
-<li><a href="#sec-23">23. node ubuntu安装</a></li>
-<li><a href="#sec-24">24. Ubuntu vim emacs 翻译工具安装</a></li>
-<li><a href="#sec-25">25. 翻墙 ubuntu</a></li>
-<li><a href="#sec-26">26. 工具</a>
-<ul>
-<li><a href="#sec-26-1">26.1. ftp</a></li>
-<li><a href="#sec-26-2">26.2. unzip 压缩解压中文</a></li>
-</ul>
-</li>
-<li><a href="#sec-27">27. 备忘</a>
-<ul>
-<li><a href="#sec-27-1">27.1. 后台模板</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-
-
-# 博客安装<a id="sec-1" name="sec-1"></a>
+# 博客安装
 
 hexo安装  
+;; 参考 <http://www.jianshu.com/p/ed32ac187dbc>  
 
+    mkdir hexo
 
-mkdir hexo  
 cd hexo  
 sudo cnpm install -g hexo  
 
@@ -150,9 +20,9 @@ hexo new = hexo n
 
 更多参考 <https://xuanwo.org/2015/03/26/hexo-intor/>  
 
-# 树型结构数据呈现<a id="sec-2" name="sec-2"></a>
+# 树型结构数据呈现
 
-### 可分页版<a id="sec-2-0-1" name="sec-2-0-1"></a>
+### 可分页版
 
 
         private function createTree($array, $pid = 0)
@@ -386,7 +256,7 @@ hexo new = hexo n
 
 <http://www.dewen.net.cn/q/1511/%E5%A6%82%E4%BD%95%E5%AF%B9php+%E5%81%9A%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E7%9A%84array_unique>  
 
-### 不可分页版<a id="sec-2-0-2" name="sec-2-0-2"></a>
+### 不可分页版
 
 
     function createTree($array, $pid = 0)
@@ -462,7 +332,7 @@ hexo new = hexo n
           return view('admin.comments.index',['tree'=>$tree]);
       }
 
-### 参考版 json树形数组->html<a id="sec-2-0-3" name="sec-2-0-3"></a>
+### 参考版 json树形数组->html
 
 var menulist = {  
     "menulist": [  
@@ -509,9 +379,9 @@ function showall(menu<sub>list</sub>, parent) {
     }  
  }  
 
-### 递归json to html<a id="sec-2-0-4" name="sec-2-0-4"></a>
+### 递归json to html
 
-### 优化版：php二维数组处理返回嵌套数组，前端循环变量显示<a id="sec-2-0-5" name="sec-2-0-5"></a>
+### 优化版：php二维数组处理返回嵌套数组，前端循环变量显示
 
     function createTree($array, $pid = 0){
         $ret = array();
@@ -570,7 +440,7 @@ function showall(menu<sub>list</sub>, parent) {
         }
     }
 
-# json php数据格式转化<a id="sec-3" name="sec-3"></a>
+# json php数据格式转化
 
 js  
 JSON 字符串 -> JavaScript 对象  
@@ -581,13 +451,13 @@ JavaScript 对象 -> JSON 字符串
 `JSON.stringify()`   
 php  
 Converting an array/stdClass -> stdClass  
-   = $stdClass = json<sub>decode</sub>(json<sub>encode</sub>($booking)); =  
+$stdClass = json<sub>decode</sub>(json<sub>encode</sub>($booking));  
 Converting an array/stdClass -> array  
-   ~ $array = json<sub>decode</sub>(json<sub>encode</sub>($booking), true);~  
+$array = json<sub>decode</sub>(json<sub>encode</sub>($booking), true);  
 stdClass -> array  一维  
-`$array = (array)$stdClass;`  
+$array = (array)$stdClass;  
 
-# jquery<a id="sec-4" name="sec-4"></a>
+# jquery
 
 plugins  <https://plugins.jquery.com/>  
 pace.min.js   页面加载提示进度条  
@@ -600,7 +470,7 @@ jquery.dataTables.js
 dataTables.bootstrap.min.js    datatables  
 sweetalert.js   警告框（删除时等）  
 
-## each<a id="sec-4-1" name="sec-4-1"></a>
+## each
 
 var arrSource=[]  
 
@@ -618,24 +488,24 @@ if(i==0){
     });  
 })  
 
-## class的选择点击事件<a id="sec-4-2" name="sec-4-2"></a>
+## class的选择点击事件
 
 $(document).on('click', '.spanTagDel', function(){  
             var tagName = $(this).parent().text()  
             alert(tagName)  
         })  
 
-## jquery手册提示<a id="sec-4-3" name="sec-4-3"></a>
+## jquery手册提示
 
 选择标签找关键字  筛选 >过滤 查找  
 
-# scrollTop<a id="sec-5" name="sec-5"></a>
+# scrollTop
 
 <https://stackoverflow.com/questions/16475198/jquery-scrolltop-animation>  
 
 $("html, body").animate({ scrollTop: 50 }, 300);  
 
-# datatable<a id="sec-6" name="sec-6"></a>
+# datatable
 
 DOM / jQuery events 获取一行的数据  
 DataTables events  点击搜索，分页等事件  
@@ -657,11 +527,11 @@ Select
 
 例子  
 
-## 结合daterangepicker实现Datatables表格带参数查询<a id="sec-6-1" name="sec-6-1"></a>
+## 结合daterangepicker实现Datatables表格带参数查询
 
 <http://datatables.club/example/user_share/send_extra_param.html>  
 
-## 操作按钮用js表现，checkbox第一列<a id="sec-6-2" name="sec-6-2"></a>
+## 操作按钮用js表现，checkbox第一列
 
                     "columnDefs": [  
                     {  
@@ -684,7 +554,7 @@ Select
                     }  
 ]  
 
-## 修改datatable 的默认英文如Previous为中文<a id="sec-6-3" name="sec-6-3"></a>
+## 修改datatable 的默认英文如Previous为中文
 
 google 搜索datatables文档  
 文档中找language 的菜单  
@@ -692,7 +562,7 @@ google 搜索datatables文档
 ctrl+F 搜索lang  
 然后到文档中修改  
 
-## datatables + vue 实现增加删除列表功能<a id="sec-6-4" name="sec-6-4"></a>
+## datatables + vue 实现增加删除列表功能
 
 <div class="form-group">  
     <label class="control-label col-md-2 col-sm-2" for="url">资源选择 \* :</label>  
@@ -888,11 +758,11 @@ $('#datatable').on('click','.btnAdd',function(){
 //            alwaysVisible: true  
         });  
 
-# js location<a id="sec-7" name="sec-7"></a>
+# js location
 
 location.reload()  
 
-# js添加删除class<a id="sec-8" name="sec-8"></a>
+# js添加删除class
 
 var classVal = document.getElementById("id").getAttribute("class");  
 
@@ -908,15 +778,15 @@ document.getElementById("id").setAttribute("class",classVal );
 classVal = classVal.replace("someClassName","otherClassName");  
 document.getElementById("id").setAttribute("class",classVal );  
 
-# bower<a id="sec-9" name="sec-9"></a>
+# bower
 
 bower install jstree &#x2013;save 总是报错  
 使用bower install jstree 在bower<sub>components生成jstree目录</sub>  
 在次bower install jstree &#x2013;save 在bower.js添加jstree项  
 
-# checkbox<a id="sec-10" name="sec-10"></a>
+# checkbox
 
-## jquery<a id="sec-10-1" name="sec-10-1"></a>
+## jquery
 
 $("input[type='checkbox']").prop("checked");  //选中复选框为true，没选中为false  
 $("input[type='checkbox']").prop("disabled", false);  
@@ -937,7 +807,7 @@ $('input[name="chkUsers"]:checked').each(function () {
         id<sub>array</sub>.push($(this).val());  
 });  
 
-## js<a id="sec-10-2" name="sec-10-2"></a>
+## js
 
 全选  
 $("#sourceAll").click(function() {  
@@ -963,7 +833,7 @@ var checkbox=document.getElementsByName('chkUsers');
      }  
  }  
 
-# cookie<a id="sec-11" name="sec-11"></a>
+# cookie
 
 //<http://www.cnblogs.com/Darren_code/archive/2011/11/24/Cookie.html>  
 
@@ -987,14 +857,14 @@ function getCookie(c<sub>name</sub>){
 　　　　document.cookie=c<sub>name</sub>+ "=" + escape(value) + ((expiredays==null) ? "" : ";expires="+exdate.toGMTString());  
 　　}  
 
-# color-admin<a id="sec-12" name="sec-12"></a>
+# color-admin
 
-## 多个表格，不能绘制显示<a id="sec-12-1" name="sec-12-1"></a>
+## 多个表格，不能绘制显示
 
 desc 能ajax返回数据，但是不能在页面显示出来，提示处理中&#x2026;  
 answ 删掉页面的data-sort-id，导致的冲突解决  
 
-## div js click on 等事件失效<a id="sec-12-2" name="sec-12-2"></a>
+## div js click on 等事件失效
 
 @section('admin-content')  
     <div id="content" class="content">  
@@ -1014,14 +884,14 @@ answ 删掉页面的data-sort-id，导致的冲突解决
     {{&#x2013;<!&#x2013; begin col-6 加上这层div js click on 等事件失效 &#x2013;>&#x2013;}}  
     {{&#x2013;<div class="col-md-12">&#x2013;}}  
 
-## \(('.selectpicker').selectpicker('render');加上后好像与\).ajax方法冲突<a id="sec-12-3" name="sec-12-3"></a>
+## \(('.selectpicker').selectpicker('render');加上后好像与\).ajax方法冲突
 
-# Composer 安装与使用<a id="sec-13" name="sec-13"></a>
+# Composer 安装与使用
 
 参考 <https://pkg.phpcomposer.com/>  
 <https://laravel-china.org/topics/1901/correct-method-for-installing-composer-expansion-pack>  
 
-## composer 安装<a id="sec-13-1" name="sec-13-1"></a>
+## composer 安装
 
 php -r "copy('https://install.phpcomposer.com/installer', 'composer-setup.php');"  
 
@@ -1048,7 +918,7 @@ composer config repo.packagist composer <https://packagist.phpcomposer.com>
     }  
 }  
 
-## 正确的 Composer 扩展包安装方法<a id="sec-13-2" name="sec-13-2"></a>
+## 正确的 Composer 扩展包安装方法
 
 流程一：新项目流程#  
 
@@ -1071,16 +941,16 @@ composer update - 从 composer.json 安装最新扩展包和依赖；
 composer update vendor/package - 从 composer.json 或者对应包的配置，并更新到最新；  
 composer require new/package - 添加安装 new/package, 可以指定版本，如： composer require new/package ~2.5.  
 
-# laravel<a id="sec-14" name="sec-14"></a>
+# laravel
 
-## laravel-my<a id="sec-14-1" name="sec-14-1"></a>
+## laravel-my
 
 composer create-project laravel/laravel laravel-my &#x2013;prefer-dist  
 
 
 composer require "maatwebsite/excel": "~2.1.0"  
 
-## 单个项目ajax删除实现<a id="sec-14-2" name="sec-14-2"></a>
+## 单个项目ajax删除实现
 
 $.ajaxSetup({  
      headers:{  
@@ -1105,36 +975,36 @@ $.ajaxSetup({
                  }  
              })//end ajax  
 
-## 开启项目流程<a id="sec-14-3" name="sec-14-3"></a>
+## 开启项目流程
 
 编写.env  
 composer dump-autoload  
 php artisan key:genarate  
 
-## url带参数<a id="sec-14-4" name="sec-14-4"></a>
+## url带参数
 
 <a href="{{ URL::to('admin/source/iauth').'?'.http<sub>build</sub><sub>query</sub>(['id'`>$data->source_id, 'title'=>$data->title, 'update'=>$data->updated_at]) }}"  data-id`"{{ $data->source<sub>id</sub> }}" data-title="{{ $data->title }}" data-update="{{ $data->updated<sub>at</sub> }}" class="btn btn-inverse m-r-5 m-b-5">资源授权</a>  
 
-## 调试<a id="sec-14-5" name="sec-14-5"></a>
+## 调试
 
  FatalThrowableError in 2154f392745gf102547be138a945a11b58e5649203.php line 2: Call to undefined method Illuminate\View\Factory::getFirstLoop()  
 php artisan view:clear  
 
-## 任务调度<a id="sec-14-6" name="sec-14-6"></a>
+## 任务调度
 
 sudo vim /etc/crontab  
 -   \* \* \* root /data/wwwroot/www.hui.c/artisan schedule:run >> /dev/null 2>&1
 
 /etc/init.d/crond start  
 
-## 时间 created<sub>at</sub> updated<sub>at</sub><a id="sec-14-7" name="sec-14-7"></a>
+## 时间 created<sub>at</sub> updated<sub>at</sub>
 
 <http://www.cnblogs.com/Eden-cola/p/laravel-created-at-column-name.html>  
 <http://www.piaoyi.org/php/Laravel-created_at-updated_at-timestamp.html>  
 
-# laravel ajax上传文件<a id="sec-15" name="sec-15"></a>
+# laravel ajax上传文件
 
-## 直接上传到服务器交互<a id="sec-15-1" name="sec-15-1"></a>
+## 直接上传到服务器交互
 
  $.ajaxSetup({  
     headers: {  
@@ -1230,7 +1100,7 @@ if(!$file->move($path,$fileName)){
 
 }  
 
-## 只有前端交互，可预览<a id="sec-15-2" name="sec-15-2"></a>
+## 只有前端交互，可预览
 
                         <div class="form-group" id="areaPic">
                             <label class="control-label col-md-2 col-sm-2" for="thumb">资源缩略图 </label>
@@ -1366,7 +1236,7 @@ if(!$file->move($path,$fileName)){
         }
     }
 
-# laravel angular adminlte<a id="sec-16" name="sec-16"></a>
+# laravel angular adminlte
 
 管理 php artisan serve  
   查看命令选项 php artisan help make:model  
@@ -1376,9 +1246,9 @@ source-list.component.js 的data.source<sub>id</sub>
 config/route.config.js  
 source-edit.component.js  
 
-# 安装 ubuntu apache2 nginx php7 ThinkPHP Laravel<a id="sec-17" name="sec-17"></a>
+# 安装 ubuntu apache2 nginx php7 ThinkPHP Laravel
 
-## apache2<a id="sec-17-1" name="sec-17-1"></a>
+## apache2
 
 参考 <https://www.howtoing.com/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04/>  
     <https://www.howtoing.com/how-to-set-up-apache-virtual-hosts-on-ubuntu-16-04/>  
@@ -1401,7 +1271,7 @@ sudo ufw allow in "Apache Full"
 测试 <http://locahost>  
 管理方法 sudo apache2ctl restart/stop/reload  
 
-## nginx<a id="sec-17-2" name="sec-17-2"></a>
+## nginx
 
 error: 重启后进入localhost/phpmyadmin 出现nginx forbidden  
 vim /etc/nginx/sites-enabled/default  
@@ -1410,7 +1280,7 @@ vim /etc/nginx/sites-enabled/default
 管理方法 启动 sudo nginx  
 sudo nginx -s reload/reopen  
 
-## 安装PHP<a id="sec-17-3" name="sec-17-3"></a>
+## 安装PHP
 
 sudo apt-get install php libapache2-mod-php php-mcrypt  
 
@@ -1468,7 +1338,7 @@ error:You don't have permission to access / on this server
 vim /etc/apache2/apache2.conf  
 copy <Directory /balabala>&#x2026;</Directory>一份对应的目录  
 
-## 调试ThinkPHP<a id="sec-17-4" name="sec-17-4"></a>
+## 调试ThinkPHP
 
 报错： <span class="underline">STORAGE<sub>WRITE</sub><sub>ERROR</sub></span>:./Application/Runtime&#x2026;  
 解决： mkdir ./Application/Runtime  
@@ -1485,7 +1355,7 @@ copy <Directory /balabala>&#x2026;</Directory>一份对应的目录
        sudo apt install php7.0-xml  
        sudo systemctl restart apache2  
 
-## 调试Laravel<a id="sec-17-5" name="sec-17-5"></a>
+## 调试Laravel
 
 安装composer  
 根目录composer install  
@@ -1505,31 +1375,31 @@ copy <Directory /balabala>&#x2026;</Directory>一份对应的目录
     复制粘贴 /var/www/api-backend/public  
     ok  
 
-# mysql<a id="sec-18" name="sec-18"></a>
+# mysql
 
-## 命令<a id="sec-18-1" name="sec-18-1"></a>
+## 命令
 
 truncate table 表名;     清除表  
 
-## mysql 紧急停止<a id="sec-18-2" name="sec-18-2"></a>
+## mysql 紧急停止
 
 ubuntu下 /etc/init.d/mysql stop  
 
-## 调试<a id="sec-18-3" name="sec-18-3"></a>
+## 调试
 
 ubuntu 下  
 ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)  
 解决 systemctl start mysql  
 
-## 导出<a id="sec-18-4" name="sec-18-4"></a>
+## 导出
 
 mysqldump -h 192.168.100.159 -u www.data.c -p www.data.c > lbb.sql  
                                 用户         数据库名  
 然后输入密码  
 
-## 批量插入测试数据<a id="sec-18-5" name="sec-18-5"></a>
+## 批量插入测试数据
 
-### 复制 一个存储过程生成1000万条数据的方法 <http://www.bcty365.com/content-35-4815-1.html><a id="sec-18-5-1" name="sec-18-5-1"></a>
+### 复制 一个存储过程生成1000万条数据的方法 <http://www.bcty365.com/content-35-4815-1.html>
 
 &#x2013; 创建测试的test表  
 DROP TABLE IF EXISTS test;  
@@ -1559,7 +1429,7 @@ DELIMITER ;
 &#x2013; 执行存储过程生成测试数据  
 CALL pre<sub>test</sub>();  
 
-### 测试<a id="sec-18-5-2" name="sec-18-5-2"></a>
+### 测试
 
 1.  插入30天播放量数据
 
@@ -1636,7 +1506,7 @@ CALL pre<sub>test</sub>();
     &#x2013; 执行存储过程生成测试数据  
     CALL pre<sub>test</sub>();  
 
-## 统计<a id="sec-18-6" name="sec-18-6"></a>
+## 统计
 
 <https://yq.aliyun.com/ziliao/65088?spm=5176.8246799.blogcont.24.cLUOtc>  
 &#x2013;查询昨天的信息记录：  
@@ -1646,7 +1516,7 @@ CALL pre<sub>test</sub>();
 DB::select('SELECT plays<sub>os</sub>,SUM(plays) AS num FROM user<sub>plays</sub>   
             WHERE to<sub>days</sub>(now()) - to<sub>days</sub>(\`created<sub>at\`</sub>) = 1 GROUP BY plays<sub>os'</sub>);  
 
-## 关于mysql时间类型datetime与timestamp范围<a id="sec-18-7" name="sec-18-7"></a>
+## 关于mysql时间类型datetime与timestamp范围
 
 datetime类型取值范围：1000-01-01 00:00:00 到 9999-12-31 23:59:59  
 
@@ -1654,16 +1524,16 @@ timestamp类型取值范围：1970-01-01 00:00:00 到 2037-12-31 23:59:59
 
 timestamp类型具有自动初始化和自动更新的特性。  
 
-## 数据库设计书推荐<a id="sec-18-8" name="sec-18-8"></a>
+## 数据库设计书推荐
 
 高性能mysql推荐 Apress.Beginning.Database.Design.2nd.Edition.Jul.2012 是英文版，需要有空的时候读读  
 另外搜到了 《数据库设计入门经典》中文版书，读了2天，结论是晦涩难懂，实战价值不大  
 
-# nginx<a id="sec-19" name="sec-19"></a>
+# nginx
 
 查看配置文件 nginx -t  
 
-# docker<a id="sec-20" name="sec-20"></a>
+# docker
 
 阿里云脚本安装  
 curl -sSL <http://acs-public-mirror.oss-cn-hangzhou.aliyuncs.com/docker-engine/internet> | sh -  
@@ -1706,15 +1576,15 @@ docker build -t nginx:v3 .
 
 强制关闭并删除正在运行的程序docker rm -f $(docker ps -q)  
 
-# ubuntu<a id="sec-21" name="sec-21"></a>
+# ubuntu
 
-## boot磁盘满<a id="sec-21-1" name="sec-21-1"></a>
+## boot磁盘满
 
 sudo du -h /boot  
 sudo apt-get remove linux-image-    tab键  
 <http://blog.csdn.net/wxyangid/article/details/53097208>  
 
-## 壁纸<a id="sec-21-2" name="sec-21-2"></a>
+## 壁纸
 
 <http://www.lovebizhi.com/>  
 
@@ -1723,17 +1593,17 @@ $ sudo add-apt-repository ppa:peterlevi/ppa
 $ sudo apt-get update  
 $ sudo apt-get install variety  
 
-## apt彻底删除<a id="sec-21-3" name="sec-21-3"></a>
+## apt彻底删除
 
 彻底删除 sudo apt purge  
 
-# 如何为sudo命令定义PATH环境变量<a id="sec-22" name="sec-22"></a>
+# 如何为sudo命令定义PATH环境变量
 
 添加所需要的路径(如 /usr/local/bin）到"secure<sub>path</sub>"下，在开篇所遇见的问题就将迎刃而解。  
 Defaults    secure<sub>path</sub> = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin  
 <http://www.linuxidc.com/Linux/2014-09/106076.htm>  
 
-# node ubuntu安装<a id="sec-23" name="sec-23"></a>
+# node ubuntu安装
 
 sudo apt install 的版本太旧  
 
@@ -1758,7 +1628,7 @@ npm install -g cnpm &#x2013;registry=<https://registry.npm.taobao.org>
 cnpm install express  
 参考 <https://blog.niceue.com/front-end-development/using-domestic-npm-images.html>  
 
-# Ubuntu vim emacs 翻译工具安装<a id="sec-24" name="sec-24"></a>
+# Ubuntu vim emacs 翻译工具安装
 
 安装ui版 sudo apt install stardict  
   安装本地词典 <http://download.huzheng.org/>  
@@ -1820,7 +1690,7 @@ man 模式下 !sdcv hello
       (concat "sdcv -n "  
               (buffer-substring begin end))))))  
 
-# 翻墙 ubuntu<a id="sec-25" name="sec-25"></a>
+# 翻墙 ubuntu
 
 
 更新软件源  
@@ -1882,19 +1752,19 @@ vim /etc/rc.local
 ssserver -c /etc/shadowsocks.json -d start  
 exit 0  
 
-# 工具<a id="sec-26" name="sec-26"></a>
+# 工具
 
-## ftp<a id="sec-26-1" name="sec-26-1"></a>
+## ftp
 
 filezilla  
 
-## unzip 压缩解压中文<a id="sec-26-2" name="sec-26-2"></a>
+## unzip 压缩解压中文
 
 unzip -O cp936 UE.zip  
 
-# 备忘<a id="sec-27" name="sec-27"></a>
+# 备忘
 
-## 后台模板<a id="sec-27-1" name="sec-27-1"></a>
+## 后台模板
 
 Metronic  
 
