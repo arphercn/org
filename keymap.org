@@ -112,6 +112,7 @@ macro编辑
 取消矩形注释         C-x r k
 跳转到行内非空白    M-m
 上移一行           C-x C-t
+
 * vim
 方向键              h j k l
 基于单词移动        b e w

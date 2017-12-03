@@ -2,21 +2,21 @@
 #+OPTIONS: toc:nil
 * 博客安装
 hexo安装
-参考 http://www.jianshu.com/p/ed32ac187dbc
+参考 [[http://www.jianshu.com/p/ed32ac187dbc]]
 #+BEGIN_EXAMPLE
 mkdir hexo
 cd hexo
+
+;; 提示 link /usr/local/node/bin/hexo@ -> /usr/local/node/lib/node_modules/hexo/bin/hexo
+;; -g代表全局依赖 安装后可以在其他目录任意调用，如webback等可以使用全局安装;
+;; 本地安装的优点是升级依赖、重命名等时可以和全局的依赖避免冲突 参考[[http://www.cnblogs.com/zhuzhenwei918/p/7228915.html]]
 sudo cnpm install -g hexo
-#+END_EXAMPLE
- 提示 link /usr/local/node/bin/hexo@ -> /usr/local/node/lib/node_modules/hexo/bin/hexo  
- -g代表全局依赖 安装后可以在其他目录任意调用，如webback等可以使用全局安装;  
- 本地安装的优点是升级依赖、重命名等时可以和全局的依赖避免冲突 参考http://www.cnblogs.com/zhuzhenwei918/p/7228915.html  
-#+BEGIN_EXAMPLE
+
 sudo hexo init
 sudo cnpm install hexo-deployer-git --save
 hexo d
 #+END_EXAMPLE
-使用
+使用命令
 #+BEGIN_EXAMPLE
 hexo generate = hexo g
 hexo server = hexo s
@@ -24,7 +24,7 @@ hexo delopy = hexo d
 hexo new = hexo n
 #+END_EXAMPLE
 
-更多参考 https://xuanwo.org/2015/03/26/hexo-intor/
+更多参考 [[https://xuanwo.org/2015/03/26/hexo-intor/]]
 
 * 树型结构数据呈现
 *** 可分页版 
