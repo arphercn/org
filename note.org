@@ -28,7 +28,8 @@ hexo new = hexo n
 
 * 树型结构数据呈现
 *** 可分页版 
-#  从数组看依次取出10条id,在根据id取出相应的父节点数据，最后过滤10条里的重复数组
+从数组看依次取出10条id,在根据id取出相应的父节点数据，最后过滤10条里的重复数组
+#+ATTR_HTML: :textarea t :height 200
 #+BEGIN_SRC php
     private function createTree($array, $pid = 0)
     {
