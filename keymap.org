@@ -7,7 +7,7 @@
 行首行尾            C-a  C-e
 
 上一段下一段         M-a  M-e
-全文首位             M-<  M->
+全文首尾             M-<  M->
 
 Forward 4 word       C-u 4 M-f
 Repeat 9 *           C-u 9 *
@@ -33,7 +33,7 @@ paste		     C-y
 
 Cut line             C-k C-k <move> C-y
                      C-u 4 C-k <move> C-y
-Copy line            C-k C-k C-y <move> C-y
+					 Copy line            C-k C-k C-y <move> C-y
                      C-u 4 C-k C-y <move> C-y
 
 Recover data         C-k C-k <move> C-k C-k C-y
@@ -48,7 +48,7 @@ save all files       C-x  s
 
 Replace string       M-x repl s <return> bbbb
                                 <return> cccc
-
+								
 auto save file       #bbbb.c#
 recover file         C-x  C-f  bbbb.c
                           M-x  recover-file <return> yes
@@ -112,7 +112,9 @@ macro编辑
 取消矩形注释         C-x r k
 跳转到行内非空白    M-m
 上移一行           C-x C-t
-
+移动整体代码块      选中代码块后： 
+                   向左移动2个字符：C-u -2 C-x TAB
+                   向右移动4个字符：C-u 4 C-x TAB
 * vim
 方向键              h j k l
 基于单词移动        b e w
