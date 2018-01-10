@@ -1,7 +1,6 @@
 #+OPTIONS: \n:t
 #+OPTIONS: toc:nil
-* 博客安装
-hexo安装实践
+* hexo博客安装实践
 
 mkdir hexo && cd hexo
 sudo cnpm install -g hexo
@@ -765,6 +764,7 @@ ctrl+F 搜索lang
 location.reload()
 
 * js添加删除class
+#+BEGIN_SRC js
 var classVal = document.getElementById("id").getAttribute("class");
 
 //删除的话
@@ -778,6 +778,7 @@ document.getElementById("id").setAttribute("class",classVal );
 //替换的话
 classVal = classVal.replace("someClassName","otherClassName");
 document.getElementById("id").setAttribute("class",classVal );
+#+END_SRC
 * bower 
 bower install jstree --save 总是报错
 使用bower install jstree 在bower_components生成jstree目录
@@ -931,6 +932,17 @@ composer update - 从 composer.json 安装最新扩展包和依赖；
 composer update vendor/package - 从 composer.json 或者对应包的配置，并更新到最新；
 composer require new/package - 添加安装 new/package, 可以指定版本，如： composer require new/package ~2.5.
 * laravel
+                                    
+** 调试
+bug 新建插入字段不成功
+  fix 检查Model 的fill
+
+报错
+  FatalThrowableError in 2154f392745gf102547be138a945a11b58e5649203.php line 2: Call to undefined method Illuminate\View\Factory::getFirstLoop()
+php artisan view:clear
+
+route问题访问不到
+  $router->get('adminuser/changeSelf',...必须在$router->resource('adminuser', 'AdminUserController');前面
 ** laravel-my
 composer create-project laravel/laravel laravel-my --prefer-dist
 # 注：有dist和source两种安装方式，dist是强制使用压缩包，而source是使用源代码安装，如果是想从source安装，那么可以改成--prefer--source
@@ -965,10 +977,6 @@ php artisan key:genarate
 
 ** url带参数
 <a href="{{ URL::to('admin/source/iauth').'?'.http_build_query(['id'=>$data->source_id, 'title'=>$data->title, 'update'=>$data->updated_at]) }}"  data-id="{{ $data->source_id }}" data-title="{{ $data->title }}" data-update="{{ $data->updated_at }}" class="btn btn-inverse m-r-5 m-b-5">资源授权</a>
-                                    
-** 调试
- FatalThrowableError in 2154f392745gf102547be138a945a11b58e5649203.php line 2: Call to undefined method Illuminate\View\Factory::getFirstLoop()
-php artisan view:clear
 
 ** 任务调度
    sudo vim /etc/crontab
@@ -1526,7 +1534,18 @@ docker build -t nginx:v3 .
 
 强制关闭并删除正在运行的程序docker rm -f $(docker ps -q)
 
-* ubuntu
+* ubuntu linux
+
+** 测试端口是否打开
+telnet 192.168.1.103 80
+** 查看服务名servers
+service --status-all
+** 修改root密码
+: sudo passwd root
+使用
+su root
+** apt安装的包查询
+dpkg -l gitlab-ce
 ** boot磁盘满
 sudo du -h /boot
 sudo apt-get remove linux-image-    tab键
@@ -1542,6 +1561,27 @@ $ sudo apt-get install variety
 
 ** apt彻底删除 
 彻底删除 sudo apt purge 
+** 提示/var/目录空间不够
+   sudo mv /var/cache/apt/archives/* ~/Desktop/newfold
+** ubuntu开机自动启动设置
+如果只是想开机时执行一些命令在背景运行, 而不是用到复杂的开机服务(例如可以暂停重启什么功能的), 可以这么做:
+  - 编辑/etc/rc.local, 在 exit 0 前面加入你要执行的命令,脚本. 注意, 这个是很早的执行阶段, 可能PATH没有设置好, 所以最好用绝对路径!!!再说一次, 绝对路径! 包括脚本内!
+  - sudo crontab -e 进入计划事务编辑模式, 编辑计划, 加入这么一句@reboot /path/to/script. 这个可以加载比较多的指令了, 如果没有正常运行, 请用绝对路径.
+  - 如果要执行的命令没有背景运行模式, 可以用nohup command > /dev/null 2>&1 &
+一般的开机服务是定义在/etc/init.d里的东东, 图形管理界面可以使用sysv-rc-conf, 命令行可以使用service命令.
+** unbuntu加快开机速度
+  :systemd-analyze blame
+查看到
+         33.587s NetworkManager-wait-online.service
+         21.164s docker.service
+          8.088s mysql.service
+          5.018s plymouth-start.service
+         ...
+执行
+   :sudo systemctl disable NetworkManager-wait-online.service
+   :sudo systemctl disable docker.service
+参考
+http://www.jianshu.com/p/11491ee15344
 * 如何为sudo命令定义PATH环境变量
 添加所需要的路径(如 /usr/local/bin）到"secure_path"下，在开篇所遇见的问题就将迎刃而解。
 Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
@@ -1633,7 +1673,7 @@ man 模式下 !sdcv hello
       (concat "sdcv -n " 
               (buffer-substring begin end))))))
 
-* 翻墙 ubuntu
+* 翻墙 ubuntu shadowsocks
 # http://blog.csdn.net/wf632856695/article/details/72819402
 更新软件源
 apt-get update
@@ -1703,12 +1743,174 @@ vim /etc/rc.local
 # By default this script does nothing.
 ssserver -c /etc/shadowsocks.json -d start
 exit 0
+
+** 调试记录
+<2017-12-20 三> 无法链接到外网，重启=ssserver -c /etc/shadowsocks.json -d start=后生效
 * 工具
+** 内网穿透
+http://www.ittun.com/ 
 ** ftp
 filezilla
-** unzip 压缩解压中文
-unzip -O cp936 UE.zip
-* 备忘
+   
+** zip unzip 压缩解压中文
+: unzip -O cp936 UE.zip  # 解决解压乱码
+: unzip file.zip -d destination_folder
+
+: zip -r fold.zip fold  # 压缩文件
+: zip -e file.zip file  # 加密文件
+** 从window拷贝代码到ubuntu（linux）乱码问题解决
+: iconv -f GBK -t UTF-8 bbbb.txt -o bbbb.txt
+有时转码后依然会出现乱码，可以利用iconv的参数-c，忽略输出的非法字符，就可以了。
+: iconv -f GBK  -t UTF-8 -c leach.m > leach1.m
+http://blog.csdn.net/u010126792/article/details/61616884
+** pdf->doc
+http://pdf2doc.com/zh/
+** 花瓶抓包
 ** 后台模板
 Metronic
+
+* 方
+** 症
+畏寒 走一段路腿疼
+不渴
+胸闷气短
+** 开方
+黄芩泻白散合黛蛤散
+
+黄岑10克 桑白皮15克  地骨皮15克  粳米15克   
+麦冬10克 北沙参10克 栀子5克 郁金3克 柴胡3克 甘草3克  
+
+http://yibian.hopto.org/fang/?fno=204
+http://www.baike.com/wiki/%E9%BB%9B%E8%9B%A4%E6%95%A3
+http://www.zysj.com.cn/zhongyaocai/yaocai_z/zhizi.html
+
+http://www.360doc.com/content/15/0702/05/6851991_482048129.shtml
+
+黛蚵散比例
+黛蛤散中海蛤壳性味咸寒，可清热化痰、软坚散结，青黛性味咸寒，可清热解毒，凉血定惊，故合用可治疗肝火犯肺，
+咳痰带血，咽喉不适等症状，对咳嗽时间比较长，并且痰黏不容易咳出来者尤为有效。一般蛤粉与青黛的配伍比例为10︰1，
+热象重者青黛可以酌加，散剂每服3~6g，日服2~3次，煎剂10~30g，儿童酌减。脾胃虚寒者慎用。我的体会直接吞服散剂较煎剂效佳
+http://blog.sina.com.cn/s/blog_58d372a70102vuoe.html
+
+-- 小青龙汤 记得李可老中医 用此方加减来治慢性肺病
+
+参考 祛湿利水经典方剂五苓散 https://mp.weixin.qq.com/s?__biz=MzA5ODM0ODgzMA==&mid=2651213214&idx=1&sn=a5feb911b725a4f2369df0143f8a871f&pass_ticket=YTrv83NFiSc592lZ4Vac%2B7lzpE6qjykYG627dLTfZfMh2ZJvyaZ2wZy9w2NunkQV
+
+三、胃苓汤（《丹溪心法》）为五苓散与平胃散（陈皮、厚朴、苍术、甘草）的合方，利水祛湿剂与芳香化湿剂合用，除加强祛湿作用外，还着重加强行气化气作用，适用于脾湿气滞、消化不良、脘腹胀痛泄泻、小便短少者。
+
+查厚朴 
+http://yibian.hopto.org/yao/?yno=241 
+痰飲喘咳。本品能燥濕化痰，下氣平喘。對於宿有喘病，因外感風寒而發者，可與桂枝、杏仁等同用，如桂枝加厚朴杏子湯；若痰濕內阻，胸悶喘咳者，常與蘇子、橘皮等同用，如蘇子降氣湯。
+
+内科不治喘，治喘丢了脸——经方泰斗胡希恕治哮喘经验总结 http://mp.weixin.qq.com/s/49GHtxN3ZEfhgTkQ-uRl2Q
+
+从六经辨证来看，哮喘常表现为太阳病或少阳病，尤以太阳少阳并病、少阳阳明并病和三阳并病为最多见，而且以实证为多见。中医所说的哮喘，一般多是指临床上的一个症状，以邪气实多见。
+
+大柴胡汤合桂枝茯苓丸方证主症见：胸胁苦满，呼吸困难，心下急，口苦咽千，大便干燥。
+
+少阳病 https://zh.wikipedia.org/wiki/%E5%B0%91%E9%99%BD%E7%97%85
+查得 变证 阴阳升降失常，上热下寒证：黄连汤 http://yibian.hopto.org/fang/?fno=95
+【辨證要點】
+胸中煩熱。
+腹中冷痛。
+嘔吐下利腸鳴。
+苔白膩。
+脈弦。
+
+黃連9克  甘草9克  乾薑9克  桂枝9克  人參6克  半夏12克  大棗4枚 
+
+郝万山讲《伤寒论》 第38讲 http://www.theqi.com/simplified/cmed/class/class1/note_38.html
+如果全身的表现是无汗的，还可以用麻黄汤，就是完全是寒邪闭郁了阳明经表的阳气，全身表现为无汗，而额头疼痛，缘缘面赤，目痛鼻干，这种症状又不特别突出，那就用麻黄汤
+
+麻黄汤 http://yibian.hopto.org/shu/?sid=603
+发汗猛 暂不用
+
+大柴胡湯	 http://yibian.hopto.org/fang/?fno=10
+
+柴胡15克(8兩)  黃芩9克(3兩)  半夏9克(半升) 洗  枳實9克(4枚) 炙  大黃6克(2兩)  芍藥9克(3兩)  生薑15克(5兩) 切  大棗12枚 擘  
+右七味，以水一斗二升，煮取六升，去滓再煎，溫服一升，日三服
+
+桂枝茯苓丸 http://yibian.hopto.org/fang/?fno=165
+桂枝10克  茯苓10克  牡丹皮10克  白芍10克  桃仁10克  
+
+[经典] 黄煌 大柴胡汤的方证及其现代应用 http://blog.sina.com.cn/s/blog_73b391c60102very.html
+先说说大柴胡汤的配方，比起当下一些中医开的方，大柴胡汤算是个小方了，共八味药。柴胡半斤、黄芩三两、半夏半升、枳实四枚、芍药三两、大黄二两，生姜五两、大枣十二枚，以水一斗二升，煮取六升，去滓，再煎。温服一升，日三服。这里有几点说明一下：
+柴胡半斤，就是八两，如果按一两等于3克折算，应该24克，如果一两等于5克折算，也应该40克，显然，用柴胡5克10克的，可能算不上大柴胡汤；
+ 
+半夏半升：经推测，半夏一升为五两，半升为二两半，可折算为12.5克，我多用10-15克。
+ 
+枳实四枚：汉代没有枳壳枳实之分，后来将小嫩的果实为枳实，大的为枳壳。这个说法，在宋代沈括《梦溪笔谈》中已经提及。根据实测，一枚枳实重约3克，一枚枳壳重量约为枳实的3-5倍，甚至更多，所以，原方用4枚枳实，可能重量当在40克以上，甚至到80克。提示我们现在用量比较保守，可以摸索大剂量枳实枳壳应用的经验
+
+郝万山讲《伤寒论》
+第21讲 太阳蓄血证（1） http://www.theqi.com/cmed/class/class1/note_21.html
+大柴胡汤证是上腹部满痛，大承气汤证是脐周极其胀满有力，桃核承气汤证是下腹部压痛。
+
+原来有血管瘤，现在怎么没有呢？对照起来，前后差了半年，就是没有了。他就问怎么治疗的？她说我就是找一个中医大夫，一直吃一种胶囊治好的，但是从那时候到现在，用抵当汤做成散剂治疗脑血管瘤，有这么好的效果的我只遇到这么一例，后来我遇到类似的病人，我也用过，也许是病人在坚持吃药方面，有些困难
+
+“太阳病身黄”，这个身黄，可以见于太阳蓄水，也可以见于太阳蓄血，太阳蓄血，血热互结，阻滞气机，而全身的气机是靠肝胆来疏泄的，血热互结，阻滞气机，气机阻滞以后，就容易反过来影响肝胆疏泄，
+
+是蓄血的，你可以用抵当汤来治疗。这一条特别强调了蓄水和蓄血的区别，在于小便利和小便不利
+
+大柴胡湯 用量 http://www.tcmforum.com/forum2.php?forumID=100483&fGroup=expert
+
+按之心下滿痛者，此為實也，當下之，宜大柴胡湯”。細與《傷寒論》條文對照，可知大柴胡湯證不必非是由太陽而少陽陽明，也可以是雜病獨立的病證。心下者，心之下也，不僅包括胃，也包括肝膽和胰，按之滿痛是點明的主證，其它尚有發熱口燥、惡心、嘔吐、尿赤、大便乾結，或黃疸、胸脅滿痛，舌必紅，苔必黃，脈必沉實滑數。
+
+不過需要指出，在急腹症的治療中，因邪實是主要矛盾，故藥量宜大，如柴胡常用至30克，黃芩15克，大黃30~40克，白芍25克，枳實(或枳殼)15~20克，使藥能勝病，邪去而元氣自復
+
+桃核承氣湯	http://yibian.hopto.org/fang/?fno=161
+
+经方一百首
+
+067、桃核承气汤 与、抵当汤、桂枝茯苓区别
+http://www.tcm100.com/user/jfybs/zzbook67.htm
+本方与桂枝茯苓丸都有少腹疼痛拒按的瘀血证候、但本方有明显的精神症状，表现小躁、狂、烦的外在征象，是瘀血初聚结；桂枝茯苓丸证偏向于—种安静的状态，瘀血瘀积已久，形成有限范围的癥块。
+龙野一雄曾把桃核承气汤、抵当汤、桂枝茯苓丸在腹证进行了详细区别。此三者在腹诊上必须非常熟练才能鉴别。其要点如下：三者的抵抗位置皆无特征，随处可以发现一至数处。
+而抵当汤证的抵抗在深部，且略有硬感，无腹动。桂枝茯苓丸证的抵抗亦在深部有硬感，境界多相当明显，亦有成为硬结者，多能证明髂总动脉的紧张、压痛，搏动亢进。桃核承气汤证之抵抗略软，境界多不明显，
+虽有髂动脉的紧张和压痛，不一定有搏动亢进的现象，但可见少腹急结。桃核承气汤的加味药多为蒲黄、当归、牛膝、乌药等。本方证病在下焦，故其服法仲景条文提出“先食温服”，以使药力直达病所，迅速发挥逐瘀下行之力。临床使用时多嘱咐病人在饭前1小时空腹服药，应注意
+
+脾陽虛主要是怕冷脾氣虛主要是無力 http://chenron.pixnet.net/blog/post/351714137-%E8%84%BE%E9%99%BD%E8%99%9B%E4%B8%BB%E8%A6%81%E6%98%AF%E6%80%95%E5%86%B7-%E8%84%BE%E6%B0%A3%E8%99%9B%E4%B8%BB%E8%A6%81%E6%98%AF%E7%84%A1%E5%8A%9B
+附子理中湯	  	來源	
+http://yibian.hopto.org/fang/?fno=691
+【辨證要點】
+
+腹痛不渴。
+或嘔或利。
+四肢厥冷。
+舌淡苔白。
+脈沈遲。
+
+症：有10年左右，一月二三次，尿痛，不利，严重时带血
+清利下焦湿热重在健脾胃https://www.douban.com/note/89856731/
+
+清利湿热的过程中易伤及正气，利湿易伤阴，清热则易伤阳，滋阴则易助温，温阳则热易生，所以说临床要仔细把握这对矛盾的相互性，
+合理地分析湿热和正虚的关系，制订下科学的治疗法则，才能聚集较好的疗效。
+
+脾胃的正常功能的发挥，不仅能源源不断地提供后天之精，而且重要的运化水湿，疏通经脉， 脾健则湿无所生，湿无生则热无以合，
+故湿热难成，故在清利湿热，尤其是在清利下焦湿热之症时，健脾是非常重要的，同时还需要提及一点，脾易受肝之所制，故少佐调肝之药，效更佳。
+
+2007/08/29
+症：上一周左右因为鼻窦炎头疼，前两天血压测了偏高，今晚测血压偏高，这两周有些胸闷，这两天有轻微的咳嗽的症状
+开方：用黛蚵散配活血散淤
+
+青黛10g 海蚵壳10克  柴胡10g 香附6g  川芎6g 桂枝10g  黃芩10g 枳壳 10g 桃仁6g  生姜6g 野菊花10g 夏枯草10g 辛夷6g 甘草10g 炙甘草6g 苍术6g 红枣3枚  
+
+黄连
+http://yibian.hopto.org/yao/?yno=100
+本品兼清肝火，若肝火犯胃，肝胃不和，脇肋脹痛、嘔吐吞酸，可與吳茱萸同用，如左金丸
+
+香附 http://yibian.hopto.org/yao/?yno=152
+與柴胡、川芎、枳殼等同用，如柴胡疏肝散
+
+止嗽散	http://yibian.hopto.org/fang/?fno=238
+
+2017/08/04
+血府逐瘀汤 
+http://yibian.hopto.org/diag/syp.php?sypno=178 
+当归三钱（9克），生地黄三钱（9克），桃仁四钱（12克），红花三钱（9克）、枳壳二钱（6克），赤芍二钱（6克）、柴胡一钱（3克），甘草二钱（6克），桔梗一钱半（5克），川芎一钱半（5克），牛膝三钱（9克） + 夏枯草6克  菊花6克
+
+2017-11-15
+大柴胡汤+桂枝茯苓+血府逐淤汤 + 黄连 治咳嗽高血压失眠
+http://www.cqvip.com/read/read.aspx?id=41221245
+柴胡30克，黃芩15克，大黃30克，白芍25克，枳實15克 半夏15克 生姜6克 大枣3枚  桂枝10克  茯苓10克  牡丹皮10克  桃仁10克 黄莲6克
+
 
