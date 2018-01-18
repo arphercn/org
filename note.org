@@ -507,6 +507,12 @@ https://stackoverflow.com/questions/16475198/jquery-scrolltop-animation
 $("html, body").animate({ scrollTop: 50 }, 300);
 
 * datatable
+
+Debug
+刷新不出页面 
+1检查和html列和datatable js的列对应关系 
+2 如果以上对应关系正确，清除缓存
+
 DOM / jQuery events 获取一行的数据
 DataTables events  点击搜索，分页等事件
 Column rendering 可以渲染链接的列，自定义列，按钮等
@@ -1534,8 +1540,50 @@ docker build -t nginx:v3 .
 
 强制关闭并删除正在运行的程序docker rm -f $(docker ps -q)
 
-* ubuntu linux
+* linux
+关于递归目录相关命令
+cp -R dir/ ./
+mv dir ./ # 不用选项
+chown -R git:git ./
+scp -r project.git/ root@hostname:/opt/git/
+* ubuntu
+** apt dpkg软件管理
+apt-cache search # ------(package 搜索包)
+apt-cache show #------(package 获取包的相关信息，如说明、大小、版本等)
+apt-get install # ------(package 安装包)
+apt-get install # -----(package --reinstall 重新安装包)
+apt-get -f install # -----(强制安装, "-f = --fix-missing"当是修复安装吧...)
+apt-get remove #-----(package 删除包)
+apt-get remove --purge # ------(package 删除包，包括删除配置文件等)
+apt-get autoremove --purge # ----(package 删除包及其依赖的软件包+配置文件等（只对6.10有效，强烈推荐）)
+apt-get update #------更新源
+apt-get upgrade #------更新已安装的包
+apt-get dist-upgrade # ---------升级系统
+apt-get dselect-upgrade #------使用 dselect 升级
+apt-cache depends #-------(package 了解使用依赖)
+apt-cache rdepends # ------(package 了解某个具体的依赖,当是查看该包被哪些包依赖吧...)
+apt-get build-dep # ------(package 安装相关的编译环境)
+apt-get source #------(package 下载该包的源代码)
+apt-get clean && apt-get autoclean # --------清理下载文件的存档 && 只清理过时的包
+apt-get check #-------检查是否有损坏的依赖
+dpkg -S filename -----查找filename属于哪个软件包
+apt-file search filename -----查找filename属于哪个软件包
+apt-file list packagename -----列出软件包的内容
+apt-file update --更新apt-file的数据库
 
+dpkg --info "软件包名" --列出软件包解包后的包名称.
+dpkg -l --列出当前系统中所有的包.可以和参数less一起使用在分屏查看. (类似于rpm -qa)
+dpkg -l |grep -i "软件包名" --查看系统中与"软件包名"相关联的包.
+dpkg -s 查询已安装的包的详细信息.
+dpkg -L 查询系统中已安装的软件包所安装的位置. (类似于rpm -ql)
+dpkg -S 查询系统中某个文件属于哪个软件包. (类似于rpm -qf)
+dpkg -I 查询deb包的详细信息,在一个软件包下载到本地之后看看用不用安装(看一下呗).
+dpkg -i 手动安装软件包(这个命令并不能解决软件包之前的依赖性问题),如果在安装某一个软件包的时候遇到了软件依赖的问题,可以用apt-get -f install在解决信赖性这个问题.
+dpkg -r 卸载软件包.不是完全的卸载,它的配置文件还存在.
+dpkg -P 全部卸载(但是还是不能解决软件包的依赖性的问题)
+dpkg -reconfigure 重新配置
+
+摘自 http://qiuye.iteye.com/blog/461394
 ** 测试端口是否打开
 telnet 192.168.1.103 80
 ** 查看服务名servers
@@ -1687,12 +1735,14 @@ pip install --upgrade pip
 解决pip install 时locale.Error: unsupported locale setting
 # http://blog.csdn.net/qq_33232071/article/details/51108062
 export LC_ALL=C
+
 如果提示没有setuptools模块，则安装setuptools
 pip install setuptools
+
 如果刚才shadowsocks安装成功则跳过这一步，某则继续安装shadowsocks
 pip install shadowsocks
 编辑配置文件
- vim /etc/shadowsocks.json
+vim /etc/shadowsocks.json
 添加：
 
 {
@@ -1704,6 +1754,8 @@ pip install shadowsocks
     "timeout":300,
     "method":"aes-256-cfb"
 }
+
+
 
 name	info
 server	服务器 IP (IPv4/IPv6)，注意这也将是服务端监听的 IP 地址
@@ -1744,9 +1796,91 @@ vim /etc/rc.local
 ssserver -c /etc/shadowsocks.json -d start
 exit 0
 
+手机端
+v4.2.5
+https://github.com/shadowsocks/shadowsocks-android/releases/download/v4.2.5/shadowsocks-nightly-4.2.5.apk
+* vultr
+<2018-01-12 五> shadowsocks无法工作，重启后无效 
+决定重换服务器,竟然$2.5/mon 的售完了...
+东京主机 打不了 ”| “符号，连不了ssh服务
+换了新加坡服务器问题解决
 ** 调试记录
 <2017-12-20 三> 无法链接到外网，重启=ssserver -c /etc/shadowsocks.json -d start=后生效
+* aws Amazon Web Service 
+*login in and setup*
+my secret key file is saved on
+: ~/aws.pem
+Login in
+: ssh -i "ec2.pem" ubuntu@ec2-54-200-248-155.us-west-2.compute.amazonaws.com
+or
+: ssh -i ec2.pem ubuntu@hostname
+
+After login
+Follow the promot
+#+BEGIN_QUOTE
+WARNING! Your environment specifies an invalid locale.
+ The unknown environment variables are:
+   LC_CTYPE=zh_CN.UTF-8 LC_ALL=
+ This can affect your user experience significantly, including the
+ ability to manage packages. You may install the locales by running:
+
+   sudo apt-get install language-pack-zh
+     or
+   sudo locale-gen zh_CN.UTF-8
+#+END_QUOTE
+
+: sudo locale-gen zh_CN.UTF-8
+
+*ping not work*
+
+https://www.zhihu.com/question/30711594 aws上已部署好服务器，为什么弹性IP还是ping不通？
+
+选择左边菜单  网络与安全 ---》安全组---》对应的安全组  选择入站规则---》再编辑
+添加新的入站规则
+   选择允许全部流量
+
+然后选择 实例-》操作-》联网-》更改安全组
+                        -》管理ip地址可查看ip    
+然后就可以ping通了
+
+
+*install shadowsocks*
+
+: sudo apt-get install python-pip
+: sudo pip install shadowsocks
+: sudo vim /etc/shadowsocks.json
+
+{
+    "server":"0.0.0.0",
+    "server_port":8388,
+    "local_address": "127.0.0.1",
+    "local_port":1080,
+    "password":"flzx3qc",
+    "timeout":300,
+    "method":"aes-256-cfb"
+}
+
+赋予文件权限
+: chmod 755 /etc/shadowsocks.json
+
+后台运行
+: ssserver -c /etc/shadowsocks.json -d start
+
+tips: when option "server" is set to real ip,shadowsocks can't be correct install
+After
+: ssserver -c /etc/shadowsocks.json -d start
+Then use stop momand prompt messege ssserver isn't started
+
+*Update*
+Can't connect to aws ec2 <2018-01-13 六>
+https://www.zhihu.com/question/21271342 亚马逊的AWS不能SSH登录了怎么办？
+参考"把security group删了重新加一个呢？"回答，删了安全组，重新添加了一遍。发现了问题所在，也是上一次配置安全组时给自己留的坑，入站位置设为了只有本机。当第二天打开本地电脑时本地ip变了，所以连不上了
+解决：安全组入站限制改为允许所有位置，这样也同时解决了手机端链接shadowsocks的问题
+
+
 * 工具
+** 命令行打开文件管理器
+nautilus /etc
 ** 内网穿透
 http://www.ittun.com/ 
 ** ftp
@@ -1912,5 +2046,6 @@ http://yibian.hopto.org/diag/syp.php?sypno=178
 大柴胡汤+桂枝茯苓+血府逐淤汤 + 黄连 治咳嗽高血压失眠
 http://www.cqvip.com/read/read.aspx?id=41221245
 柴胡30克，黃芩15克，大黃30克，白芍25克，枳實15克 半夏15克 生姜6克 大枣3枚  桂枝10克  茯苓10克  牡丹皮10克  桃仁10克 黄莲6克
+
 
 

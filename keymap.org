@@ -134,7 +134,16 @@ macro编辑
 替换单字母          r
 剪切                d dw d5l dt" di" da"
 复制                yy yj y5j    yi" ya"
+全部复制            ggyG
 粘贴                p 3p
+sudo apt-get install vim-gnome
+"+y   复制选中内容到＋寄存器，也就是系统的剪贴板，供其他程序用
+gg"+yG   要复制到别的地方，用 "+y 来复制，注意是三个字符。
+修改~/.vimrc
+添加如下内容：
+nmap <c-c> "+y
+nmap <c-v> "+p
+
 
 重复上个命令        .
 虚拟模式选择        ve vw vW vi" va" vis vap
@@ -948,4 +957,7 @@ CPU  dmesg | grep CPU
 			 chkconfig --list | grep rsyslog
 	配置文件 /etc/logrotate.conf
 	
+
+
+
 
