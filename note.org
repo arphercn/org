@@ -1547,6 +1547,18 @@ mv dir ./ # 不用选项
 chown -R git:git ./
 scp -r project.git/ root@hostname:/opt/git/
 * ubuntu
+** 添加自启动快捷方式
+sudo vim /usr/share/applications/pstorm.desktop
+[Desktop Entry]
+Version=1.0
+Name=pstorm
+Exec=/opt/PhpStorm-172.3317.83/bin/phpstorm.sh
+Terminal=false
+Icon=/opt/PhpStorm-172.3317.83/bin/phpstorm.png
+Type=Application
+Categories=Development
+
+https://blog.csdn.net/walker0411/article/details/51555821
 ** apt dpkg软件管理
 apt-cache search # ------(package 搜索包)
 apt-cache show #------(package 获取包的相关信息，如说明、大小、版本等)
@@ -1845,7 +1857,7 @@ https://www.zhihu.com/question/30711594 aws上已部署好服务器，为什么�
 
 
 *install shadowsocks*
-
+: sudo apt update
 : sudo apt-get install python-pip
 : sudo pip install shadowsocks
 : sudo vim /etc/shadowsocks.json
@@ -1861,7 +1873,7 @@ https://www.zhihu.com/question/30711594 aws上已部署好服务器，为什么�
 }
 
 赋予文件权限
-: chmod 755 /etc/shadowsocks.json
+: sudo chmod 755 /etc/shadowsocks.json
 
 后台运行
 : ssserver -c /etc/shadowsocks.json -d start
@@ -1876,7 +1888,6 @@ Can't connect to aws ec2 <2018-01-13 六>
 https://www.zhihu.com/question/21271342 亚马逊的AWS不能SSH登录了怎么办？
 参考"把security group删了重新加一个呢？"回答，删了安全组，重新添加了一遍。发现了问题所在，也是上一次配置安全组时给自己留的坑，入站位置设为了只有本机。当第二天打开本地电脑时本地ip变了，所以连不上了
 解决：安全组入站限制改为允许所有位置，这样也同时解决了手机端链接shadowsocks的问题
-
 
 * 工具
 ** 命令行打开文件管理器
